@@ -12,7 +12,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
  * @since  Version 1.0.1
  *
  */
-function add_option($name, $value = '', $autoload = 1)
+function user_add_option($name, $value = '', $autoload = 1)
 {
     if (!option_exists($name)) {
         $CI = &get_instance();
@@ -27,26 +27,26 @@ function add_option($name, $value = '', $autoload = 1)
             $newData['autoload'] = $autoload;
         }
 
-        $CI->db->insert(db_prefix() . 'options', $newData);
+        // $CI->db->insert(db_prefix() . 'options', $newData);
 
         $insert_id = $CI->db->insert_id();
 
-        if($CI->session->userdata('staff_user_id')){
-            $array = array('name' => $name, 'user_id' => $CI->session->userdata('staff_user_id'));
+        if ($CI->session->userdata('admin_id')) {
+            $array = array('name' => $name, 'user_id' => $CI->session->userdata('admin_id'));
             $res_data = $CI->db->select('value')
-            ->where($array)->get(db_prefix() . 'menu_mapping')->row();
-            if(!empty($res_data)){
+                ->where($array)->get(db_prefix() . 'menu_mapping')->row();
+            if (!empty($res_data)) {
                 $CI->db->where('name', $name);
-                $CI->db->where('user_id', $CI->session->userdata('staff_user_id'));
+                $CI->db->where('user_id', $CI->session->userdata('admin_id'));
                 $newdata = ['value' => $value];
 
                 $CI->db->update(db_prefix() . 'menu_mapping', $newdata);
 
-            }else{
+            } else {
                 $newDataCheck = [
                     'name' => $name,
                     'value' => $value,
-                    'user_id' => $CI->session->userdata('staff_user_id')
+                    'user_id' => $CI->session->userdata('admin_id')
                 ];
                 $CI->db->insert(db_prefix() . 'menu_mapping', $newDataCheck);
 
@@ -65,13 +65,139 @@ function add_option($name, $value = '', $autoload = 1)
 }
 
 function get_menu_option($name, $default)
-{ 
-    $option = get_option($name);
+{
+    $option = user_get_option($name);
     if (empty($option)) {
-        update_option($name, $default);
+        user_update_option($name, $default);
         return $default;
     }
     return $option;
+}
+
+function user_get_option($name)
+{
+    $CI = &get_instance();
+    $array = array('name' => $name, 'user_id' => $CI->session->userdata('admin_id'));
+    $option = $CI->db->where($array)->get(db_prefix() . 'menu_mapping')->row();
+    return $option ? $option->value : '';
+}
+
+/**
+ * Updates option by name
+ *
+ * @param string $name Option name
+ * @param string $value Option Value
+ * @param mixed $autoload Whether to update the autoload
+ *
+ * @return boolean
+ */
+function user_update_option($name, $value, $autoload = null)
+{
+    /**
+     * Create the option if not exists
+     * @since  2.3.3
+     */
+    if (!option_exists($name)) {
+        return add_option($name, $value, $autoload === null ? 1 : 0);
+    }
+
+    $CI = &get_instance();
+
+    $CI->db->where('name', $name);
+    if ($autoload) {
+        $data['autoload'] = $autoload;
+    }
+
+    if ($CI->session->userdata('admin_id')) {
+        $array = array('name' => $name, 'user_id' => $CI->session->userdata('admin_id'));
+        $res_data = $CI->db->select('value')
+            ->where($array)->get(db_prefix() . 'menu_mapping')->row();
+        if (!empty($res_data)) {
+            $CI->db->where('name', $name);
+            $CI->db->where('user_id', $CI->session->userdata('admin_id'));
+            $newdata = ['value' => $value];
+
+            $CI->db->update(db_prefix() . 'menu_mapping', $newdata);
+
+        } else {
+            $newDataCheck = [
+                'name' => $name,
+                'value' => $value,
+                'user_id' => $CI->session->userdata('admin_id')
+            ];
+            $CI->db->insert(db_prefix() . 'menu_mapping', $newDataCheck);
+
+        }
+
+
+    }
+
+
+    if ($CI->db->affected_rows() > 0) {
+        return true;
+    }
+
+    return false;
+}
+
+/**
+ * Delete option
+ * @param mixed $name option name
+ * @return boolean
+ * @since  Version 1.0.4
+ */
+function delete_option($name)
+{
+    $CI = &get_instance();
+    $CI->db->where('name', $name);
+    $CI->db->delete(db_prefix() . 'options');
+
+    return (bool)$CI->db->affected_rows();
+}
+
+function save_transl($slug, $data)
+{
+    user_update_option($slug, serialize($data));
+    return true;
+}
+
+
+/**
+ * Add option
+ *
+ * @param string $name Option name (required|unique)
+ * @param string $value Option value
+ * @param integer $autoload Whether to autoload this option
+ *
+ * @since  Version 1.0.1
+ *
+ */
+function add_option($name, $value = '', $autoload = 1)
+{
+    if (!option_exists($name)) {
+        $CI = &get_instance();
+
+        $newData = [
+            'name' => $name,
+            'value' => $value,
+        ];
+
+        if ($CI->db->field_exists('autoload', db_prefix() . 'options')) {
+            $newData['autoload'] = $autoload;
+        }
+
+        $CI->db->insert(db_prefix() . 'options', $newData);
+
+        $insert_id = $CI->db->insert_id();
+
+        if ($insert_id) {
+            return true;
+        }
+
+        return false;
+    }
+
+    return false;
 }
 
 /**
@@ -111,40 +237,13 @@ function update_option($name, $value, $autoload = null)
     $CI = &get_instance();
 
     $CI->db->where('name', $name);
-   // $data = ['value' => $value];
-
-
+    $data = ['value' => $value];
 
     if ($autoload) {
         $data['autoload'] = $autoload;
     }
 
     $CI->db->update(db_prefix() . 'options', $data);
-
-    if($CI->session->userdata('staff_user_id')){
-        $array = array('name' => $name, 'user_id' => $CI->session->userdata('staff_user_id'));
-        $res_data = $CI->db->select('value')
-            ->where($array)->get(db_prefix() . 'menu_mapping')->row();
-        if(!empty($res_data)){
-            $CI->db->where('name', $name);
-            $CI->db->where('user_id', $CI->session->userdata('staff_user_id'));
-            $newdata = ['value' => $value];
-
-            $CI->db->update(db_prefix() . 'menu_mapping', $newdata);
-
-        }else{
-            $newDataCheck = [
-                'name' => $name,
-                'value' => $value,
-                'user_id' => $CI->session->userdata('staff_user_id')
-            ];
-            $CI->db->insert(db_prefix() . 'menu_mapping', $newDataCheck);
-
-        }
-
-
-    }
-
 
     if ($CI->db->affected_rows() > 0) {
         return true;
@@ -153,19 +252,25 @@ function update_option($name, $value, $autoload = null)
     return false;
 }
 
-/**
- * Delete option
- * @param mixed $name option name
- * @return boolean
- * @since  Version 1.0.4
- */
-function delete_option($name)
+function get_transl($slug)
 {
-    $CI = &get_instance();
-    $CI->db->where('name', $name);
-    $CI->db->delete(db_prefix() . 'options');
+    $data = user_get_option($slug);
+    if ($data)
+        return unserialize($data);
+    return array();
+}
 
-    return (bool)$CI->db->affected_rows();
+function get_transl_field($slug, $fied_slug, $default_value)
+{
+    $data = user_get_option($slug);
+    if ($data) {
+        $data = unserialize($data);
+        if (!empty($data[$fied_slug])) {
+            return $data[$fied_slug];
+        }
+    }
+    return $default_value;
+
 }
 
 /**

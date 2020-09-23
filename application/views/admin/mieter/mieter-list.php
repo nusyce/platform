@@ -10,7 +10,9 @@
       <div class="card-header">
         <div class="d-inline-block">
           <h3 class="card-title"><i class="fa fa-list"></i>&nbsp;Mieters</h3>
-        </div>
+			<a href="<?php echo base_url('admin/mieter/translation'); ?>" class="btn btn-info btntrans pull-left display-block"><?php echo 'Translate'; ?></a>
+
+		</div>
         <div class="d-inline-block float-right">
 			  <a href="<?php echo base_url('admin/mieter/mieter');?>" class="btn btn-success"><i class="fa fa-plus"></i> Add New Mieter</a>
 		  </div>
@@ -22,16 +24,16 @@
           <thead>
             <tr>
               <th>#</th>
-              <th>Vollständiger Name</th>
-              <th>projekt</th>
-              <th>Straße</th>
-				<th>Nr.</th>
-				<th>Wohnungsnummer</th>
-				<th>Etage</th>
-				<th>Flügel</th>
-				<th>PLZ</th>
-				<th>Stadt</th>
-				<th>Telefon</th>
+              <th><?php echo get_transl_field('tsl_mieter', 'fullname', 'Vollständiger Name')?></th>
+              <th><?php echo get_transl_field('tsl_mieter', 'projekt', 'Projekt:')?></th>
+              <th><?php echo get_transl_field('tsl_mieter', 'strabe_m', 'Straße')?></th>
+				<th><?php echo get_transl_field('tsl_mieter', 'nr', 'Nr.')?></th>
+				<th><?php echo get_transl_field('tsl_mieter', 'wohnungsnummer', 'wohnungsnummer')?></th>
+				<th><?php echo get_transl_field('tsl_mieter', 'etage', 'Etage')?></th>
+				<th><?php echo get_transl_field('tsl_mieter', 'flugel', 'Flügel')?></th>
+				<th><?php echo get_transl_field('tsl_mieter', 'plz', 'PLZ')?></th>
+				<th><?php echo get_transl_field('tsl_mieter', 'stadt', 'Stadt')?></th>
+				<th><?php echo get_transl_field('tsl_mieter', 'telefon_1', 'Telefon 1')?></th>
 
 				<th>Action</th>
             </tr>

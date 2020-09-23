@@ -35,6 +35,24 @@ class Mieter extends MY_Controller {
 		$this->mieter_model->delete($id);
 
 	}
+	public function translation()
+	{
+		if ($this->input->post()) {
+			$success = save_transl('tsl_mieter', $this->input->post());
+			if ($success)
+				//set_alert('success', _l('updated_successfully', get_menu_option('clients', 'Translation')));
+				redirect(admin_url('mieter/translation'));
+
+		}
+
+
+		$data['title'] = 'Translate';
+		$data['bodyclass'] = '';
+		$this->load->view('admin/includes/_header');
+		$this->load->view('admin/mieter/translation', $data);
+		$this->load->view('admin/includes/_footer');
+
+	}
 	public function save()
 	{
 		if(!empty($_POST)) {

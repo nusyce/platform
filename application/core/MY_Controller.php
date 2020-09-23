@@ -11,6 +11,7 @@
 			parent::__construct();
 
 			$this->load->model('admin/setting_model', 'setting_model');
+			$this->load->helper('admin');
 
 
 

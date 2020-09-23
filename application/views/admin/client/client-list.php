@@ -9,8 +9,11 @@
     <div class="card">
       <div class="card-header">
         <div class="d-inline-block">
-          <h3 class="card-title"><i class="fa fa-list"></i>&nbsp;Kunden</h3>
-        </div>
+          <h3 class="card-title"><span><?php echo get_menu_option(c_menu(), 'Kunder') ?></span>
+              <a id="edit-menu" href="#"><i class="fa fa-pencil"></i></a></h3>
+			<a href="<?php echo base_url('admin/client/translation'); ?>" class="btn btn-info btntrans pull-left display-block"><?php echo 'Translate'; ?></a>
+
+		</div>
 		  <div class="d-inline-block float-right">
 			  <a href="<?php echo base_url('admin/client/client');?>" class="btn btn-success"><i class="fa fa-plus"></i> Add New Kunden</a>
 		  </div>
@@ -22,19 +25,19 @@
           <thead>
             <tr>
               <th>#</th>
-              <th>Firma</th>
-              <th>Mitarbeiter</th>
-              <th>Mieter</th>
-				<th>Email</th>
-				<th>Telephone</th>
-				<th>Action</th>
+              <th><?php echo get_transl_field('tsl_clients', 'firma','Firma')?></th>
+              <th><?php echo get_transl_field('tsl_clients', 'mitarbeiter', 'Mitarbeiter')?></th>
+              <th><?php echo get_transl_field('tsl_clients', 'mieter','Mieter')?></th>
+				<th><?php echo get_transl_field('tsl_clients', 'email', 'Email')?></th>
+				<th><?php echo get_transl_field('tsl_clients', 'telefon', 'Telefon ')?></th>
+				<th><?php echo get_transl_field('tsl_clients', 'action', 'Action')?></th>
             </tr>
           </thead>
         </table>
       </div>
     </div>
-  </section>  
-</div>
+	  <div class="content-wrapper">
+		  <section class="content">
 
 
 <!-- DataTables -->

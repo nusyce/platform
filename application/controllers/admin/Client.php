@@ -71,6 +71,24 @@ class Client extends MY_Controller {
 		}
 
 	}
+	public function translation()
+	{
+		if ($this->input->post()) {
+			$success = save_transl('tsl_clients', $this->input->post());
+			if ($success)
+				//set_alert('success', _l('updated_successfully', get_menu_option('clients', 'Translation')));
+			redirect(admin_url('client/translation'));
+
+		}
+
+
+		$data['title'] = 'Translate';
+		$data['bodyclass'] = '';
+		$this->load->view('admin/includes/_header');
+		$this->load->view('admin/client/translation', $data);
+		$this->load->view('admin/includes/_footer');
+
+	}
 	public function datatable_json()
 	{
 		$records['data'] = $this->client_model->get_client();

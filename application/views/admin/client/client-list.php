@@ -9,7 +9,8 @@
     <div class="card">
       <div class="card-header">
         <div class="d-inline-block">
-          <h3 class="card-title"><i class="fa fa-list"></i>&nbsp;Kunden</h3>
+          <h3 class="card-title"><span><?php echo get_menu_option(c_menu(), 'Kunder') ?></span>
+              <a id="edit-menu" href="#"><i class="fa fa-pencil"></i></a></h3>
         </div>
 		  <div class="d-inline-block float-right">
 			  <a href="<?php echo base_url('admin/client/client');?>" class="btn btn-success"><i class="fa fa-plus"></i> Add New Kunden</a>

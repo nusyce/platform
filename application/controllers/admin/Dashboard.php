@@ -22,6 +22,22 @@ class Dashboard extends My_Controller {
 		$this->load->model('admin/setting_model', 'setting_model');
 	}
 
+
+
+	public function update_menu()
+	{
+		user_update_option($_POST['menu_slug'], $_POST['name']);
+		 if ($_POST['menu_slug'] == 'inventarlistes') {
+			redirect(admin_url('wohnungen/' . $_POST['menu_slug']));
+		} else if ($_POST['menu_slug'] == 'move_inventory') {
+			redirect(admin_url('wohnungen/' . $_POST['menu_slug']));
+		} else {
+			if ($_POST['menu_clone'] == '1')
+				redirect(admin_url());
+			redirect(admin_url($_POST['menu_slug']));
+		}
+	}
+
 	//--------------------------------------------------------------------------
 
 	public function edit_my_menu(){

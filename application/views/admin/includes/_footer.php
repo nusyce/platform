@@ -1,33 +1,30 @@
+<?php if (!isset($footer)): ?>
 
+    <footer class="main-footer">
+        <strong><?= $this->general_settings['copyright']; ?></strong>
+        <div class="float-right d-none d-sm-inline-block">
+            <!--<b>Developed By:</b> CodeGlamour-->
+        </div>
+    </footer>
 
+<?php endif; ?>
 
-<?php if(!isset($footer)): ?>
-
-  <footer class="main-footer">
-    <strong><?= $this->general_settings['copyright']; ?></strong>
-    <div class="float-right d-none d-sm-inline-block">
-      <!--<b>Developed By:</b> CodeGlamour-->
-    </div>
-  </footer>
-
-  <?php endif; ?>  
-
-  <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
+<!-- Control Sidebar -->
+<aside class="control-sidebar control-sidebar-dark">
     <!-- Control sidebar content goes here -->
-  </aside>
-  <!-- /.control-sidebar -->
+</aside>
+<!-- /.control-sidebar -->
 
-  
+
 </div>
 <!-- ./wrapper -->
-
+<?php  $this->load->view('admin/includes/menu-edite')  ?>
 
 <!-- jQuery UI 1.11.4 -->
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
 <script>
-  $.widget.bridge('uibutton', $.ui.button)
+    $.widget.bridge('uibutton', $.ui.button)
 </script>
 <!-- Bootstrap 4 -->
 <script src="<?= base_url() ?>assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -45,132 +42,136 @@
 <!-- DROPZONE -->
 <script src="<?= base_url() ?>assets/plugins/dropzone/dropzone.js" type="text/javascript"></script>
 <script>
-	$(document).ready(function() {
-		clockUpdate();
-		setInterval(clockUpdate, 1000);
-	})
+    $(document).ready(function () {
+        clockUpdate();
+        setInterval(clockUpdate, 1000);
+    })
 
-	function clockUpdate() {
-		var date = new Date();
-		$('.digital-clock').css({'color': '#fff', 'text-shadow': '0 0 6px #ff0'});
-		function addZero(x) {
-			if (x < 10) {
-				return x = '0' + x;
-			} else {
-				return x;
-			}
-		}
+    function clockUpdate() {
+        var date = new Date();
+      //  $('.digital-clock').css({'color': '#fff', 'text-shadow': '0 0 6px #ff0'});
 
-		function twelveHour(x) {
-			/*if (x > 12) {
-				return x = x - 12;
-			} else if (x == 0) {
-				return x = 12;
-			} else {
-				return x;
-			}*/
-			return x;
-		}
-		var weekday = ["Sonntag","Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag"];
+        function addZero(x) {
+            if (x < 10) {
+                return x = '0' + x;
+            } else {
+                return x;
+            }
+        }
+
+        function twelveHour(x) {
+            /*if (x > 12) {
+                return x = x - 12;
+            } else if (x == 0) {
+                return x = 12;
+            } else {
+                return x;
+            }*/
+            return x;
+        }
+
+        var weekday = ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"];
 
 
-		var h = addZero(twelveHour(date.getHours()));
-		var m = addZero(date.getMinutes());
-		var s = addZero(date.getSeconds());
-        var month=date.getMonth()+1;
-		$('.digital-clock').text(weekday[date.getDay()]+', '+date.getDate()+'.'+month+'.'+date.getFullYear()+' | '+h + ':' + m + ':' + s +' Uhr')
-	}
+        var h = addZero(twelveHour(date.getHours()));
+        var m = addZero(date.getMinutes());
+        var s = addZero(date.getSeconds());
+        var month = date.getMonth() + 1;
+        $('.digital-clock').text(weekday[date.getDay()] + ', ' + date.getDate() + '.' + month + '.' + date.getFullYear() + ' | ' + h + ':' + m + ':' + s + ' Uhr')
+    }
 </script>
 <script>
 
-var csfr_token_name = '<?php echo $this->security->get_csrf_token_name(); ?>';
+    var csfr_token_name = '<?php echo $this->security->get_csrf_token_name(); ?>';
 
-var csfr_token_value = '<?php echo $this->security->get_csrf_hash(); ?>';
+    var csfr_token_value = '<?php echo $this->security->get_csrf_hash(); ?>';
 
-$(function(){
+    $(function () {
 //-------------------------------------------------------------------
 // Country State & City Change
 
-	$('#edit-menu').click(function (e) {
-		e.preventDefault();
+        $('#edit-menu').click(function (e) {
+            e.preventDefault();
+            $('#modal-edit-menu').modal('show');
+        })
+        $('#close-reminder-modal').click(function (e) {
+            e.preventDefault();
+            $('#modal-edit-menu').modal('hide');
+        })
 
 
-		$('#modal-edit-menu').modal('show');
-	})
-	$('#close-reminder-modal').click(function (e) {
-		e.preventDefault();
+
+        $('.need-edition').on('click', '.edit-menu', function (e) {
+            e.preventDefault();
+            $('#modal-edit-menu #name').val($(this).parents('.need-edition').find('.menu-text').html().trim());
+            $('#modal-edit-menu #menu_slug').val($(this).parents('.need-edition').attr('id').trim());
+            $('#modal-edit-menu #menu_clone').val('1');
+            $('#modal-edit-menu').modal('show');
+        })
+
+        $('#edit-menu').click(function (e) {
+            e.preventDefault();
+            $('#modal-edit-menu #name').val($(this).parent().find('span').html().trim());
+            $('#modal-edit-menu').modal('show');
+        })
 
 
-		$('#modal-edit-menu').modal('hide');
-	})
-$(document).on('change','.country',function()
-{
-
-  if(this.value == '')
-  {
-    $('.state').html('<option value="">Select Option</option>');
-
-    $('.city').html('<option value="">Select Option</option>');
-
-    return false;
-  }
+        $(document).on('change', '.country', function () {
+            if (this.value == '') {
+                $('.state').html('<option value="">Select Option</option>');
+                $('.city').html('<option value="">Select Option</option>');
+                return false;
+            }
 
 
-  var data =  {
+            var data = {
+                country: this.value,
+            }
 
-    country : this.value,
+            data[csfr_token_name] = csfr_token_value;
+            $.ajax({
 
-  }
+                type: "POST",
 
-  data[csfr_token_name] = csfr_token_value;
+                url: "<?= base_url('admin/auth/get_country_states') ?>",
+                data: data,
+                dataType: "json",
+                success: function (obj) {
+                    $('.state').html(obj.msg);
+                },
 
-  $.ajax({
+            });
+        });
 
-    type: "POST",
+        $(document).on('change', '.state', function () {
 
-    url: "<?= base_url('admin/auth/get_country_states') ?>",
+            var data = {
 
-    data: data,
+                state: this.value,
 
-    dataType: "json",
+            }
 
-    success: function(obj) {
-      $('.state').html(obj.msg);
-   },
+            data[csfr_token_name] = csfr_token_value;
 
-  });
-});
+            $.ajax({
 
-$(document).on('change','.state',function()
-{
+                type: "POST",
 
-  var data =  {
+                url: "<?= base_url('admin/auth/get_state_cities') ?>",
 
-    state : this.value,
+                data: data,
 
-  }
+                dataType: "json",
 
-  data[csfr_token_name] = csfr_token_value;
+                success: function (obj) {
 
-  $.ajax({
+                    $('.city').html(obj.msg);
 
-    type: "POST",
+                },
 
-    url: "<?= base_url('admin/auth/get_state_cities') ?>",
-
-    data: data,
-
-    dataType: "json",
-
-    success: function(obj) {
-
-      $('.city').html(obj.msg);
-
-   },
-
-  });
+            });
+        });
     });
-  });
 </script>
 
 </body>

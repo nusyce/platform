@@ -61,6 +61,15 @@ $config['index_page'] = '';
 */
 $config['uri_protocol']	= 'REQUEST_URI';
 
+/**
+ * Database Tables Prefix
+ * @return string
+ */
+function db_prefix()
+{
+    return  'mar_';
+}
+
 /*
 |--------------------------------------------------------------------------
 | URL suffix

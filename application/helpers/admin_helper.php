@@ -428,7 +428,7 @@ function load_admin_language($staff_id = '')
  */
 function get_admin_uri()
 {
-    return ADMIN_URI;
+    return 'admin';
 }
 
 /**

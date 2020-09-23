@@ -289,7 +289,7 @@ function get_staff_user_id()
         return false;
     }
 
-    return $CI->session->userdata('staff_user_id');
+    return $CI->session->userdata('admin_id');
 }
 
 /**

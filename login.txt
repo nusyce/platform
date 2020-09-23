@@ -1,0 +1,24 @@
+Admin:
+URL: https://itfreakz.bplaced.net/plattform/admin/super_admin
+USER:test@gmail.com
+PW:12345
+
+Client:
+URL: https://itfreakz.bplaced.net/plattform/admin/
+USER:client@gmail.com
+PW:123456
+
+
+Worker:
+URL: https://itfreakz.bplaced.net/plattform/admin/
+USER:worker@gmail.com
+PW:123456
+
+
+
+
+
+
+
+
+

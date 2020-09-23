@@ -34,6 +34,7 @@
 		{
 			$ci =& get_instance();
 			$ci->db->where('id_admin',$ci->session->userdata('admin_id'));
+			$ci->db->get('mar_module_rename');
 			return $ci->db->get('mar_module_rename')->result_array();
 		}
     }

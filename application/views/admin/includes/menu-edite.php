@@ -1,5 +1,5 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed'); ?>
-<div class="modal fade modal-reminder" id="modal-edit-menu<?= $module_id ?>" tabindex="-1"
+<div class="modal fade modal-reminder" id="modal-edit-menu" tabindex="-1"
      role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -11,10 +11,10 @@
                 <h4 class="modal-title" id="myModalLabel"><?php echo 'Edit Menu'; ?></h4>
             </div>
             <div class="modal-body">
-                <input type="hidden" id="menu_slug" name="id_module" value="<?= $module_id  ?>">
+                <input type="hidden" id="id_module" name="id_module" value="">
                 <div class="row">
                     <div class="col-md-12">
-                        <?php echo render_input('module_name', 'Title', $module_name ); ?>
+                        <?php echo render_input('module_name', 'Title' ); ?>
                     </div>
                 </div>
             </div>

@@ -40,83 +40,7 @@ $cur_tab = $this->uri->segment(2)==''?'dashboard': $this->uri->segment(2);
 
     <!-- Sidebar Menu -->
     <nav class="mt-2">
-      <!--<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
-        <?php 
-          $menu = get_sidebar_menu(); 
-
-          foreach ($menu as $nav):
-
-            $sub_menu = get_sidebar_sub_menu($nav['module_id']);
-
-            $has_submenu = (count($sub_menu) > 0) ? true : false;
-        ?>
-
-        <?php if($this->rbac->check_module_permission($nav['controller_name'])): ?> 
-
-        <li id="<?= ($nav['controller_name']) ?>" class="nav-item <?= ($has_submenu) ? 'has-treeview' : '' ?> has-treeview">
-
-          <a href="<?= base_url('admin/'.$nav['controller_name']) ?>" class="nav-link">
-            <i class="nav-icon fa <?= $nav['fa_icon'] ?>"></i>
-            <p>
-              <?= trans($nav['module_name']) ?>
-              <?= ($has_submenu) ? '<i class="right fa fa-angle-left"></i>' : '' ?>
-            </p>
-          </a>
-
-
-          <?php 
-            if($has_submenu): 
-          ?>
-          <ul class="nav nav-treeview">
-
-            <?php foreach($sub_menu as $sub_nav): ?>
-
-            <li class="nav-item">
-              <a href="<?= base_url('admin/'.$nav['controller_name'].'/'.$sub_nav['link']); ?>" class="nav-link">
-                <i class="fa fa-circle-o nav-icon"></i>
-                <p><?= trans($sub_nav['name']) ?></p>
-              </a>
-            </li>
-
-            <?php endforeach; ?>
-           
-          </ul>
-          <?php endif; ?>
-
-        </li>
-
-        <?php endif; ?>
-
-        <?php endforeach; ?>
-
-        <li class="nav-header"><?= trans('miscellaneous') ?></li>
-        <li class="nav-item">
-          <a href="https://adminlte.io/docs" class="nav-link">
-            <i class="nav-icon fa fa-file"></i>
-            <p><?= trans('documentation') ?></p>
-          </a>
-        </li>
-        <li class="nav-header"><?= trans('labels') ?></li>
-        <li class="nav-item">
-          <a href="#" class="nav-link">
-            <i class="nav-icon fa fa-circle-o text-danger"></i>
-            <p class="text"><?= trans('important') ?></p>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="#" class="nav-link">
-            <i class="nav-icon fa fa-circle-o text-warning"></i>
-            <p><?= trans('warning') ?></p>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="#" class="nav-link">
-            <i class="nav-icon fa fa-circle-o text-info"></i>
-            <p><?= trans('informational') ?></p>
-          </a>
-        </li>
-      </ul>-->
 		<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
 
@@ -144,8 +68,8 @@ $cur_tab = $this->uri->segment(2)==''?'dashboard': $this->uri->segment(2);
 
 				<?php if($this->rbac->check_module_permission($nav['controller_name'])): ?>
 
-				<li id="<?= ($nav['controller_name']) ?>" class="nav-item <?= ($has_submenu) ? 'has-treeview' : '' ?> has-treeview">
-					<a data-target="#modal-edit-menu<?= $nav['module_id'] ?>" data-toggle="modal"  class="edit-menu" href="#modal-edit-menu<?= $nav['module_id'] ?>" aria-expanded="false"><i class="fa fa-pencil"></i></a>
+				<li data-target="<?= $module_name ?>" id="<?= ($nav['module_id']) ?>" class="nav-item <?= ($has_submenu) ? 'has-treeview' : '' ?> has-treeview">
+					<a class="edit-menu" href="#" aria-expanded="false"><i class="fa fa-pencil"></i></a>
 					<a href="<?= base_url('admin/'.$nav['controller_name']) ?>" class="nav-link">
 
 						<i class="nav-icon fa <?= $nav['fa_icon'] ?>"></i>
@@ -179,7 +103,7 @@ $cur_tab = $this->uri->segment(2)==''?'dashboard': $this->uri->segment(2);
 
 			<?php endif; ?>
 			<?php endif; ?>
-				<?php $data['module_id'] = $nav['module_id'];$data['module_name'] = $module_name; $this->load->view('admin/includes/menu-edite',$data) ?>
+
 			<?php endforeach; ?>
 
 		</ul>

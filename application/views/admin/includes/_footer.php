@@ -1,6 +1,6 @@
 
 
-
+<?php $this->load->view('admin/includes/menu-edite')?>
 <?php if(!isset($footer)): ?>
 
   <footer class="main-footer">
@@ -90,7 +90,14 @@ var csfr_token_value = '<?php echo $this->security->get_csrf_hash(); ?>';
 $(function(){
 //-------------------------------------------------------------------
 // Country State & City Change
+	$('.has-treeview').on('click', '.edit-menu', function (e) {
+		e.preventDefault();
+		e.stopPropagation();
 
+		$('#modal-edit-menu #module_name').val($(this).parents('.has-treeview').data('target').trim());
+		$('#modal-edit-menu #id_module').val($(this).parents('.has-treeview').attr('id'));
+		$('#modal-edit-menu').modal('show');
+	})
 	$('#edit-menu').click(function (e) {
 		e.preventDefault();
 

@@ -34,9 +34,9 @@ class RBAC
 		}
 		elseif(!$this->check_module_permission($this->obj->uri->segment(2))) //sending controller name
 		{
-			$back_to = $_SERVER['REQUEST_URI'];
+			/*$back_to = $_SERVER['REQUEST_URI'];
 			$back_to = $this->obj->functions->encode($back_to);
-			redirect('access_denied/index/'.$back_to);
+			redirect('access_denied/index/'.$back_to);*/
 		}
 	}
 

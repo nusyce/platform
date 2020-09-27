@@ -1,3 +1,5 @@
+<?php defined('BASEPATH') or exit('No direct script access allowed'); ?>
+<?php init_head(true); ?>
 <style>
 	.login-box, .register-box {
 		width: 500px;
@@ -24,7 +26,7 @@
     margin-right: auto;
     margin-top: 100px;
     margin-bottom: 20px;
-}" src="<?php echo base_url().'assets\img\logo.png'?>">
+}" src="<?= base_url($this->general_settings['favicon']); ?>">
 	<p style="text-align: center"> Die Komplett-Losung fur alle Mitarbeiter<br>
 		Wir bringen die Zukunft - Jetzt 30 Tage lang kostenlos testen!</p>
 
@@ -79,3 +81,4 @@
 
   <!-- /.login-box -->
 </div>
+<?php init_tail(true); ?>

@@ -38,41 +38,44 @@ function widget_status_stats($table, $title = '')
 {
     $where = '';
     $wherett = '';
-    $staff = get_staff();
+  /*  $staff = get_staff();
     if (isset($staff->projects) && !empty($staff->projects) && in_array($table, ['mieters', 'tasks', 'wohnungen'])) {
         $stf_project = unserialize($staff->projects);
         $stf_project = implode("','", $stf_project);
         $tt = $table;
         $where = db_prefix() . $tt . '.project IN  ("' . $stf_project . ' ")  AND ';
         $wherett = db_prefix() . $tt . '.project IN  ("' . $stf_project . ' ")';
-    }
+    }*/
     $total = total_rows(db_prefix() . $table, $wherett);
-    $active = total_rows(db_prefix() . $table, $where.'active=1');
-    $not_active = total_rows(db_prefix() . $table, $where.' active=0');
+    if($table!='admin')
+	{
+		$active = total_rows(db_prefix() . $table, $where.'active=1');
+		$not_active = total_rows(db_prefix() . $table, $where.' active=0');
+	}else{
+		$active = total_rows(db_prefix() . $table, $where.'is_active=1');
+		$not_active = total_rows(db_prefix() . $table, $where.'is_active=0');
+	}
+
     $percentData = percentVal($active, $total);
     ob_start()
     ?>
-    <h4><b><?= $active ?></b> Aktive</h4>
-    <div class="col-md-12 text-right progress-finance-status">
+    <h4 class="active_status"><b><?= $active ?></b> Aktive</h4>
+    <div class="col-md-12 text-right progress-finance-status" style="margin-bottom: 15px;">
         <?php echo $percentData[0]; ?>%
-        <div class="progress no-margin progress-bar-mini">
-            <div class="progress-bar progress-bar-success no-percent-text not-dynamic"
-                 role="progressbar" aria-valuenow="<?php echo $percentData[0]; ?>"
-                 aria-valuemin="0" aria-valuemax="100" style="width: 0%"
-                 data-percent="<?php echo $percentData[0]; ?>">
-            </div>
-        </div>
+		<div class="progress progress-bar-success progress-sm">
+			<div class="progress-bar" role="progressbar" aria-valuenow="<?php echo $percentData[0]; ?>" style="width:<?php echo $percentData[0]; ?>%"></div>
+		</div>
+
+
     </div>
-    <h4><b><?= $not_active ?></b> Inaktiv</h4>
-    <div class="col-md-12 text-right progress-finance-status">
+    <h4 class="active_status"><b><?= $not_active ?></b> Inaktiv</h4>
+    <div class="col-md-12 text-right progress-finance-status" >
         <?php echo $percentData[1]; ?>%
-        <div class="progress no-margin progress-bar-mini">
-            <div class="progress-bar progress-bar-danger no-percent-text not-dynamic"
-                 role="progressbar" aria-valuenow="<?php echo $percentData[1]; ?>"
-                 aria-valuemin="0" aria-valuemax="100" style="width: 0%"
-                 data-percent="<?php echo $percentData[1]; ?>">
-            </div>
-        </div>
+		<div class="progress progress-bar-danger progress-sm mb-0">
+			<div class="progress-bar" role="progressbar" aria-valuenow="<?php echo $percentData[1]; ?>" aria-valuemin="0" aria-valuemax="100" style="width:<?php echo $percentData[1]; ?>%;"></div>
+		</div>
+
+
     </div>
     <?php
     $content = ob_get_contents();
@@ -102,7 +105,7 @@ function widget_status_stats_projeckt($table, $title = '')
     </div>
 
     <h4><b><?= $not_active ?></b> <?= _l('Abgerechnet') ?></h4>
-    <div class="col-md-12 text-right progress-finance-status">
+    <div class="col-md-12 text-right progress-finance-status" style="margin-bottom: 10px">
         <?php echo $percentData[1]; ?>%
         <div class="progress no-margin progress-bar-mini">
             <div class="progress-bar progress-bar-danger no-percent-text not-dynamic"
@@ -221,25 +224,29 @@ function slugify($text)
  * @since  1.0.0
  * Init admin head
  */
-function init_head($aside = true)
+function init_head($auth = false)
 {
     $CI = &get_instance();
     $CI->load->view('admin/includes/head');
-    $CI->load->view('admin/includes/header', ['startedTimers' => $CI->misc_model->get_staff_started_timers()]);
-    $CI->load->view('admin/includes/setup_menu');
-    if ($aside == true) {
-        $CI->load->view('admin/includes/aside');
+
+   if ($auth == false) {
+	   $CI->load->view('admin/includes/header');
+	   $CI->load->view('admin/includes/sidebar');
     }
+
 }
 
 /**
  * @since  1.0.0
  * Init admin footer/tails
  */
-function init_tail()
+function init_tail($auth = false)
 {
     $CI = &get_instance();
-    $CI->load->view('admin/includes/scripts');
+	if ($auth == false) {
+		$CI->load->view('admin/includes/footer');
+	}
+    $CI->load->view('admin/includes/script');
 }
 
 /**

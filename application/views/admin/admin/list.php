@@ -1,5 +1,8 @@
-<div class="datalist">
-    <table id="example1" class="table table-bordered table-hover">
+
+<div class="table-responsive">
+
+	<table id="na_datatable" class="table zero-configuration dataTable"  role="grid" >
+
         <thead>
             <tr>
                 <th width="50"><?= trans('id') ?></th>
@@ -8,7 +11,7 @@
                 <th><?= trans('email') ?></th>
                 <th><?= trans('role') ?></th>
                 <th width="100"><?= trans('status') ?></th>
-                <th width="120"><?= trans('action') ?></th>
+
             </tr>
         </thead>
         <tbody>
@@ -20,6 +23,10 @@
                 <td>
 					<h4 class="m0 mb5"><?=$row['firstname']?> <?=$row['lastname']?></h4>
                     <small class="text-muted"><?=$row['admin_role_title']?></small>
+					<div class="row-options"><a href="<?= base_url("admin/admin/edit/".$row['admin_id']); ?>" class="">
+							Bearbeiten
+						</a> |
+						<a href="<?= base_url("admin/admin/delete/".$row['admin_id']); ?>"  class="text-danger _delete"> löschen</a></div>
                 </td>
                 <td>
                     <?=$row['username']?>
@@ -28,23 +35,28 @@
 					<?=$row['email']?>
                 </td>
                 <td>
-                    <button class="btn btn-xs btn-success"><?=$row['admin_role_title']?></button>
+                    <?=$row['admin_role_title']?>
                 </td> 
-                <td><input class='tgl tgl-ios tgl_checkbox' 
-                    data-id="<?=$row['admin_id']?>" 
-                    id='cb_<?=$row['admin_id']?>' 
+                <td><div class="custom-control custom-switch"><input data-switch-url="<?=base_url("admin/admin/change_status")?>" class='tgl tgl-ios tgl_checkbox custom-control-input'
+                    data-id="<?=$row['admin_id']?>"
+                    id='cb_<?=$row['admin_id']?>'
                     type='checkbox' <?php echo ($row['is_active'] == 1)? "checked" : ""; ?> />
-                    <label class='tgl-btn' for='cb_<?=$row['admin_id']?>'></label>
+                    <label class="tgl-btn custom-control-label" for='cb_<?=$row['admin_id']?>'></label></div>
                 </td>
-                <td>
-                    <a href="<?= base_url("admin/admin/edit/".$row['admin_id']); ?>" class="btn btn-warning btn-xs mr5" >
-                    <i class="fa fa-edit"></i>
-                    </a>
-                    <a href="<?= base_url("admin/admin/delete/".$row['admin_id']); ?>" onclick="return confirm('are you sure to delete?')" class="btn btn-danger btn-xs"><i class="fa fa-remove"></i></a>
-                </td>
+
             </tr>
             <?php endforeach;?>
         </tbody>
     </table>
 </div>
+<script>
+	//---------------------------------------------------
+	var table = $('#na_datatable').DataTable( {
+		"processing": true,
+		"serverSide": false,
+		'responsive': true,});
+
+
+
+</script>
 

@@ -15,18 +15,24 @@ class Mieter extends MY_Controller {
 		// var_dump($records);exit();
 		$data['mieter'] = $this->mieter_model->get_by_id($id);
 		$data['title'] = 'Mieter';
-		$this->load->view('admin/includes/_header');
+
 		$this->load->view('admin/mieter/mieter', $data);
-		$this->load->view('admin/includes/_footer');
+
+	}
+	function change_status(){
+
+		$this->rbac->check_operation_access(); // check opration permission
+
+		$this->mieter_model->change_status();
 	}
 	public function index()
 	{
 		// $records = $this->activity_model->get_activity_log();
 		// var_dump($records);exit();
 		$data['title'] = 'Mieter';
-		$this->load->view('admin/includes/_header');
+
 		$this->load->view('admin/mieter/mieter-list', $data);
-		$this->load->view('admin/includes/_footer');
+
 	}
 	public function delete($id='')
 	{
@@ -48,9 +54,9 @@ class Mieter extends MY_Controller {
 
 		$data['title'] = 'Translate';
 		$data['bodyclass'] = '';
-		$this->load->view('admin/includes/_header');
+
 		$this->load->view('admin/mieter/translation', $data);
-		$this->load->view('admin/includes/_footer');
+
 
 	}
 	public function save()
@@ -90,18 +96,82 @@ class Mieter extends MY_Controller {
 		}
 
 	}
+	public function import()
+	{
+
+		$dbFields = $this->db->list_fields(db_prefix() . 'mieters');
+
+		$this->load->library('import/import_mieter', [], 'import');
+
+		$this->import->setDatabaseFields($dbFields);
+
+		if ($this->input->post()
+			&& isset($_FILES['file_excel']['name']) && $_FILES['file_excel']['name'] != '') {
+			$data_a = $this->import->setSimulation($this->input->post('simulate'))
+				->setTemporaryFileLocation($_FILES['file_excel']['tmp_name'])
+				->setFilename($_FILES['file_excel']['name'])
+				->perform();
+			$data['data_a'] = $data_a;
+
+		}
+
+
+		$data['title'] = 'import';
+
+		$data['bodyclass'] = 'dynamic-create-groups';
+		$this->load->view('admin/mieter/import', $data);
+	}
+	public function import_perform_data()
+	{
+		if (isset($_POST)) {
+			$data = unserialize($_POST['data']);
+			unset($_POST['data']);
+			$Posted = $_POST;
+			$imported = 0;
+			foreach ($data as $rowNumber => $row) {
+				$insert = [];
+				foreach ($Posted as $i => $columFields) {
+					if (isset($row[$columFields]) && !empty($row[$columFields]))
+						$insert[$i] = $row[$columFields];
+					else
+						$insert[$i] = '';
+				}
+				if (count($insert) > 0) {
+					if ($this->mieter_model->is_duplicate(['fullname' => $insert['fullname'], 'vorname' => $insert['vorname'], 'nachname' => $insert['nachname']]))
+						continue;
+					$this->mieter_model->add_import($insert);
+					$imported++;
+				}
+			}
+			if ($imported > 0) {
+				$this->session->set_flashdata('success',$imported.' row has been exported Successfully.');
+			}
+			redirect(admin_url('mieter'));
+		}
+	}
+
 	public function datatable_json()
 	{
 		$records['data'] = $this->mieter_model->get_mieter();
 
 		$data = array();
 		$i=0;
-		$text_comfirm="return confirm('are you sure to delete?')";
+		//$text_comfirm="return confirm('are you sure to delete?')";
 		foreach ($records['data']  as $row) 
-		{  
+		{
+			$checked="";
+			if($row['active']==1)
+			{
+				$checked="checked";
+			}
 			$data[]= array(
-				++$i,
-				$row['fullname'],
+				$row['id'],
+				'<a href="'.base_url('admin/mieter/mieter/'.$row['id']).'" class="">
+		'.$row['fullname'].'
+</a><div class="row-options"><a href="'.base_url('admin/mieter/mieter/'.$row['id']).'" class="">
+Bearbeiten
+</a> |
+<a href="'.base_url('admin/mieter/delete/'.$row['id']).'"   class="text-danger _delete"> löschen</a></div>',
 				$row['projektname'],
 				$row['strabe_m'],
 				$row['nr_p'],
@@ -111,16 +181,11 @@ class Mieter extends MY_Controller {
 				$row['plz'],
 				$row['stadt'],
 				$row['telefon_1'],
-
-				'<a href="'.base_url('admin/mieter/mieter/'.$row['id']).'" class="btn btn-warning btn-xs mr5">
-<i class="fa fa-edit"></i>
-</a>
-<a href="'.base_url('admin/mieter/delete/'.$row['id']).'" onclick="'.$text_comfirm.'"  class="btn btn-danger btn-xs"><i class="fa fa-remove"></i></a>',
-				$row['fulger_p'],
-				$row['umsetzwohnung'],
-				$row['betreuer'],
-				$row['vorname'],
-				$row['nachname'],
+				'<div class="custom-control custom-switch"><input data-switch-url="'.base_url("admin/mieter/change_status").'" class="tgl tgl-ios tgl_checkbox custom-control-input" 
+                    data-id="'.$row['id'].'"
+                    id="cb_'.$row['id'].'"
+                    type="checkbox"'.$checked.'/>
+                    <label class="tgl-btn custom-control-label" for="cb_'.$row['id'].'"></label></div>'
 				
 
 

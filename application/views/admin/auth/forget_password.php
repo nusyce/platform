@@ -1,10 +1,26 @@
-<div class="form-background"> 
+
+<?php defined('BASEPATH') or exit('No direct script access allowed'); ?>
+<?php init_head(true); ?>
+<style>
+	.login-box, .register-box {
+		width: 360px;
+		margin: 7% auto;
+	}
+</style>
+<div class="form-background">
 
   <div class="login-box">
 
     <div class="login-logo">
 
-      <h2><a href="<?= base_url('admin'); ?>"><?= $this->general_settings['company']; ?></a></h2>
+		<img style="    width: 250px;
+    text-align: center;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 100px;
+    margin-bottom: 20px;
+}" src="<?= base_url($this->general_settings['favicon']); ?>">
 
     </div>
 
@@ -63,7 +79,7 @@
   <!-- /.login-box -->
 
 </div>
-
+<?php init_tail(true); ?>
           
 
 

@@ -102,6 +102,7 @@ function change_status()
 	$this->db->set('is_active',$this->input->post('status'));
 	$this->db->where('admin_id',$this->input->post('id'));
 	$this->db->update('mar_admin');
+
 } 
 
 	//-----------------------------------------------------

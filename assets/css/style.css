@@ -1,0 +1,32 @@
+
+
+
+.main-menu.menu-light .navigation li a, .digital-clock, body.vertical-layout.vertical-menu-modern.menu-expanded .main-menu .navigation li.has-sub > a.nav-link:after {
+	color: #fff;
+}
+
+.menu-text {
+	font-size: 12px !important;
+}
+
+.main-menu.menu-light .navigation > li {
+	margin: 0 0;
+	transition: background-color 0.5s ease;
+	margin-left: 15px;
+	margin-top: 0px !important;
+}
+
+.nav-link {
+	color: #626f80 !important;
+}
+
+.edit-menu {
+	z-index: 999;
+	opacity: 0;
+	width: 30px;
+	color: #1d1d1d !important;
+	/* background: #fff; */
+	margin-left: 155px !important;
+	margin-top: 2px;
+	position: absolute;
+}

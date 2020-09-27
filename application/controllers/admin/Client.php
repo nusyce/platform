@@ -15,9 +15,9 @@ class Client extends MY_Controller {
 		// $records = $this->activity_model->get_activity_log();
 		// var_dump($records);exit();
 		$data['title'] = 'Kunder';
-		$this->load->view('admin/includes/_header');
+
 		$this->load->view('admin/client/client-list', $data);
-		$this->load->view('admin/includes/_footer');
+
 	}
 	public function client($id='')
 	{
@@ -25,9 +25,15 @@ class Client extends MY_Controller {
 		// var_dump($records);exit();
 		$data['client'] = $this->client_model->get_by_id($id);
 		$data['title'] = 'Kunder';
-		$this->load->view('admin/includes/_header');
+
 		$this->load->view('admin/client/client', $data);
-		$this->load->view('admin/includes/_footer');
+
+	}
+	function change_status(){
+
+		$this->rbac->check_operation_access(); // check opration permission
+
+		$this->client_model->change_status();
 	}
 	public function delete($id='')
 	{
@@ -84,9 +90,9 @@ class Client extends MY_Controller {
 
 		$data['title'] = 'Translate';
 		$data['bodyclass'] = '';
-		$this->load->view('admin/includes/_header');
+
 		$this->load->view('admin/client/translation', $data);
-		$this->load->view('admin/includes/_footer');
+
 
 	}
 	public function datatable_json()
@@ -97,18 +103,31 @@ class Client extends MY_Controller {
 		$i=0;
 		$text_comfirm="return confirm('are you sure to delete?')";
 		foreach ($records['data']  as $row) 
-		{  
+		{
+			$checked="";
+			if($row['active']==1)
+			{
+				$checked="checked";
+			}
+
 			$data[]= array(
 				++$i,
-				$row['company'],
+				'<a href="'.base_url('admin/client/client/'.$row['userid']).'" class="">
+		'.$row['company'].'
+</a><div class="row-options"><a href="'.base_url('admin/client/client/'.$row['userid']).'" class="">
+Bearbeiten
+</a> |
+<a href="'.base_url('admin/client/delete/'.$row['userid']).'"   class="text-danger _delete"> löschen</a></div>',
 				1,
 				1,
 				$row['email'],
 				$row['phonenumber'],
-				'<a href="'.base_url('admin/client/client/'.$row['userid']).'" class="btn btn-warning btn-xs mr5">
-<i class="fa fa-edit"></i>
-</a>
-<a id="delete_link" href="'.base_url('admin/client/delete/'.$row['userid']).'" onclick="'.$text_comfirm.'" class="btn btn-danger btn-xs"><i class="fa fa-remove"></i></a>',
+			'<div class="custom-control custom-switch"><input data-switch-url="'.base_url("admin/client/change_status").'" class="tgl tgl-ios tgl_checkbox custom-control-input" 
+                    data-id="'.$row['userid'].'"
+                    id="cb_'.$row['userid'].'"
+                    type="checkbox"'.$checked.'/>
+                    <label class="tgl-btn custom-control-label" for="cb_'.$row['userid'].'"></label></div>',
+
 			);
 		}
 		$records['data'] = $data;

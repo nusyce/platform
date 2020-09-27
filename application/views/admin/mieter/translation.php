@@ -1,13 +1,22 @@
-<link rel="stylesheet" href="<?= base_url() ?>assets/plugins/datatables/dataTables.bootstrap4.css">
-
-<div class="content-wrapper">
-	<section class="content">
-		<div class="row">
-			<div class="col-md-12">
-				<h4 class="customer-profile-group-heading"
-					style="margin: 0">Translation <?= get_menu_option('mieter','Mieter') ?></h4>
-			</div>
+<?php defined('BASEPATH') or exit('No direct script access allowed'); ?>
+<?php init_head(); ?>
+<div class="app-content content">
+	<div class="content-overlay"></div>
+	<div class="content-wrapper">
+		<div class="content-header row">
 		</div>
+		<div class="content-body">
+			<div class="card">
+				<div class="card-header">
+					<div class="d-inline-block">
+						<h3 class="card-title"><i class="fa fa-list"></i>Translation <?= get_menu_option('mieter','Mieter') ?></h3>
+
+					</div>
+
+				</div>
+			</div>
+
+			<div class="content-wrapper">
 
 		<div class="row">
 			<div class="col-md-12">
@@ -185,7 +194,7 @@
 								</div>
 								<div class="row">
 									<div class="col-md-12">
-										<?php echo render_input('projektprojektname', get_transl_field('tsl_mieter', 'projektprojektname', 'Projekt Projektname'),get_transl_field('tsl_mieter', 'projektprojektname', 'Projekt Projektname ')); ?>
+										<?php echo render_input('projektprojektname', get_transl_field('tsl_mieter', 'projektprojektname', 'ProjektProjektname'),get_transl_field('tsl_mieter', 'projektprojektname', 'Projekt Projektname ')); ?>
 
 									</div>
 								</div>
@@ -313,7 +322,9 @@
 					<?php echo form_close(); ?>
 				</div>
 			</div>
-		</div></div >
-			<section class="content">
+		</div></div>
+		</div>
+	</div>
+	<?php init_tail(); ?>
 
 

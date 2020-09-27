@@ -23,9 +23,9 @@ class Super_admin extends MY_Controller
 				$data['footer'] = false;
 				$data['bg_cover'] = true;
 
-				$this->load->view('admin/includes/_header', $data);
+
 				$this->load->view('admin/auth/super_login');
-				$this->load->view('admin/includes/_footer', $data);
+
 			}
 
 	}

@@ -1,19 +1,23 @@
-<style>
-	input, button, select, optgroup  {
-		margin: 0;
-		font-family: inherit;
-		font-size: inherit;
-		line-height: inherit;
-		width: 100%;
-		height: 35px;
-	}
-</style>
+<?php defined('BASEPATH') or exit('No direct script access allowed'); ?>
+<?php init_head(); ?>
+<div class="app-content content">
+	<div class="content-overlay"></div>
+	<div class="content-wrapper">
+		<div class="content-header row">
+		</div>
+		<div class="content-body">
+			<div class="card">
+				<div class="card-header">
+					<div class="d-inline-block">
+						<h3 class="card-title"><i class="fa fa-list"></i>Add&nbsp;Mieters</h3>
 
-<div class="content-wrapper">
-	<section class="content">
-	
+					</div>
+
+				</div>
+			</div>
+
 		<?php $this->load->view('admin/includes/_messages.php') ?>
-		
+			<div class="panel-body">
 		<form action="<?php echo base_url('admin/mieter/save')?>" class="client-form" autocomplete="off" method="post" accept-charset="utf-8">
 						<div class="row">
 						<input type="hidden" name="<?php echo $this->security->get_csrf_token_name();?>" value="<?php echo $this->security->get_csrf_hash();?>">
@@ -25,31 +29,31 @@
 
 									<div class="col-md-12">
 										<?php $value = (isset($mieter) ? $mieter->fullname : ''); ?>
-										<?php echo render_input('fullname', 'Vollständiger Name', $value); ?>
+										<?php echo render_input('fullname', get_transl_field('tsl_mieter', 'fullname','Vollständiger Name'), $value); ?>
 									</div>
 									<div class="col-md-12">
 										<?php $value = (isset($mieter) ? $mieter->vorname : ''); ?>
-										<?php echo render_input('vorname', 'Vorname', $value); ?>
+										<?php echo render_input('vorname', get_transl_field('tsl_mieter', 'vorname','Vorname'), $value); ?>
 									</div>
 									<div class="col-md-12">
 										<?php $value = (isset($mieter) ? $mieter->nachname : ''); ?>
-										<?php echo render_input('nachname', 'Nachname', $value); ?>
+										<?php echo render_input('nachname', get_transl_field('tsl_mieter', 'nachname','Nachname'), $value); ?>
 									</div>
 									<div class="col-md-12">
 										<?php $value = (isset($mieter) ? $mieter->email : ''); ?>
-										<?php echo render_input('email', 'Email', $value); ?>
+										<?php echo render_input('email', get_transl_field('tsl_mieter', 'email','Email'), $value); ?>
 									</div>
 									<div class="col-md-12">
 										<?php $value = (isset($mieter) ? $mieter->strabe_m : ''); ?>
-										<?php echo render_input('strabe_m', 'Straße', $value); ?>
+										<?php echo render_input('strabe_m', get_transl_field('tsl_mieter', 'strabe_m','Straße'), $value); ?>
 									</div>
 									<div class="col-md-12">
 										<?php $value = (isset($mieter) ? $mieter->hausnummer_m : ''); ?>
-										<?php echo render_input('hausnummer_m', 'Hausnummer', $value); ?>
+										<?php echo render_input('hausnummer_m', get_transl_field('tsl_mieter', 'hausnummer_m','Hausnummer'), $value); ?>
 									</div>
 									<div class="col-md-12">
 										<?php $value = (isset($mieter) ? $mieter->wohnungsnummer : ''); ?>
-										<?php echo render_input('wohnungsnummer', 'Wohnungsnummer', $value); ?>
+										<?php echo render_input('wohnungsnummer', get_transl_field('tsl_mieter', 'wohnungsnummer','Wohnungsnummer'), $value); ?>
 									</div>
 
 
@@ -69,7 +73,7 @@
 										$data[] = array('value' => '9. OG');
 										$data[] = array('value' => '10. OG');
 										$value = (isset($mieter) ? $mieter->etage : ''); ?>
-										<?php echo render_select('etage', $data, array('value', 'value'), 'Etage', $value); ?>
+										<?php echo render_select('etage', $data, array('value', 'value'), get_transl_field('tsl_mieter', 'etage','Etage'), $value); ?>
 									</div>
 									<div class="col-md-12">
 										<?php
@@ -80,31 +84,31 @@
 										$data[] = array('value' => 'Mitte/Links');
 										$data[] = array('value' => 'Mitte/Rechts');
 										$value = (isset($mieter) ? $mieter->flugel : ''); ?>
-										<?php echo render_select('flugel', $data, array('value', 'value'), 'Fl�gel', $value); ?>
+										<?php echo render_select('flugel', $data, array('value', 'value'), get_transl_field('tsl_mieter', 'flugel','Flügel'), $value); ?>
 									</div>
 									<div class="col-md-12">
 										<?php $value = (isset($mieter) ? $mieter->plz : ''); ?>
-										<?php echo render_input('plz', 'PLZ', $value); ?>
+										<?php echo render_input('plz', get_transl_field('tsl_mieter', 'plz','PLZ'), $value); ?>
 									</div>
 									<div class="col-md-12">
 										<?php $value = (isset($mieter) ? $mieter->stadt : ''); ?>
-										<?php echo render_input('stadt', 'Stadt', $value); ?>
+										<?php echo render_input('stadt', get_transl_field('tsl_mieter', 'stadt','Stadt'), $value); ?>
 									</div>
 									<div class="col-md-12">
 										<?php $value = (isset($mieter) ? $mieter->telefon_1 : ''); ?>
-										<?php echo render_input('telefon_1', 'Telefon 1', $value); ?>
+										<?php echo render_input('telefon_1', get_transl_field('tsl_mieter', 'telefon_1','Telefon 1'), $value); ?>
 									</div>
 									<div class="col-md-12">
 										<?php $value = (isset($mieter) ? $mieter->telefon_2 : ''); ?>
-										<?php echo render_input('telefon_2', '²Telefon 2', $value); ?>
+										<?php echo render_input('telefon_2', get_transl_field('tsl_mieter', 'telefon_2','²Telefon 2'), $value); ?>
 									</div>
 									<div class="col-md-12">
 										<?php $value = (isset($mieter) ? $mieter->telefon_3 : ''); ?>
-										<?php echo render_input('telefon_3', 'Telefon 3', $value); ?>
+										<?php echo render_input('telefon_3', get_transl_field('tsl_mieter', 'telefon_3','Telefon 3'), $value); ?>
 									</div>
 									<div class="col-md-12">
 										<?php $value = (isset($mieter) ? $mieter->notice : ''); ?>
-										<?php echo render_textarea('notice', 'Notice', $value); ?>
+										<?php echo render_textarea('notice', get_transl_field('tsl_mieter', 'notice','Notice'), $value); ?>
 									</div>
 									<div class="col-md-12">
 									<p>Besonderheit</p>
@@ -113,7 +117,7 @@
 									<div class="col-md-12">
 										<?php $selected = isset($mieter) && $mieter->haustiere == '1' ? 1 : 0;
 										$datas = array(array('id' => 0, 'value' => 'Nein'), array('id' => 1, 'value' => 'Ja'));
-										echo render_select('haustiere', $datas, array('id', 'value'), 'Haustiere', $selected); ?>
+										echo render_select('haustiere', $datas, array('id', 'value'), get_transl_field('tsl_mieter', 'haustiere','Haustiere'), $selected); ?>
 
 									</div>
 									</div>
@@ -121,10 +125,11 @@
 									<div class="col-md-12">
 										<?php $selected = isset($mieter) && $mieter->raucher == '1' ? 1 : 0;
 										$datas = array(array('id' => 0, 'value' => 'Nein'), array('id' => 1, 'value' => 'Ja'));
-										echo render_select('raucher', $datas, array('id', 'value'), 'Raucher', $selected); ?>
+										echo render_select('raucher', $datas, array('id', 'value'), get_transl_field('tsl_mieter', 'raucher','Raucher'), $selected); ?>
 
 									</div>
 									</div>
+
 									</div>
 									</div>
 								</div>
@@ -261,8 +266,10 @@
 					
 						<div class="form-group">
 				<div class="col-md-12">
-					<input style="width: 150px;" type="submit"  value="Add Mieter" class="btn btn-primary pull-right">
+					<input style="width: 150px;" type="submit"  value="Save Mieter" class="btn btn-primary pull-right">
 				</div>
-			</div></form>
-	</section>
+			</div></form></div>
+		</div>
+	</div>
 </div>
+<?php init_tail(); ?>

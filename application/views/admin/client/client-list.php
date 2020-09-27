@@ -1,10 +1,12 @@
 <!-- DataTables -->
-<link rel="stylesheet" href="<?= base_url() ?>assets/plugins/datatables/dataTables.bootstrap4.css"> 
-
-<!-- Content Wrapper. Contains page content -->
-<div class="content-wrapper">
-  <section class="content">
-    <!-- For Messages -->
+<?php defined('BASEPATH') or exit('No direct script access allowed'); ?>
+<?php init_head(); ?>
+    <!-- For Messages --><div class="app-content content">
+	<div class="content-overlay"></div>
+	<div class="content-wrapper">
+		<div class="content-header row">
+		</div>
+		<div class="content-body">
     <?php $this->load->view('admin/includes/_messages.php') ?>
     <div class="card">
       <div class="card-header">
@@ -17,11 +19,27 @@
 		  <div class="d-inline-block float-right">
 			  <a href="<?php echo base_url('admin/client/client');?>" class="btn btn-success"><i class="fa fa-plus"></i> Add New Kunden</a>
 		  </div>
+		  <?php
+		  $total = ''; ?>
+		  <div class="col-md-4" style="padding-right: 0px;  padding-left: 0px;margin-top: 10px">
+
+
+
+					  <div class="panel_s">
+						  <div class="panel-body" style="padding: 15px  15px;">
+							  <?= widget_status_stats('clients', $title); ?>
+
+						  </div>
+					  </div>
+				  </div>
+
       </div>
     </div>
+
     <div class="card">
-      <div class="card-body table-responsive">
-        <table id="na_datatable" class="table table-bordered table-striped" width="100%">
+		<div class="table-responsive">
+
+			<table id="na_datatable" class="table zero-configuration dataTable"  role="grid" >
           <thead>
             <tr>
               <th>#</th>
@@ -30,25 +48,24 @@
               <th><?php echo get_transl_field('tsl_clients', 'mieter','Mieter')?></th>
 				<th><?php echo get_transl_field('tsl_clients', 'email', 'Email')?></th>
 				<th><?php echo get_transl_field('tsl_clients', 'telefon', 'Telefon ')?></th>
-				<th><?php echo get_transl_field('tsl_clients', 'action', 'Action')?></th>
+				<th><?php  echo get_transl_field('tsl_clients', 'aktiv','Aktiveeee')?></th>
+
             </tr>
           </thead>
         </table>
       </div>
     </div>
-	  <div class="content-wrapper">
-		  <section class="content">
-
-
-<!-- DataTables -->
-<script src="<?= base_url() ?>assets/plugins/datatables/jquery.dataTables.js"></script>
-<script src="<?= base_url() ?>assets/plugins/datatables/dataTables.bootstrap4.js"></script>
+		</div>
+	</div>
+</div>
+<?php init_tail(); ?>
 
 <script>
   //---------------------------------------------------
   var table = $('#na_datatable').DataTable( {
     "processing": true,
     "serverSide": false,
+	  'responsive': true,
     "ajax": "<?=base_url('admin/client/datatable_json')?>",
     "order": [[0,'asc']],
     "columnDefs": [
@@ -58,6 +75,9 @@
     { "targets": 3, "name": "created_at", 'searchable':true, 'orderable':true},
     ]
   });
+
+
+
 </script>
 <script>
 	document.getElementById('delete_link').onclick = function(e){

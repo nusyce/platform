@@ -93,9 +93,9 @@ class Auth extends MY_Controller {
 				$data['footer'] = false;
 				$data['bg_cover'] = true;
 
-				$this->load->view('admin/includes/_header', $data);
+
 				$this->load->view('admin/auth/login');
-				$this->load->view('admin/includes/_footer', $data);
+
 			}
 		}	
 
@@ -176,9 +176,9 @@ class Auth extends MY_Controller {
 				$data['footer'] = false;
 				$data['bg_cover'] = true;
 
-				$this->load->view('admin/includes/_header', $data);
+
 				$this->load->view('admin/auth/register');
-				$this->load->view('admin/includes/_footer', $data);
+
 			}
 		}
 
@@ -251,9 +251,9 @@ class Auth extends MY_Controller {
 				$data['footer'] = false;
 				$data['bg_cover'] = true;
 
-				$this->load->view('admin/includes/_header', $data);
+
 				$this->load->view('admin/auth/forget_password');
-				$this->load->view('admin/includes/_footer', $data);
+
 			}
 		}
 

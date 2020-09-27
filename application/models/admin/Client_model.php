@@ -19,6 +19,12 @@ class Client_model extends CI_Model{
 		redirect('admin/client/');
 
 	}
+	function change_status()
+	{
+		$this->db->set('active',$this->input->post('status'));
+		$this->db->where('userid',$this->input->post('id'));
+		$this->db->update('mar_clients');
+	}
 	public function get_by_id($id){
 		$query = $this->db->get_where('mar_clients', array('userid' => $id));
 		return $result = $query->row();

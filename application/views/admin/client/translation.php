@@ -1,13 +1,20 @@
-<link rel="stylesheet" href="<?= base_url() ?>assets/plugins/datatables/dataTables.bootstrap4.css">
+<?php defined('BASEPATH') or exit('No direct script access allowed'); ?>
+<?php init_head(); ?>
+<div class="app-content content">
+	<div class="content-overlay"></div>
+	<div class="content-wrapper">
+		<div class="content-header row">
+		</div>
+		<div class="content-body">
+			<div class="card">
+				<div class="card-header">
+					<div class="d-inline-block">
+						<h3 class="card-title"><i class="fa fa-list"></i>Translation <?= get_menu_option('kunden','Kunden') ?></h3>
 
-<div class="content-wrapper">
-	<section class="content">
-        <div class="row">
-            <div class="col-md-12">
-                <h4 class="customer-profile-group-heading"
-                    style="margin: 0">Translation <?= get_transl_field('tsl_clients', 'kunden','Kunden') ?></h4>
-            </div>
-        </div>
+					</div>
+
+				</div>
+			</div>
         <div class="row">
             <div class="col-md-12">
                 <div class="panel_s" id="clients-transl">
@@ -193,7 +200,8 @@
                     <?php echo form_close(); ?>
                 </div>
             </div>
-        </div></div >
-			<section class="content">
-
+        </div></div>
+	</div>
+</div>
+<?php init_tail(); ?>
 

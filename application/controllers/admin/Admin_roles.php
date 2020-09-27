@@ -53,9 +53,9 @@ class Admin_roles extends MY_Controller
 
 		$data['title'] = trans('add_new_role');
 
-		$this->load->view('admin/includes/_header');
+
 		$this->load->view('admin/admin_roles/add', $data);
-		$this->load->view('admin/includes/_footer');
+
 	}
 
 	//--------------------------------------------------
@@ -75,9 +75,9 @@ class Admin_roles extends MY_Controller
 		$data['title'] = trans('edit_role');
 		$data['record'] = $this->admin_roles->get_role_by_id($id);
 		
-		$this->load->view('admin/includes/_header');
+
 		$this->load->view('admin/admin_roles/edit', $data);
-		$this->load->view('admin/includes/_footer');
+
 	}
 
 	//--------------------------------------------------
@@ -90,9 +90,9 @@ class Admin_roles extends MY_Controller
 		$data['access']= $this->admin_roles->get_access($id);
 		$data['modules']= $this->admin_roles->get_modules();
 
-		$this->load->view('admin/includes/_header');
+
 		$this->load->view('admin/admin_roles/access', $data);
-		$this->load->view('admin/includes/_footer');
+
 	}
 
 	//-----------------------------------------------------------
@@ -121,9 +121,9 @@ class Admin_roles extends MY_Controller
 		$data['title'] = trans('module_setting');
 		$data['records'] = $this->admin_roles->get_all_module();
 
-		$this->load->view('admin/includes/_header');
+
 		$this->load->view('admin/admin_roles/module_list', $data);
-		$this->load->view('admin/includes/_footer');
+
 	}
 
 	//-----------------------------------------------------------
@@ -164,9 +164,9 @@ class Admin_roles extends MY_Controller
 		else{
 			$data['title'] = trans('add_new_module');
 
-			$this->load->view('admin/includes/_header');
+
 			$this->load->view('admin/admin_roles/module_add', $data);
-			$this->load->view('admin/includes/_footer');
+
 		}
 	}
 
@@ -209,9 +209,9 @@ class Admin_roles extends MY_Controller
 			$data['title'] = trans('update_module');
 			$data['module'] = $this->admin_roles->get_module_by_id($id);
 
-			$this->load->view('admin/includes/_header');
+
 			$this->load->view('admin/admin_roles/module_edit', $data);
-			$this->load->view('admin/includes/_footer');
+
 		}
 	}
 
@@ -236,9 +236,9 @@ class Admin_roles extends MY_Controller
 		$data['title'] = '';
 		$data['records'] = $this->admin_roles->get_sub_module_by_module($module_id);
 
-		$this->load->view('admin/includes/_header');
+
 		$this->load->view('admin/admin_roles/sub_module_list', $data);
-		$this->load->view('admin/includes/_footer');
+
 	}
 
 	//-----------------------------------------------------------
@@ -279,9 +279,9 @@ class Admin_roles extends MY_Controller
 		else{
 			$data['title'] = '';
 
-			$this->load->view('admin/includes/_header');
+
 			$this->load->view('admin/admin_roles/sub_module_add', $data);
-			$this->load->view('admin/includes/_footer');
+
 		}
 	}
 
@@ -323,9 +323,9 @@ class Admin_roles extends MY_Controller
 		else{
 			$data['title'] = '';
 			$data['module'] = $this->admin_roles->get_sub_module_by_id($id);
-			$this->load->view('admin/includes/_header');
+
 			$this->load->view('admin/admin_roles/sub_module_edit', $data);
-			$this->load->view('admin/includes/_footer');
+
 		}
 	}
 

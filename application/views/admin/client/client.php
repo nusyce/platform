@@ -1,27 +1,25 @@
-<style>
-	input, button, select, optgroup  {
-		margin: 0;
-		font-family: inherit;
-		font-size: inherit;
-		line-height: inherit;
-		width: 100%;
-		height: 35px;
-	}
-</style>
+<?php defined('BASEPATH') or exit('No direct script access allowed'); ?>
+<?php init_head(); ?>
+<div class="app-content content">
+	<div class="content-overlay"></div>
+	<div class="content-wrapper">
+		<div class="content-header row">
+		</div>
+		<div class="content-body">
 
-<div class="content-wrapper">
-	<section class="content">
+			<div class="card">
 		<div class="card-header">
 			<div class="d-inline-block">
 				<h3 class="card-title"> <i class="fa fa-pencil"></i>
-					Edit Admin </h3>
+					 <?php echo get_menu_option(c_menu(), 'Kunder') ?> </h3>
 			</div>
 			<div class="d-inline-block float-right">
 				<a href="<?php echo base_url('admin/client')?>" class="btn btn-success"><i class="fa fa-list"></i> <?php echo get_menu_option(c_menu(), 'Kunder') ?> List</a>
 			</div>
 		</div>
+			</div>
 		<?php $this->load->view('admin/includes/_messages.php') ?>
-		
+			<div class="panel-body">
 			<div class="col-md-12">
 
 			<div class="horizontal-scrollable-tabs">
@@ -268,7 +266,7 @@
 					
 						<div class="form-group">
 				                <div class="col-md-12">
-					        <input style="width: 150px;" type="submit"  value="Add Kunden" class="btn btn-primary pull-right">
+					        <input style="width: 150px;" type="submit"  value="Save Kunden" class="btn btn-primary pull-right">
 				                </div>
 			                        </div>
                     </form>
@@ -277,5 +275,8 @@
 
 
 			</div>
-	</section>
+		</div>
+		</div>
+	</div>
 </div>
+<?php init_tail(); ?>

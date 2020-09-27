@@ -1,7 +1,11 @@
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-    <!-- Main content -->
-    <section class="content">
+<?php defined('BASEPATH') or exit('No direct script access allowed'); ?>
+<?php init_head(); ?>
+	<!-- For Messages --><div class="app-content content">
+	<div class="content-overlay"></div>
+	<div class="content-wrapper">
+		<div class="content-header row">
+		</div>
+		<div class="content-body">
       <div class="card card-default">
         <div class="card-header">
           <div class="d-inline-block">
@@ -65,5 +69,7 @@
         </div>
           <!-- /.box-body -->
       </div>
-    </section> 
   </div>
+  </div>
+  </div>
+  <?php init_tail(); ?>

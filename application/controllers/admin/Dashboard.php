@@ -55,11 +55,11 @@ class Dashboard extends My_Controller {
 
 		$data['title'] = 'Dashboard';
 
-		$this->load->view('admin/includes/_header', $data);
+
 
     	$this->load->view('admin/dashboard/general');
 
-    	$this->load->view('admin/includes/_footer');
+
 
 	}
 	public function general_settings(){
@@ -69,9 +69,9 @@ class Dashboard extends My_Controller {
 
 		$data['title'] = 'General Setting';
 
-		$this->load->view('admin/includes/_header', $data);
+
 		$this->load->view('admin/general_settings/setting', $data);
-		$this->load->view('admin/includes/_footer');
+
 
 	}
 	//--------------------------------------------------------------------------

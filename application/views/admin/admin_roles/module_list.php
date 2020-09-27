@@ -1,9 +1,12 @@
 <!-- DataTables -->
-<link rel="stylesheet" href="<?= base_url() ?>assets/plugins/datatables/dataTables.bootstrap4.css"> 
-
-<!-- Content Wrapper. Contains page content -->
-<div class="content-wrapper">
-	<section class="content">
+<?php defined('BASEPATH') or exit('No direct script access allowed'); ?>
+<?php init_head(); ?>
+<!-- For Messages --><div class="app-content content">
+	<div class="content-overlay"></div>
+	<div class="content-wrapper">
+		<div class="content-header row">
+		</div>
+		<div class="content-body">
 		<!-- For Messages -->
    		<?php $this->load->view('admin/includes/_messages.php') ?>
 		<div class="card">
@@ -54,9 +57,10 @@
 				</table>
 			</div>
 		</div>
-	</section>
-	<!-- /.content -->
 </div>
+</div>
+</div>
+<?php init_tail(); ?>
 
 
 <!-- DataTables -->

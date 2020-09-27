@@ -64,7 +64,7 @@ class General_settings extends MY_Controller {
 			}
 			else{
 				$this->session->set_flashdata('error', $result['msg']);
-				redirect(base_url('admin/general_settings'));
+				redirect(base_url('admin/dashboard/general_settings'));
 			}
 		}
 
@@ -87,7 +87,7 @@ class General_settings extends MY_Controller {
 		$result = $this->setting_model->update_general_setting($data);
 		if($result){
 			$this->session->set_flashdata('success', 'Setting has been changed Successfully!');
-			redirect(base_url('admin/general_settings'), 'refresh');
+			redirect(base_url('admin/dashboard/general_settings'), 'refresh');
 		}
 	}
 

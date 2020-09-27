@@ -1,15 +1,19 @@
-<!-- DataTables -->
-<link rel="stylesheet" href="<?= base_url() ?>assets/plugins/datatables/dataTables.bootstrap4.css"> 
-<!-- Content Wrapper. Contains page content -->
-<div class="content-wrapper">
-    <section class="content">
+<?php defined('BASEPATH') or exit('No direct script access allowed'); ?>
+<?php init_head(); ?>
+
+<!-- For Messages --><div class="app-content content">
+	<div class="content-overlay"></div>
+	<div class="content-wrapper">
+		<div class="content-header row">
+		</div>
+		<div class="content-body">
          <!-- For Messages -->
         <?php $this->load->view('admin/includes/_messages.php') ?>
         <div class="card">
             <div class="card-body">
                 <div class="d-inline-block">
                   <h3 class="card-title">
-                    <i class="fa fa-list"></i>
+
                     <?= trans('admin_list') ?>
                   </h3>
               </div>
@@ -17,10 +21,10 @@
 					<a href="<?php echo base_url('admin/admin/add');?>" class="btn btn-success"><i class="fa fa-plus"></i> Add New User</a>
 				</div>
             </div>
-            <div class="card-body">
+
                 <?php echo form_open("/",'class="filterdata"') ?>    
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-3" style="margin-left: 25px;">
                         <div class="form-group">
                             <select name="type" class="form-control" onchange="filter_data()" >
                                 <option value=""><?= trans('all_admin_types') ?></option>
@@ -46,23 +50,23 @@
                     </div>
                 </div>
                 <?php echo form_close(); ?> 
-            </div> 
+
         </div>
     </section>
 
 
     <!-- Main content -->
-    <section class="content mt10">
+
     	<div class="card">
-    		<div class="card-body">
+
                <!-- Load Admin list (json request)-->
                <div class="data_container"></div>
-           </div>
-       </div>
-    </section>
-    <!-- /.content -->
-</div>
 
+       </div>
+
+	</div>
+</div>
+<?php init_tail(); ?>
 
 
 <!-- DataTables -->
@@ -93,15 +97,5 @@ $('.data_container').load('<?=base_url('admin/admin/list_data')?>');
 load_records();
 
 //---------------------------------------------------------------------
-$("body").on("change",".tgl_checkbox",function(){
-$.post('<?=base_url("admin/admin/change_status")?>',
-{
-    '<?php echo $this->security->get_csrf_token_name(); ?>' : '<?php echo $this->security->get_csrf_hash(); ?>',
-	id : $(this).data('id'),
-	status : $(this).is(':checked')==true?1:0
-},
-function(data){
-	$.notify("Status Changed Successfully", "success");
-});
-});
+
 </script>

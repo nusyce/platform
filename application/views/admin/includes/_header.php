@@ -35,6 +35,7 @@
 	.digital-clock{
 		font-size: 20px;
 		margin-top: 4px;
+		color:white;
 	}
 </style>
 </head>

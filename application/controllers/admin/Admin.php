@@ -16,9 +16,9 @@ class Admin extends MY_Controller
 		$data['title'] = trans('role_and_permissions');;
 		$data['records'] = $this->admin_roles->get_all();
 
-		$this->load->view('admin/includes/_header');
+
 		$this->load->view('admin/admin_roles/index', $data);
-		$this->load->view('admin/includes/_footer');
+
 	}
 	//-----------------------------------------------------		
 	function index($type=''){
@@ -31,9 +31,9 @@ class Admin extends MY_Controller
 		
 		$data['title'] = 'Admin List';
 
-		$this->load->view('admin/includes/_header');
+
 		$this->load->view('admin/admin/index', $data);
-		$this->load->view('admin/includes/_footer');
+
 	}
 
 	//---------------------------------------------------------
@@ -109,9 +109,9 @@ class Admin extends MY_Controller
 			}
 			else
 			{
-				$this->load->view('admin/includes/_header', $data);
+
         		$this->load->view('admin/admin/add');
-        		$this->load->view('admin/includes/_footer');
+
 			}
 	}
 
@@ -170,9 +170,9 @@ class Admin extends MY_Controller
 		else{
 			$data['admin'] = $this->admin->get_admin_by_id($id);
 			
-			$this->load->view('admin/includes/_header');
+
 			$this->load->view('admin/admin/edit', $data);
-			$this->load->view('admin/includes/_footer');
+
 		}		
 	}
 

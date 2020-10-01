@@ -3907,7 +3907,7 @@ input:focus ~ .bg-success {
 /* Progress Bars success */
 /* ---------------------- */
 .progress-bar-success .progress-bar {
-  background-color: #39DA8A;
+  background-color: #84c529;
   box-shadow: 0 2px 6px 0 rgba(57, 218, 138, 0.6);
 }
 
@@ -4972,12 +4972,12 @@ input:focus ~ .bg-info {
 /* ------------- */
 .btn-info {
   border-color: #009faa !important;
-  background-color: #00CFDD !important;
+  background-color: #03a9f4 !important;
   color: #fff;
 }
 
 .btn-info:hover, .btn-info.hover {
-  background-color: #00e7f7 !important;
+  background-color: #337ab7 !important;
   color: #fff;
 }
 

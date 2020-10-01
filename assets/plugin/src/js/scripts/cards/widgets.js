@@ -45,7 +45,7 @@ $(document).ready(function () {
             fontSize: "20px",
             show: true,
             offsetY: 8,
-            fontFamily: "Rubik"
+            fontFamily: Roboto
           }
         }
       }
@@ -89,7 +89,7 @@ $(document).ready(function () {
             fontSize: "20px",
             show: true,
             offsetY: 8,
-            fontFamily: "Rubik"
+            fontFamily: Roboto
           }
         }
       }
@@ -133,7 +133,7 @@ $(document).ready(function () {
             fontSize: "20px",
             show: true,
             offsetY: 8,
-            fontFamily: "Rubik"
+            fontFamily: Roboto
           }
         }
       }
@@ -176,7 +176,7 @@ $(document).ready(function () {
           },
           value: {
             fontSize: '32px',
-            fontFamily: "Rubik",
+            fontFamily: Roboto,
             offsetY: -15,
           },
           total: {
@@ -577,7 +577,7 @@ $(document).ready(function () {
           },
           value: {
             fontSize: '32px',
-            fontFamily: "Rubik",
+            fontFamily: Roboto,
             offsetY: -15,
           },
           total: {

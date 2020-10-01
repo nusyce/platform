@@ -2853,7 +2853,7 @@ _:-ms-lang(x), .toast-bs-container {
   border-right : 0;
   color : #324356;
   background-color : transparent;
-  font-weight : 600;
+
 }
 
 .pagination .page-item .page-link:focus {

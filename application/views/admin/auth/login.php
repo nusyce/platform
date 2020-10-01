@@ -26,6 +26,10 @@
 		padding-left: 0px;
 	}
 
+	.login-panel {
+		margin-bottom: 30px;
+	}
+
 	.form-background {
 		min-height: 100%;
 		overflow-x: hidden;
@@ -47,19 +51,19 @@
 		Wir bringen die Zukunft - Jetzt 30 Tage lang kostenlos testen!</p>
 
 	<div class="row" style="margin-top: 25px">
-		<div class="col-3">
+		<div class="col-md-3">
 
 		</div>
-		<div class="col-6">
+		<div class="col-md-6">
 			<?php $this->load->view('admin/includes/_messages.php') ?>
 		</div>
-		<div class="col-3">
+		<div class="col-md-3">
 
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-3"></div>
-		<div class="col-3" style="padding-right: 15px;
+		<div class="col-md-3"></div>
+		<div class="col-md-3 login-panel" style="padding-right: 15px;
     padding-left: 15px;">
 			<div class="card-body login-card-body" style="background-color: white">
 				<h2 class="login-box-msg"> Admin Login
@@ -102,7 +106,7 @@
 			</div>
 		</div>
 
-		<div class="col-3" style="padding-right: 15px;
+		<div class="col-md-3 login-panel" style="padding-right: 15px;
     padding-left: 15px;">
 			<div class="card-body login-card-body" style="background-color: white">
 				<h2 class="login-box-msg"> Workers Login
@@ -138,7 +142,7 @@
 
 			</div>
 		</div>
-		<div class="col-3"></div>
+		<div class="col-md-3"></div>
 	</div>
 
 	<!-- /.login-box -->

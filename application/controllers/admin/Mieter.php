@@ -19,6 +19,12 @@ class Mieter extends MY_Controller {
 		$this->load->view('admin/mieter/mieter', $data);
 
 	}
+
+	public function render($project = '')
+	{
+		$this->app->get_renderable_data('mieter/table', ['project' => $project]);
+	}
+
 	function change_status(){
 
 		$this->rbac->check_operation_access(); // check opration permission

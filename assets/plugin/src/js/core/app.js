@@ -593,7 +593,7 @@
       debug: false,
       fallbackLng: "en",
       backend: {
-        loadPath: "<?= base_url()?>/assets/app/data/locales/{{lng}}.json"
+        loadPath: "/assets/app/data/locales/{{lng}}.json"
       },
       returnObjects: true
     },

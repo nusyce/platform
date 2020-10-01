@@ -10,10 +10,10 @@
 		<div class="card">
 			<div class="card-header">
 				<div class="d-inline-block">
-					<h3 class="card-title"><i class="fa fa-list"></i>&nbsp; <?= $title ?></h3>
+					<h3 class="card-title"> <?= $title ?></h3>
 				</div>
 				<div class="d-inline-block float-right">
-					<a href="<?= base_url('admin/admin_roles/add'); ?>" class="btn btn-success"><i class="fa fa-plus"></i> <?= trans('add_new_role') ?></a>
+					<a href="<?= base_url('admin/admin_roles/add'); ?>" class="btn btn-success"> <?= trans('add_new_role') ?></a>
 				</div>
 			</div>
 
@@ -64,7 +64,17 @@
 <?php init_tail(); ?>
 <script>
 	//---------------------------------------------------
-	var table = $('#na_datatable').DataTable( {
+	var table = $('#na_datatable').DataTable( {"language": {
+			"info": "Zeige _START_ bis _END_ von _TOTAL_ Einträge",
+			"searchPlaceholder": "Suchen",
+			"search": "",
+			"sLengthMenu": "_MENU_",
+			"paginate": {
+				"previous": "zurück",
+				"next": "vor",
+
+			}
+		},
 		"processing": true,
 		"serverSide": false,
 		'responsive': true,});

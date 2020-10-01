@@ -200,7 +200,8 @@ function get_alert_class()
         $alert_class = 'danger';
     }
 
-    return hooks()->apply_filters('alert_class', $alert_class);
+    //return hooks()->apply_filters('alert_class', $alert_class);
+	return $alert_class;
 }
 
 /**

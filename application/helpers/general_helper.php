@@ -485,7 +485,8 @@ function _l($line, $label = '', $log_errors = true)
 {
     $CI = &get_instance();
 
-    $hook_data = hooks()->apply_filters('before_get_language_text', ['line' => $line, 'label' => $label]);
+    $hook_data = ['line' => $line, 'label' => $label];
+    //$hook_data = hooks()->apply_filters('before_get_language_text', ['line' => $line, 'label' => $label]);
 
     $line = $hook_data['line'];
     $label = $hook_data['label'];
@@ -496,7 +497,8 @@ function _l($line, $label = '', $log_errors = true)
         $_line = @sprintf($CI->lang->line(trim($line), $log_errors), $label);
     }
 
-    $hook_data = hooks()->apply_filters('after_get_language_text', ['line' => $line, 'formatted_line' => $_line]);
+    //$hook_data = hooks()->apply_filters('after_get_language_text', ['line' => $line, 'formatted_line' => $_line]);
+    $hook_data = ['line' => $line, 'formatted_line' => $_line];
 
     $_line = $hook_data['formatted_line'];
     $line = $hook_data['line'];

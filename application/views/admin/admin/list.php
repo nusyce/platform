@@ -21,8 +21,8 @@
 					<?=$row['admin_id']?>
                 </td>
                 <td>
-					<h4 class="m0 mb5"><?=$row['firstname']?> <?=$row['lastname']?></h4>
-                    <small class="text-muted"><?=$row['admin_role_title']?></small>
+					<?=$row['firstname']?> <?=$row['lastname']?>
+
 					<div class="row-options"><a href="<?= base_url("admin/admin/edit/".$row['admin_id']); ?>" class="">
 							Bearbeiten
 						</a> |
@@ -49,14 +49,29 @@
         </tbody>
     </table>
 </div>
+
 <script>
 	//---------------------------------------------------
-	var table = $('#na_datatable').DataTable( {
+	var table = $('#na_datatable').DataTable( {"language": {
+			"info": "Zeige _START_ bis _END_ von _TOTAL_ Einträge",
+		"searchPlaceholder": "Suchen",
+				"search": "",
+				"sLengthMenu": "_MENU_",
+				"paginate": {
+			"previous": "zurück",
+					"next": "vor",
+
+		}
+	},
 		"processing": true,
 		"serverSide": false,
 		'responsive': true,});
 
 
+	$(document).ready(function () {
+		$('.dataTables_length').parent('div').addClass('div-datatable');
+		$('.dataTables_filter').parent('div').addClass('div-datatable');
 
+	})
 </script>
 

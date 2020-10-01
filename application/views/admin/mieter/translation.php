@@ -9,18 +9,18 @@
 			<div class="card">
 				<div class="card-header">
 					<div class="d-inline-block">
-						<h3 class="card-title"><i class="fa fa-list"></i>Translation <?= get_menu_option('mieter','Mieter') ?></h3>
+						<h3 class="card-title">Translation <?= get_menu_option('mieter','Mieter') ?></h3>
 
 					</div>
 
 				</div>
 			</div>
 
-			<div class="content-wrapper">
+
 
 		<div class="row">
 			<div class="col-md-12">
-				<div class="panel_s" id="mieter-transl">
+				<div class="panel-body" id="mieter-transl">
 					<?php
 					echo form_open($this->uri->uri_string(), array('id' => 'mieter-transl')); ?>
 					<div class="panel-body">
@@ -322,7 +322,7 @@
 					<?php echo form_close(); ?>
 				</div>
 			</div>
-		</div></div>
+		</div>
 		</div>
 	</div>
 	<?php init_tail(); ?>

@@ -12,9 +12,7 @@ $first_segment = !empty($first_segments) ? $first_segments : $first_segment;
         <div class="modal-content">
 
             <?php echo form_open('admin/dashboard/update_menu/', array('id' => 'form-update-menu')); ?>
-            <div class="modal-header" style="background-color: #b4b4d0;
-    color: white;">
-
+            <div class="modal-header"  >
                 <h4 class="modal-title" id="myModalLabel"><?php echo 'Edit Menu'; ?></h4>
             </div>
             <div class="modal-body">
@@ -27,7 +25,7 @@ $first_segment = !empty($first_segments) ? $first_segments : $first_segment;
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                 <button type="submit" class="btn btn-info">Submit</button>
             </div>
             <?php echo form_close(); ?>

@@ -9,7 +9,7 @@
         <div class="card card-default color-palette-bo">
             <div class="card-header">
               <div class="d-inline-block">
-                  <h3 class="card-title"> <i class="fa fa-plus"></i>
+                  <h3 class="card-title">
                   <?= trans('general_settings') ?> </h3>
               </div>
             </div>
@@ -19,12 +19,7 @@
 
                 <?php echo form_open_multipart(base_url('admin/general_settings/add')); ?>	
                 <!-- Nav tabs -->
-                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-                  <li class="nav-item">
-                    <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#main" role="tab" aria-controls="main" aria-selected="true"><?= trans('general_setting') ?></a>
-                  </li>
 
-                </ul>
 
                  <!-- Tab panes -->
                 <div class="tab-content">

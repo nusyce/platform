@@ -18,7 +18,7 @@
 	}
 
 	.open .menu-text {
-		color: #8494a7 !important;
+		color: #323a45 !important;
 	}
 
 	.menu-text {
@@ -49,8 +49,12 @@
 					<h2 style="padding-left: 0px;"
 						class="brand-text mb-0"><?= $this->general_settings['company']; ?></h2>
 				</a></li>
+			<li class="nav-item mobile-menu d-xl-none mr-auto for-mobile" style="margin-right: 20px !important;
+    margin-top: 10px;"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#" style="color: white!important;"><i class="ficon bx bx-menu" style="font-size: 25px !important;"></i></a></li>
 
 		</ul>
+
+
 	</div>
 	<div class="shadow-bottom"></div>
 	<div class="main-menu-content">
@@ -76,7 +80,7 @@
 					<?php if ($this->rbac->check_module_permission($nav['controller_name'])): ?>
 
 					<li id="<?= ($nav['controller_name']) ?>" data-traget="<?= ($nav['controller_name']) ?>"
-						class="nav-item <?= ($has_submenu) ? 'has-treeview' : '' ?> has-treeview need-edition">
+						class="nav-item <?= ($has_submenu) ? 'has-treeview' : '' ?> has-treeview need-edition <?= ($this->uri->segment(2)==$nav['controller_name']) ? 'active' : '' ?> <?= ($this->uri->segment(2)==$nav['controller_name']&&$has_submenu) ? 'open' : '' ?>">
 						<?php if ($has_submenu): ?>
 							<a class="edit-menu" href="#" aria-expanded="false"><i class="fa fa-pencil"></i></a>
 						<?php endif; ?>
@@ -94,11 +98,11 @@
 							<ul class="menu-content">
 
 								<?php foreach ($sub_menu as $sub_nav): ?>
-									<li class="nav-item">
+									<li class="nav-item <?= ($this->uri->segment(2).'/'.$this->uri->segment(3)==$nav['controller_name'].'/'. $sub_nav['link']) ? 'active' : '' ?>" >
 										<a href="<?= base_url('admin/' . $nav['controller_name'] . '/' . $sub_nav['link']); ?>"
 										   class="nav-link">
-											<i class="fa fa-circle-o nav-icon"></i>
-											<p><?= $sub_nav['name'] ?></p>
+
+											<p class="p-nav-link"><?= $sub_nav['name'] ?></p>
 										</a>
 									</li>
 								<?php endforeach; ?>

@@ -1,11 +1,7 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed'); ?>
 <?php init_head(); ?>
-<div class="app-content content">
-	<div class="content-overlay"></div>
-	<div class="content-wrapper">
-		<div class="content-header row">
-		</div>
-		<div class="content-body">
+<div id="wrapper">
+    <div class="content">
         <div class="row">
             <div class="col-md-12">
                 <div class="panel_s">
@@ -160,9 +156,16 @@
         </div>
     </div>
 </div>
-</div>
 <?php init_tail(); ?>
 <script src="<?php echo base_url('assets/plugins/jquery-validation/additional-methods.min.js'); ?>"></script>
-
+<script>
+  /*  $(function () {
+        appValidateForm($('#import_form'), {
+            file_csv: {required: true, extension: "csv"},
+            source: 'required',
+            status: 'required'
+        });
+    });*/
+</script>
 </body>
 </html>

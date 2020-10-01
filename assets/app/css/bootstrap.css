@@ -32,7 +32,7 @@
   --breakpoint-lg: 992px;
   --breakpoint-xl: 1200px;
   --font-family-sans-serif: "IBM Plex Sans", Helvetica, Arial, serif;
-  --font-family-monospace: "Rubik", Helvetica, Arial, serif;
+  --font-family-monospace: Roboto, Helvetica, Arial, serif;
 }
 
 *,
@@ -50,11 +50,11 @@ html {
 
 body {
   margin: 0;
-  font-family: "IBM Plex Sans", Helvetica, Arial, serif;
+  font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.4;
-  color: #727E8C;
+  color: #323a45;
   text-align: left;
   background-color: #F2F4F4;
 }
@@ -175,7 +175,7 @@ pre,
 code,
 kbd,
 samp {
-  font-family: "Rubik", Helvetica, Arial, serif;
+  font-family: Roboto, Helvetica, Arial, serif;
   font-size: 1em;
 }
 
@@ -367,7 +367,7 @@ template {
 h1, h2, h3, h4, h5, h6,
 .h1, .h2, .h3, .h4, .h5, .h6 {
   margin-bottom: 0.5rem;
-  font-family: "Rubik", Helvetica, Arial, serif;
+  font-family: Roboto, Helvetica, Arial, serif;
   font-weight: 400;
   line-height: 1.2;
   color: black;
@@ -1369,7 +1369,7 @@ pre code {
 .table {
   width: 100%;
   margin-bottom: 1rem;
-  color: #727E8C;
+  color: black;
 }
 
 .table th,
@@ -1702,7 +1702,7 @@ pre code {
 .table-responsive {
   display: block;
   width: 100%;
-  overflow-x: auto;
+  overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
 	padding: 1.7rem;
 }
@@ -3413,9 +3413,9 @@ input[type="button"].btn-block {
 }
 
 .custom-control-input:checked ~ .custom-control-label::before {
-  color: #FFFFFF;
-  border-color: #5A8DEE;
-  background-color: #5A8DEE;
+	color: #FFFFFF;
+	border-color: #84c529;
+	background-color: #84c529;
 }
 
 .custom-control-input:focus ~ .custom-control-label::before {
@@ -3423,7 +3423,7 @@ input[type="button"].btn-block {
 }
 
 .custom-control-input:focus:not(:checked) ~ .custom-control-label::before {
-  border-color: #5A8DEE;
+  border-color: #84c529;
 }
 
 .custom-control-input:not(:disabled):active ~ .custom-control-label::before {
@@ -3433,7 +3433,7 @@ input[type="button"].btn-block {
 }
 
 .custom-control-input:disabled ~ .custom-control-label {
-  color: #475F7B;
+  color: #84c529;
 }
 
 .custom-control-input:disabled ~ .custom-control-label::before {
@@ -3479,8 +3479,8 @@ input[type="button"].btn-block {
 }
 
 .custom-checkbox .custom-control-input:indeterminate ~ .custom-control-label::before {
-  border-color: #5A8DEE;
-  background-color: #5A8DEE;
+  border-color: #84c529;
+  background-color: #84c529;
 }
 
 .custom-checkbox .custom-control-input:indeterminate ~ .custom-control-label::after {
@@ -3488,11 +3488,11 @@ input[type="button"].btn-block {
 }
 
 .custom-checkbox .custom-control-input:disabled:checked ~ .custom-control-label::before {
-  background-color: rgba(90, 141, 238, 0.5);
+  background-color: #84c529;
 }
 
 .custom-checkbox .custom-control-input:disabled:indeterminate ~ .custom-control-label::before {
-  background-color: rgba(90, 141, 238, 0.5);
+  background-color: #84c529;
 }
 
 .custom-radio .custom-control-label::before {
@@ -3504,7 +3504,7 @@ input[type="button"].btn-block {
 }
 
 .custom-radio .custom-control-input:disabled:checked ~ .custom-control-label::before {
-  background-color: rgba(90, 141, 238, 0.5);
+  background-color: #84c529;
 }
 
 .custom-switch {
@@ -3540,7 +3540,7 @@ input[type="button"].btn-block {
 }
 
 .custom-switch .custom-control-input:disabled:checked ~ .custom-control-label::before {
-  background-color: rgba(90, 141, 238, 0.5);
+  background-color: #84c529;
 }
 
 .custom-select {
@@ -3551,7 +3551,7 @@ input[type="button"].btn-block {
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.4;
-  color: #475F7B;
+  color: #84c529;
   vertical-align: middle;
   background: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3e%3cpath fill='%23394C62' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e") no-repeat right 0.8rem center/8px 10px;
   background-color: #FFFFFF;
@@ -3561,13 +3561,13 @@ input[type="button"].btn-block {
 }
 
 .custom-select:focus {
-  border-color: #5A8DEE;
+  border-color: #84c529;
   outline: 0;
   box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.1);
 }
 
 .custom-select:focus::-ms-value {
-  color: #475F7B;
+  color: #84c529;
   background-color: #FFFFFF;
 }
 
@@ -3578,7 +3578,7 @@ input[type="button"].btn-block {
 }
 
 .custom-select:disabled {
-  color: #475F7B;
+  color: #84c529;
   background-color: #828D99;
 }
 
@@ -4341,10 +4341,13 @@ input[type="button"].btn-block {
 }
 
 .card-header {
-  padding: 1.4rem 1.7rem;
-  margin-bottom: 0;
-  background-color: transparent;
-  border-bottom: 0px solid #dfe3e7;
+	background: #f9fafc;
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+	border-bottom: 1px solid #e4e5e7;
+	padding: 15px 15px 15px 20px;
+	/* margin: -20px -20px 15px -20px; */
+	color: #656565;
 }
 
 .card-header:first-child {
@@ -10098,7 +10101,7 @@ button.bg-dark:focus {
 }
 
 .text-monospace {
-  font-family: "Rubik", Helvetica, Arial, serif !important;
+  font-family: Roboto, Helvetica, Arial, serif !important;
 }
 
 .text-justify {

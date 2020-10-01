@@ -10,7 +10,7 @@
          <!-- For Messages -->
         <?php $this->load->view('admin/includes/_messages.php') ?>
         <div class="card">
-            <div class="card-body">
+            <div class="card-body" style="margin-left: 15px;">
                 <div class="d-inline-block">
                   <h3 class="card-title">
 
@@ -18,13 +18,13 @@
                   </h3>
               </div>
 				<div class="d-inline-block float-right">
-					<a href="<?php echo base_url('admin/admin/add');?>" class="btn btn-success"><i class="fa fa-plus"></i> Add New User</a>
+					<a href="<?php echo base_url('admin/admin/add');?>" class="btn btn-success"> Add New User</a>
 				</div>
             </div>
 
                 <?php echo form_open("/",'class="filterdata"') ?>    
-                <div class="row">
-                    <div class="col-md-3" style="margin-left: 25px;">
+                <div class="row row-search" style="margin-left: 25px;">
+                    <div class="col-md-3" >
                         <div class="form-group">
                             <select name="type" class="form-control" onchange="filter_data()" >
                                 <option value=""><?= trans('all_admin_types') ?></option>

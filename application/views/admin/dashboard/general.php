@@ -5,12 +5,15 @@
 	<div class="content-wrapper">
 		<div class="content-header row">
 		</div>
-		<div class="content-body">
-			<div class="panel-body">
+		<div class="content-body" >
+			<div class="panel-body" style="background-color: white">
 				<?php
 				$total = ''; ?>
 				<div class="row">
-					<div class="col-md-12" style="margin-bottom: 20px">
+					<div class="col-md-12" style="margin-top: 20px;
+    margin-bottom: 20px;
+    border: 0;
+    border-bottom: 1px solid #eee;">
 						<h3><?= ucwords($this->session->userdata('username')); ?></h3>
 					</div>
 					<hr class="hr-panel-heading mbot40">
@@ -21,7 +24,6 @@
 						<div class="row">
 							<div class="col-md-12">
 								<h4 class="no-margin"><?= $title . ': <b>' . $total . '</b>' ?></h4>
-								<br>
 							</div>
 						</div>
 						<div class="row mbot15">
@@ -29,7 +31,7 @@
 								<div class="panel_s">
 									<div class="panel-body" style="padding: 15px  15px;">
 										<?= widget_status_stats('clients', $title); ?>
-										<div class="text-center" style="margin-top: 10px;"><a
+										<div class="text-center" style="margin-top: 17px;"><a class="text-progress"
 													href="<?= admin_url('client') ?>">Alle <?= $title ?></a></div>
 									</div>
 								</div>
@@ -43,7 +45,6 @@
 						<div class="row">
 							<div class="col-md-12">
 								<h4 class="no-margin"><?= $title . ': <b>' . $total . '</b>' ?></h4>
-								<br>
 							</div>
 						</div>
 						<div class="row mbot15">
@@ -51,7 +52,7 @@
 								<div class="panel_s">
 									<div class="panel-body" style="padding: 15px  15px;">
 										<?= widget_status_stats('mieters', $title); ?>
-										<div class="text-center" style="margin-top: 10px;"><a
+										<div class="text-center" style="margin-top: 17px;"><a class="text-progress"
 																	href="<?= admin_url('mieter') ?>">Alle <?= $title ?></a></div>
 									</div>
 								</div>
@@ -65,7 +66,6 @@
 						<div class="row">
 							<div class="col-md-12">
 								<h4 class="no-margin"><?= $title . ': <b>' . $total . '</b>' ?></h4>
-								<br>
 							</div>
 						</div>
 						<div class="row mbot15">
@@ -73,7 +73,7 @@
 								<div class="panel_s">
 									<div class="panel-body" style="padding: 15px  15px;">
 										<?= widget_status_stats('admin', $title); ?>
-										<div class="text-center" style="margin-top: 10px;"><a
+										<div class="text-center" style="margin-top: 17px;"><a class="text-progress"
 													href="<?= admin_url('admin') ?>">Alle <?= $title ?></a></div>
 									</div>
 								</div>

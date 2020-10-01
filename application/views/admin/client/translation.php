@@ -9,7 +9,7 @@
 			<div class="card">
 				<div class="card-header">
 					<div class="d-inline-block">
-						<h3 class="card-title"><i class="fa fa-list"></i>Translation <?= get_menu_option('kunden','Kunden') ?></h3>
+						<h3 class="card-title">Translation <?= get_menu_option('kunden','Kunden') ?></h3>
 
 					</div>
 
@@ -17,7 +17,7 @@
 			</div>
         <div class="row">
             <div class="col-md-12">
-                <div class="panel_s" id="clients-transl">
+                <div class="panel-body" id="clients-transl">
                     <?php
                     echo form_open($this->uri->uri_string(), array('id' => 'clients-transl')); ?>
 

@@ -66,11 +66,14 @@ class Client extends MY_Controller {
 			}
 				
 			}
+			unset($_POST['ci_csrf_token']);
 			if(isset($_POST['userid']) && !empty($_POST['userid']))
 			{
+
 				$this->client_model->update($_POST['userid'],$_POST);
 			}else
 			{
+
 				$this->client_model->add($_POST);
 			}
 

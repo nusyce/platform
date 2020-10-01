@@ -9,7 +9,7 @@
 			<div class="card">
 				<div class="card-header">
 					<div class="d-inline-block">
-						<h3 class="card-title"><i class="fa fa-list"></i>Add&nbsp;Mieters</h3>
+						<h3 class="card-title">Mieter</h3>
 
 					</div>
 
@@ -266,7 +266,7 @@
 					
 						<div class="form-group">
 				<div class="col-md-12">
-					<input style="width: 150px;" type="submit"  value="Save Mieter" class="btn btn-primary pull-right">
+					<input style="width: 150px;" type="submit"  value="Speichern" class="btn btn-primary pull-right">
 				</div>
 			</div></form></div>
 		</div>

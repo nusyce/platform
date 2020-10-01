@@ -110,7 +110,7 @@ class Admin extends MY_Controller
 			else
 			{
 
-        		$this->load->view('admin/admin/add');
+        		$this->load->view('admin/admin/add', $data);
 
 			}
 	}

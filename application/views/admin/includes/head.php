@@ -34,14 +34,24 @@
 	<link rel="stylesheet" type="text/css" href="<?= base_url()?>/assets/app/css/pages/dashboard-ecommerce.css">
 	<!-- END: Page CSS-->
 
-	<!-- BEGIN: Custom CSS-->
-	<link rel="stylesheet" type="text/css" href="<?= base_url()?>/assets/css/style.css">
 
 	<!-- END: Custom CSS-->
 	<link rel="stylesheet" type="text/css" href="<?= base_url()?>/assets/plugin/datatables/datatables.css">
+	<link rel="stylesheet" type="text/css" id="roboto-css" href="<?php echo site_url('assets/plugins/roboto/roboto.css'); ?>">
+
+	<!-- BEGIN: Custom CSS-->
+	<link rel="stylesheet" type="text/css" href="<?= base_url()?>/assets/css/style.css">
+
 
 	<style>
+		body {
+			font-family: Roboto, Geneva, sans-serif;
+			font-size:15px;
+		}
 
+		.bold, b, strong, h1,h2,h3,h4,h5,h6 {
+			font-weight: 400;
+		}
 		.panel_s .panel-body {
 			background: #fff;
 			border: 1px solid #dce1ef;
@@ -53,7 +63,11 @@
 	</style>
 
 
-
+<script>
+	var admin_url="<?php echo base_url('admin/') ?>";
+	var csrfTokenName="<?php $this->security->get_csrf_token_name(); ?>";
+	var csrfTokenHash="<?php echo $this->security->get_csrf_hash(); ?>";
+</script>
 
 
 

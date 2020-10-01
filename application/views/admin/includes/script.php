@@ -1,11 +1,18 @@
 <?php  $this->load->view('admin/includes/menu-edite')  ?>
 <!-- BEGIN: Vendor JS-->
+<?php
+/**
+ * Check for any alerts stored in session
+ */
+app_js_alerts();
+?>
+
 <script src="<?= base_url()?>/assets/app/vendors/js/vendors.min.js"></script>
 <script src="<?= base_url()?>/assets/app/fonts/LivIconsEvo/js/LivIconsEvo.tools.js"></script>
 <script src="<?= base_url()?>/assets/app/fonts/LivIconsEvo/js/LivIconsEvo.defaults.js"></script>
 <script src="<?= base_url()?>/assets/app/fonts/LivIconsEvo/js/LivIconsEvo.min.js"></script>
 <!-- BEGIN Vendor JS-->
-
+<script src="<?= base_url()?>/assets/plugins/jquery-validation/jquery.validate.js"></script>
 <!-- BEGIN: Page Vendor JS-->
 <script src="<?= base_url()?>/assets/app/vendors/js/charts/apexcharts.min.js"></script>
 <script src="<?= base_url()?>/assets/app/vendors/js/extensions/swiper.min.js"></script>
@@ -28,8 +35,8 @@
 <script src="<?= base_url()?>/assets/app//vendors/js/tables/datatable/dataTables.buttons.min.js"></script>
 <script src="<?= base_url()?>/assets/app/vendors/js/tables/datatable/buttons.html5.min.js"></script>
 <script src="<?= base_url()?>/assets/app/vendors/js/tables/datatable/buttons.print.min.js"></script>
-<script src="<?= base_url()?>/assets/app/app-assets/vendors/js/tables/datatable/buttons.bootstrap.min.js"></script>
-<script src="<?= base_url()?>/assets/app/vendors/js/tables/datatable/pdfmake.min.js"></script>
+<!--<script src="<?/*= base_url()*/?>/assets/app/app-assets/vendors/js/tables/datatable/buttons.bootstrap.min.js"></script>
+--><script src="<?= base_url()?>/assets/app/vendors/js/tables/datatable/pdfmake.min.js"></script>
 <script src="<?= base_url()?>/assets/app/vendors/js/tables/datatable/vfs_fonts.js"></script>
 <!-- END: Page Vendor JS-->
 <script src="<?= base_url()?>/assets/js/app.js"></script>
@@ -39,9 +46,13 @@
 <script src="<?= base_url()?>/assets/app/js/scripts/datatables/datatable.js"></script>
 
 <!-- BEGIN: Page JS-->
-<script src="<?= base_url()?>/assets/app/js/scripts/pages/dashboard-ecommerce.js"></script>
+<!--<script src="<?/*= base_url()*/?>/assets/app/js/scripts/pages/dashboard-ecommerce.js"></script>
+-->
+<script src="<?= base_url()?>/assets/plugins/validation/app-form-validation.js"></script>
 <!-- END: Page JS-->
 <script>
+	console.log(jQuery().jquery);
+
 
 	$("body").on("change",".tgl_checkbox",function(){
 		var $url =$(this).data('switch-url');
@@ -58,6 +69,8 @@
 				});
 	});
 	$(document).ready(function () {
+		$('.dataTables_length').parent('div').addClass('div-datatable');
+		$('.dataTables_filter').parent('div').addClass('div-datatable');
 		$('#tgl_checkbox').button('toggle');
 		clockUpdate();
 		setInterval(clockUpdate, 1000);

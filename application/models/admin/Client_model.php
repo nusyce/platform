@@ -15,7 +15,8 @@ class Client_model extends CI_Model{
 			
 			$data['datecreated']=date('d-m-y h:i:s');
 			$this->db->insert('mar_clients', $data);
-			$this->session->set_flashdata('success','Client has been Added Successfully.');	
+
+		set_alert('success', 'added_successfully');
 		redirect('admin/client/');
 
 	}

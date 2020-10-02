@@ -92,10 +92,10 @@ foreach ($rResult as $aRow) {
     $row[] = $aRow['id'];
     $subjectOutput = '<a href="' . admin_url('mieter/mieter/' . $aRow['id']) . '">' . $aRow['fullname'] . '</a>';
     $subjectOutput .= '<div class="row-options">';
-    $subjectOutput .= '  <a href="' . admin_url('mieter/mieter/' . $aRow['id']) . '">' . _l('edit') . '</a>';
+    $subjectOutput .= '  <a href="' . admin_url('mieter/mieter/' . $aRow['id']) . '">' . _l('Bearbeiten') . '</a>';
 
     /*    if (has_permission('mieter', '', 'delete')) {*/
-    $subjectOutput .= ' | <a href="' . admin_url('mieter/delete/' . $aRow['id']) . '" class="text-danger _delete">' . _l('delete') . '</a>';
+    $subjectOutput .= ' | <a href="' . admin_url('mieter/delete/' . $aRow['id']) . '" class="text-danger _delete">' . _l('löschen') . '</a>';
     /* }*/
 
     $subjectOutput .= '</div>';

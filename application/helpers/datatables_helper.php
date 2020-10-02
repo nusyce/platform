@@ -342,20 +342,20 @@ function get_datatables_language_array()
 {
 	$lang = [
 		'emptyTable' => preg_replace("/{(\d+)}/", _l('dt_entries'), _l('dt_empty_table')),
-		'info' => preg_replace("/{(\d+)}/", _l('dt_entries'), _l('dt_info')),
+		'info' => 'Zeige _START_ bis _END_ von _TOTAL_ Einträge',
 		'infoEmpty' => preg_replace("/{(\d+)}/", _l('dt_entries'), _l('dt_info_empty')),
 		'infoFiltered' => preg_replace("/{(\d+)}/", _l('dt_entries'), _l('dt_info_filtered')),
 		'lengthMenu' => '_MENU_',
 		'loadingRecords' => _l('dt_loading_records'),
 		'processing' => '<div class="dt-loader"></div>',
 		'search' => '<div class="input-group"><span class="input-group-addon"><span class="fa fa-search"></span></span>',
-		'searchPlaceholder' => _l('dt_search'),
+		'searchPlaceholder' => _l('Suchen'),
 		'zeroRecords' => _l('dt_zero_records'),
 		'paginate' => [
 			'first' => _l('dt_paginate_first'),
 			'last' => _l('dt_paginate_last'),
-			'next' => _l('dt_paginate_next'),
-			'previous' => _l('dt_paginate_previous'),
+			'next' => _l('vor'),
+			'previous' => _l('zurück'),
 		],
 		'aria' => [
 			'sortAscending' => _l('dt_sort_ascending'),
@@ -363,7 +363,7 @@ function get_datatables_language_array()
 		],
 	];
 
-	return hooks()->apply_filters('datatables_language_array', $lang);
+	return $lang;
 }
 
 /**

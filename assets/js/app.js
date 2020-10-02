@@ -3,6 +3,9 @@
  * This file is compiled with assets/js/common.js because most of the functions can be used in admin and clients area
  */
 
+$.fn.dataTableExt.sErrMode = 'throw';
+
+
 // For manually modals where no close is defined
 $(document).keyup(function (e) {
 	if (e.keyCode == 27) { // escape key maps to keycode `27`
@@ -66,39 +69,15 @@ function renderDataTable(selector, url, notsearchable, notsortable, fnserverpara
 		}
 	}
 
-
-	// Bootstrap switch active or inactive global function
-	$("body").on('change', '.onoffswitch input', function (event, state) {
-		var switch_url = $(this).data('switch-url');
-		if (!switch_url) {
-			return;
-		}
-		switch_field(this);
-	});
-
-
-	// Fix for checkboxes ID duplicate when table goes responsive
-	$("body").on('click', 'table.dataTable tbody td:first-child', function () {
-		var tr = $(this).parents('tr');
-		if ($(this).parents('table').DataTable().row(tr).child.isShown()) {
-			var switchBox = $(tr).next().find('input.onoffswitch-checkbox');
-			if (switchBox.length > 0) {
-				var switchBoxId = Math.random().toString(16).slice(2);
-				switchBox.attr('id', switchBoxId).next().attr('for', switchBoxId);
-			}
-		}
-	});
-
-
 	var length_options = [10, 25, 50, 100];
 	var length_options_names = [10, 25, 50, 100];
 
-	/*	app.options.tables_pagination_limit = parseFloat(app.options.tables_pagination_limit);
+	app.options.tables_pagination_limit = parseFloat(app.options.tables_pagination_limit);
 
-		if ($.inArray(app.options.tables_pagination_limit, length_options) == -1) {
-			length_options.push(app.options.tables_pagination_limit);
-			length_options_names.push(app.options.tables_pagination_limit);
-		}*/
+	if ($.inArray(app.options.tables_pagination_limit, length_options) == -1) {
+		length_options.push(app.options.tables_pagination_limit);
+		length_options_names.push(app.options.tables_pagination_limit);
+	}
 
 	length_options.sort(function (a, b) {
 		return a - b;
@@ -107,17 +86,14 @@ function renderDataTable(selector, url, notsearchable, notsortable, fnserverpara
 		return a - b;
 	});
 	length_options.push(-1);
-	/*
-		length_options_names.push(app.lang.dt_length_menu_all);
-	*/
+	length_options_names.push(app.lang.dt_length_menu_all);
 
 	var dtSettings = {
-		//"language": app.lang.datatables,
-		//	"language": app.lang.datatables,
+		"language": app.lang.datatables,
 		"processing": true,
 		"retrieve": true,
 		"serverSide": true,
-		//'paginate': true,
+		'paginate': true,
 		"fixedHeader": true,
 		'searchDelay': 750,
 		"bDeferRender": true,
@@ -128,8 +104,7 @@ function renderDataTable(selector, url, notsearchable, notsortable, fnserverpara
 			bootstrap: true
 		},
 		dom: "<'row'><'row'<'col-md-7'lB><'col-md-5'f>>rt<'row'<'col-md-4'i>><'row'<'#colvis'><'.dt-page-jump'>p>",
-		/*"pageLength": app.options.tables_pagination_limit,*/
-		"pageLength": 25,
+		"pageLength": app.options.tables_pagination_limit,
 		"lengthMenu": [length_options, length_options_names],
 		"columnDefs": [{
 			"searchable": false,
@@ -138,15 +113,6 @@ function renderDataTable(selector, url, notsearchable, notsortable, fnserverpara
 			"sortable": false,
 			"targets": notsortable
 		}],
-		"info": "Zeige _START_ bis _END_ von _TOTAL_ Einträge",
-		"searchPlaceholder": "Suchen",
-		"search": "",
-		"sLengthMenu": "_MENU_",
-		"paginate": {
-			"previous": "zurück",
-			"next": "vor",
-
-		},
 		"fnDrawCallback": function (oSettings) {
 			_table_jump_to_page(this, oSettings);
 			if (oSettings.aoData.length === 0) {
@@ -164,19 +130,15 @@ function renderDataTable(selector, url, notsearchable, notsortable, fnserverpara
 			var t = this;
 			var $btnReload = $('.btn-dt-reload');
 			$btnReload.attr('data-toggle', 'tooltip');
-			/*
-						$btnReload.attr('title', app.lang.dt_button_reload);
-			*/
+			$btnReload.attr('title', app.lang.dt_button_reload);
 
 			var $btnColVis = $('.dt-column-visibility');
 			$btnColVis.attr('data-toggle', 'tooltip');
-			/*
-						$btnColVis.attr('title', app.lang.dt_button_column_visibility);
-			*/
-			/*
-						if (t.hasClass('scroll-responsive') || app.options.scroll_responsive_tables == 1) {
-							t.wrap('<div class="table-responsive"></div>');
-						}*/
+			$btnColVis.attr('title', app.lang.dt_button_column_visibility);
+
+			if (t.hasClass('scroll-responsive') || app.options.scroll_responsive_tables == 1) {
+				t.wrap('<div class="table-responsive"></div>');
+			}
 
 			var dtEmpty = t.find('.dataTables_empty');
 			if (dtEmpty.length) {
@@ -193,12 +155,13 @@ function renderDataTable(selector, url, notsearchable, notsortable, fnserverpara
 			t.removeClass('dt-table-loading');
 			var th_last_child = t.find('thead th:last-child');
 			var th_first_child = t.find('thead th:first-child');
-			/*if (th_last_child.text().trim() == app.lang.options) {
+			if (th_last_child.text().trim() == app.lang.options) {
 				th_last_child.addClass('not-export');
-			}*/
+			}
 			if (th_first_child.find('input[type="checkbox"]').length > 0) {
 				th_first_child.addClass('not-export');
 			}
+		/*	mainWrapperHeightFix();*/
 		},
 		"order": defaultorder,
 		"ajax": {
@@ -219,9 +182,9 @@ function renderDataTable(selector, url, notsearchable, notsortable, fnserverpara
 		buttons: get_datatable_buttons(table),
 	};
 
-	/*	if (table.hasClass('scroll-responsive') || app.options.scroll_responsive_tables == 1) {
-			dtSettings.responsive = false;
-		}*/
+	if (table.hasClass('scroll-responsive') || app.options.scroll_responsive_tables == 1) {
+		dtSettings.responsive = false;
+	}
 
 	table = table.dataTable(dtSettings);
 	var tableApi = table.DataTable();

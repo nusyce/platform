@@ -527,7 +527,7 @@ function render_admin_js_variables()
     $date_format = $date_format[0];
     $CI = &get_instance();
 
-    $options = [
+/*    $options = [
         'date_format' => $date_format,
         'decimal_places' => get_decimal_places(),
         'scroll_responsive_tables' => get_option('scroll_responsive_tables'),
@@ -550,7 +550,7 @@ function render_admin_js_variables()
         'enable_google_picker' => get_option('enable_google_picker'),
         'google_client_id' => get_option('google_client_id'),
         'google_api' => get_option('google_api_key'),
-    ];
+    ];*/
 
     // by remove it means do not prefix it
 
@@ -618,30 +618,30 @@ function render_admin_js_variables()
     echo 'var app = {};';
     echo 'var app = {};';
 
-    echo 'app.available_tags = ' . json_encode(get_tags_clean()) . ';';
+  /*  echo 'app.available_tags = ' . json_encode(get_tags_clean()) . ';';
     echo 'app.available_tags_ids = ' . json_encode(get_tags_ids()) . ';';
-    echo 'app.user_recent_searches = ' . json_encode(get_staff_recent_search_history()) . ';';
+    echo 'app.user_recent_searches = ' . json_encode(get_staff_recent_search_history()) . ';';*/
     echo 'app.months_json = ' . json_encode([_l('January'), _l('February'), _l('March'), _l('April'), _l('May'), _l('June'), _l('July'), _l('August'), _l('September'), _l('October'), _l('November'), _l('December')]) . ';';
-    echo 'app.tinymce_lang = "' . get_tinymce_language($GLOBALS['locale']) . '";';
-    echo 'app.locale = "' . $GLOBALS['locale'] . '";';
-    echo 'app.browser = "' . strtolower($CI->agent->browser()) . '";';
+/*    echo 'app.tinymce_lang = "' . get_tinymce_language($GLOBALS['locale']) . '";';*/
+/*    echo 'app.locale = "' . $GLOBALS['locale'] . '";';*/
+/*    echo 'app.browser = "' . strtolower($CI->agent->browser()) . '";';
     echo 'app.user_language = "' . get_staff_default_language() . '";';
     echo 'app.is_mobile = "' . is_mobile() . '";';
     echo 'app.user_is_staff_member = "' . is_staff_member() . '";';
     echo 'app.user_is_admin = "' . is_admin() . '";';
-    echo 'app.max_php_ini_upload_size_bytes = "' . $maxUploadSize . '";';
+    echo 'app.max_php_ini_upload_size_bytes = "' . $maxUploadSize . '";';*/
     echo 'app.calendarIDs = "";';
 
     echo 'app.options = {};';
     echo 'app.lang = {};';
 
-    foreach ($options as $var => $val) {
+/*    foreach ($options as $var => $val) {
         echo 'app.options.' . $var . ' = "' . $val . '";';
-    }
+    }*/
 
-    foreach ($lang as $key => $val) {
+/*    foreach ($lang as $key => $val) {
         echo 'app.lang. ' . $key . ' = "' . $val . '";';
-    }
+    }*/
 
     echo 'app.lang.datatables = ' . json_encode(get_datatables_language_array()) . ';';
 
@@ -649,7 +649,7 @@ function render_admin_js_variables()
      * @deprecated 2.3.2
      */
 
-    $deprecated = [
+   /* $deprecated = [
         'app_language' => get_staff_default_language(), // done, prefix it
         'app_is_mobile' => is_mobile(), // done, prefix it
         'app_user_browser' => strtolower($CI->agent->browser()), // done, prefix it
@@ -679,11 +679,11 @@ function render_admin_js_variables()
         'app_enable_google_picker' => get_option('enable_google_picker'), // done, dont to nothing
         'app_google_client_id' => get_option('google_client_id'), // done, dont to nothing
         'google_api' => get_option('google_api_key'), // done, dont do nothing
-    ];
+    ];*/
 
-    $firstKey = key($deprecated);
+   /* $firstKey = key($deprecated);*/
 
-    $vars = 'var ' . $firstKey . '="' . $deprecated[$firstKey] . '",';
+/*    $vars = 'var ' . $firstKey . '="' . $deprecated[$firstKey] . '",';
 
     unset($deprecated[$firstKey]);
 
@@ -696,7 +696,7 @@ function render_admin_js_variables()
     echo 'var appLang = {};';
     foreach ($lang as $key => $val) {
         echo 'appLang["' . $key . '"] = "' . $val . '";';
-    }
+    }*/
 
     echo '</script>';
 }

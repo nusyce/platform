@@ -267,9 +267,9 @@ span.livicon-evo {
 		width: calc(100% - 260px);
 		float: right;
 	}
-.for-mobile{
-	display: none;
-}
+	.for-mobile{
+		display: none;
+	}
 	body .content-left {
 		width: calc(100% - 260px);
 		float: left;
@@ -313,30 +313,6 @@ span.livicon-evo {
 	overflow: hidden !important;
 	text-overflow: ellipsis !important;
 	white-space: nowrap !important;
-}
-
-table.dataTable thead > tr > th {
-	color: #4e75ad;
-	background: #f6f8fa;
-	padding-left: 20px !important;
-	vertical-align: middle;
-	border-bottom: 1px solid;
-	border-color: #ebf5ff !important;
-	font-size: 11px !important;
-	padding-top: 9px;
-	padding-bottom: 8px;
-}
-
-.dataTables_length select, .uneditable-input, input[type=color], input[type=date], input[type=datetime-local], input[type=datetime], input[type=email], input[type=file], input[type=month], input[type=number], input[type=password], input[type=search], input[type=tel], input[type=text], input[type=time], input[type=url], input[type=week], select.form-control, textarea.form-control {
-	border: 1px solid #bfcbd9;
-	-webkit-box-shadow: none;
-	box-shadow: none;
-	color: #494949;
-	font-size: 14px;
-	-webkit-transition: border-color .2s cubic-bezier(.645, .045, .355, 1);
-	transition: border-color .2s cubic-bezier(.645, .045, .355, 1);
-	line-height: 1;
-	height: 36px;
 }
 
 @media (max-width: 575.98px) {
@@ -4002,6 +3978,7 @@ hr {
 	border-top: 1px solid #eee;
 }
 
+/*
 .table.dataTable thead .sorting:before, .table.dataTable thead .sorting:after,
 .table.dataTable thead .sorting_asc:before,
 .table.dataTable thead .sorting_asc:after,
@@ -4030,31 +4007,10 @@ hr {
 	font-size: 1.1rem;
 	display: none;
 }
+*/
 
-.table.dataTable thead .sorting:after,
-.table.dataTable thead .sorting_asc:after,
-.table.dataTable thead .sorting_desc:after,
-.table.dataTable thead .sorting_desc_disabled:after {
-	content: "\ea48";
-	padding-top: 1em;
-	font-size: 1.1rem;
-	display: none;
-}
 
-div.dataTables_wrapper div.dataTables_filter,
-div.dataTables_wrapper div.dataTables_length {
-	margin: 1rem 0;
-}
 
-div.dataTables_wrapper div.dataTables_filter select,
-div.dataTables_wrapper div.dataTables_length select {
-	background-position: calc(100% - 4px) 9px, calc(100% - 20px) 13px, 100% 0;
-	padding: 0 0.8rem;
-}
-
-div.dataTables_wrapper div.dataTables_paginate ul.pagination {
-	margin-top: 1rem;
-}
 
 @media only screen and (max-width: 768px) {
 	div.dataTables_wrapper div.dataTables_paginate ul.pagination {

@@ -42,6 +42,11 @@ class Client extends MY_Controller {
 		$this->client_model->delete($id);
 
 	}
+	public function render($client = '')
+	{
+		$this->app->get_renderable_data('client/table', ['client' => $client]);
+	}
+
 	public function save()
 	{
 		if(!empty($_POST)) {

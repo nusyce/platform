@@ -1,15 +1,36 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
-	
-class Mieter extends MY_Controller {
+<?php defined('BASEPATH') or exit('No direct script access allowed');
 
-	public function __construct(){
+class Mieter extends MY_Controller
+{
+
+	public function __construct()
+	{
 
 		parent::__construct();
 		auth_check(); // check login auth
 		$this->rbac->check_module_access();
 		$this->load->model('admin/Mieter_model', 'mieter_model');
 	}
-	public function mieter($id='')
+
+
+	public function index()
+	{
+		$data['title'] = 'Mieter';
+
+		$data['plz'] = $this->mieter_model->get_grouped('plz');
+		$data['stadt'] = $this->mieter_model->get_grouped('stadt');
+		$data['strabe'] = $this->mieter_model->get_grouped('strabe_m');
+		$data['flugel'] = $this->mieter_model->get_grouped('flugel');
+		$data['hausnummer'] = $this->mieter_model->get_grouped('hausnummer_m');
+		$data['wohnungsnummer'] = $this->mieter_model->get_grouped('wohnungsnummer');
+		$data['etage'] = $this->mieter_model->get_grouped('etage');
+
+		$data['project'] = $this->mieter_model->get_projekte();
+		$this->load->view('admin/mieter/mieter-list', $data);
+
+	}
+
+	public function mieter($id = '')
 	{
 		// $records = $this->activity_model->get_activity_log();
 		// var_dump($records);exit();
@@ -25,28 +46,22 @@ class Mieter extends MY_Controller {
 		$this->app->get_renderable_data('mieter/table', ['project' => $project]);
 	}
 
-	function change_status(){
+	function change_status_old()
+	{
 
 		$this->rbac->check_operation_access(); // check opration permission
 
 		$this->mieter_model->change_status();
 	}
-	public function index()
-	{
-		// $records = $this->activity_model->get_activity_log();
-		// var_dump($records);exit();
-		$data['title'] = 'Mieter';
 
-		$this->load->view('admin/mieter/mieter-list', $data);
-
-	}
-	public function delete($id='')
+	public function delete($id = '')
 	{
 		// $records = $this->activity_model->get_activity_log();
 		// var_dump($records);exit();
 		$this->mieter_model->delete($id);
 
 	}
+
 	public function translation()
 	{
 		if ($this->input->post()) {
@@ -65,9 +80,10 @@ class Mieter extends MY_Controller {
 
 
 	}
+
 	public function save()
 	{
-		if(!empty($_POST)) {
+		if (!empty($_POST)) {
 
 
 			$this->form_validation->set_rules('fullname', 'fullname', 'trim|required');
@@ -80,28 +96,25 @@ class Mieter extends MY_Controller {
 					'errors' => validation_errors()
 				);
 				$this->session->set_flashdata('errors', $data['errors']);
-				if(isset($_POST['id']) && !empty($_POST['id']))
-			{
-				redirect(base_url('admin/mieter/mieter/'.$_POST['id']), 'refresh');
-			}else
-			{
-				redirect(base_url('admin/mieter/mieter'), 'refresh');
+				if (isset($_POST['id']) && !empty($_POST['id'])) {
+					redirect(base_url('admin/mieter/mieter/' . $_POST['id']), 'refresh');
+				} else {
+					redirect(base_url('admin/mieter/mieter'), 'refresh');
+				}
+
 			}
-				
-			}
-			if(isset($_POST['id']) && !empty($_POST['id']))
-			{
-				
-				$this->mieter_model->update($_POST['id'],$_POST);
-			}else
-			{
-				
+			if (isset($_POST['id']) && !empty($_POST['id'])) {
+
+				$this->mieter_model->update($_POST['id'], $_POST);
+			} else {
+
 				$this->mieter_model->add($_POST);
 			}
 
 		}
 
 	}
+
 	public function import()
 	{
 
@@ -127,6 +140,7 @@ class Mieter extends MY_Controller {
 		$data['bodyclass'] = 'dynamic-create-groups';
 		$this->load->view('admin/mieter/import', $data);
 	}
+
 	public function import_perform_data()
 	{
 		if (isset($_POST)) {
@@ -150,34 +164,42 @@ class Mieter extends MY_Controller {
 				}
 			}
 			if ($imported > 0) {
-				$this->session->set_flashdata('success',$imported.' row has been exported Successfully.');
+				$this->session->set_flashdata('success', $imported . ' row has been exported Successfully.');
 			}
 			redirect(admin_url('mieter'));
 		}
 	}
+
+
+	/* Change client status / active / inactive */
+	public function change_status($id, $status)
+	{
+		if ($this->input->is_ajax_request()) {
+			$this->mieter_model->change_status($id, $status);
+		}
+	}
+
 
 	public function datatable_json()
 	{
 		$records['data'] = $this->mieter_model->get_mieter();
 
 		$data = array();
-		$i=0;
+		$i = 0;
 		//$text_comfirm="return confirm('are you sure to delete?')";
-		foreach ($records['data']  as $row) 
-		{
-			$checked="";
-			if($row['active']==1)
-			{
-				$checked="checked";
+		foreach ($records['data'] as $row) {
+			$checked = "";
+			if ($row['active'] == 1) {
+				$checked = "checked";
 			}
-			$data[]= array(
+			$data[] = array(
 				$row['id'],
-				'<a href="'.base_url('admin/mieter/mieter/'.$row['id']).'" class="">
-		'.$row['fullname'].'
-</a><div class="row-options"><a href="'.base_url('admin/mieter/mieter/'.$row['id']).'" class="">
+				'<a href="' . base_url('admin/mieter/mieter/' . $row['id']) . '" class="">
+		' . $row['fullname'] . '
+</a><div class="row-options"><a href="' . base_url('admin/mieter/mieter/' . $row['id']) . '" class="">
 Bearbeiten
 </a> |
-<a href="'.base_url('admin/mieter/delete/'.$row['id']).'"   class="text-danger _delete"> löschen</a></div>',
+<a href="' . base_url('admin/mieter/delete/' . $row['id']) . '"   class="text-danger _delete"> löschen</a></div>',
 				$row['projektname'],
 				$row['strabe_m'],
 				$row['nr_p'],
@@ -187,12 +209,11 @@ Bearbeiten
 				$row['plz'],
 				$row['stadt'],
 				$row['telefon_1'],
-				'<div class="custom-control custom-switch"><input data-switch-url="'.base_url("admin/mieter/change_status").'" class="tgl tgl-ios tgl_checkbox custom-control-input" 
-                    data-id="'.$row['id'].'"
-                    id="cb_'.$row['id'].'"
-                    type="checkbox"'.$checked.'/>
-                    <label class="tgl-btn custom-control-label" for="cb_'.$row['id'].'"></label></div>'
-				
+				'<div class="custom-control custom-switch"><input data-switch-url="' . base_url("admin/mieter/change_status") . '" class="tgl tgl-ios tgl_checkbox custom-control-input" 
+                    data-id="' . $row['id'] . '"
+                    id="cb_' . $row['id'] . '"
+                    type="checkbox"' . $checked . '/>
+                    <label class="tgl-btn custom-control-label" for="cb_' . $row['id'] . '"></label></div>'
 
 
 			);

@@ -20,38 +20,38 @@
 				</div>
 			</div>-->
 		</div>
-    <!-- For Messages -->
-    <?php $this->load->view('admin/includes/_messages.php') ?>
-    <div class="card">
-      <div class="card-header">
-		  <div id="page-header">
-        <div class="d-inline-block" style="display: flex !important;">
+		<!-- For Messages -->
+		<?php //$this->load->view('admin/includes/_messages.php') ?>
+		<div class="card">
+			<div id="page-header">
+				<div class="d-inline-block" style="display: flex !important;">
 
-          <h3 class="card-title"><span>MIETER</span></h3>
-			<a style="margin-left: 10px" href="<?php echo base_url('admin/mieter/translation'); ?>" class="btn btn-info btntrans pull-left display-block"><?php echo 'Translate'; ?></a>
+					<h3 class="card-title nomb" ><span>MIETER</span></h3>
+					<a style="margin-left: 10px" href="<?php echo base_url('admin/mieter/translation'); ?>"
+					   class="btn btn-info btntrans pull-left display-block"><?php echo 'Translate'; ?></a>
+				</div>
+			</div>
+			<div class="d-inline-block float-right" style="margin-top: 10px">
+				<a href="<?php echo base_url('admin/mieter/mieter'); ?>"
+				   class="btn btn-success"><?php echo 'Erstellen'; ?></a>
+
+				<a href="<?php echo admin_url('mieter/import'); ?>"
+				   class="btn btn-info ">importieren</a>
+			</div>
+
+			<?php
+			$total = ''; ?>
+			<div class="col-md-4" style="padding-right: 0px;  padding-left: 0px;margin-top: 10px">
+				<div class="panel_s">
+					<div class="panel-body" style="padding: 15px  15px;">
+						<?= widget_status_stats('mieters', $title); ?>
+
+					</div>
+				</div>
+			</div>
 		</div>
-		  </div>
-        <div class="d-inline-block float-right" style="margin-top: 10px">
-			  <a href="<?php echo base_url('admin/mieter/mieter');?>" class="btn btn-success"><?php echo 'Erstellen'; ?></a>
-
-			<a href="<?php echo admin_url('mieter/import'); ?>"
-			   class="btn btn-info ">importieren</a>
-		  </div>
-
-		  <?php
-		  $total = ''; ?>
-		  <div class="col-md-4" style="padding-right: 0px;  padding-left: 0px;margin-top: 10px">
-			  <div class="panel_s">
-				  <div class="panel-body" style="padding: 15px  15px;">
-					  <?= widget_status_stats('mieters', $title); ?>
-
-				  </div>
-			  </div>
-		  </div>
-      </div>
-    </div>
-    <div class="card">
-		<div class="table-responsive">
+		<div class="card">
+			<!--	<div class="table-responsive">
 
 			<table id="na_datatable" class="table zero-configuration dataTable"  role="grid" >
 
@@ -59,21 +59,21 @@
             <tr>
 
               <th>ID</th>
-              <th><?php echo get_transl_field('tsl_mieter', 'fullname', 'Vollständiger Name')?></th>
-              <th><?php echo get_transl_field('tsl_mieter', 'projekt', 'Projekt:')?></th>
-              <th><?php echo get_transl_field('tsl_mieter', 'strabe_m', 'Straße')?></th>
-				<th><?php echo get_transl_field('tsl_mieter', 'nr', 'Nr.')?></th>
-				<th><?php echo get_transl_field('tsl_mieter', 'wohnungsnummer', 'wohnungsnummer')?></th>
-				<th><?php echo get_transl_field('tsl_mieter', 'etage', 'Etage')?></th>
-				<th><?php echo get_transl_field('tsl_mieter', 'flugel', 'Flügel')?></th>
-				<th><?php echo get_transl_field('tsl_mieter', 'plz', 'PLZ')?></th>
-				<th><?php echo get_transl_field('tsl_mieter', 'stadt', 'Stadt')?></th>
-				<th><?php echo get_transl_field('tsl_mieter', 'telefon_1', 'Telefon 1')?></th>
-				<th><?php echo get_transl_field('tsl_mieter', 'aktiv','Aktiveeee')?></th>
+              <th><?php /*echo get_transl_field('tsl_mieter', 'fullname', 'Vollständiger Name')*/ ?></th>
+              <th><?php /*echo get_transl_field('tsl_mieter', 'projekt', 'Projekt:')*/ ?></th>
+              <th><?php /*echo get_transl_field('tsl_mieter', 'strabe_m', 'Straße')*/ ?></th>
+				<th><?php /*echo get_transl_field('tsl_mieter', 'nr', 'Nr.')*/ ?></th>
+				<th><?php /*echo get_transl_field('tsl_mieter', 'wohnungsnummer', 'wohnungsnummer')*/ ?></th>
+				<th><?php /*echo get_transl_field('tsl_mieter', 'etage', 'Etage')*/ ?></th>
+				<th><?php /*echo get_transl_field('tsl_mieter', 'flugel', 'Flügel')*/ ?></th>
+				<th><?php /*echo get_transl_field('tsl_mieter', 'plz', 'PLZ')*/ ?></th>
+				<th><?php /*echo get_transl_field('tsl_mieter', 'stadt', 'Stadt')*/ ?></th>
+				<th><?php /*echo get_transl_field('tsl_mieter', 'telefon_1', 'Telefon 1')*/ ?></th>
+				<th><?php /*echo get_transl_field('tsl_mieter', 'aktiv','Aktiveeee')*/ ?></th>
 
             </tr>
           </thead>
-        </table>
+        </table>-->
 			<div class="row">
 				<div class="col-md-12">
 					<p class="bold"><?php echo _l('Filtere nach'); ?></p>
@@ -112,19 +112,19 @@
 			$table_data = array(
 					'<span class="hide"> - </span><div class="checkbox mass_select_all_wrap"><input type="checkbox" id="mass_select_all" data-to-table="mieter"><label></label></div>',
 					'ID',
-					get_transl_field('tsl_mieter', 'fullname','Vollständiger Name'),
-					get_transl_field('tsl_mieter', 'projekt','Projekt'),
-					get_transl_field('tsl_mieter', 'strabe_m','Straße'),
-					get_transl_field('tsl_mieter', 'nr','Nr.'),
-					get_transl_field('tsl_mieter', 'wohnungsnummer','Wohnungsnummer'),
-					get_transl_field('tsl_mieter', 'etage','Etage'),
-					get_transl_field('tsl_mieter', 'flugel','Flügel'),
-					get_transl_field('tsl_mieter', 'plz','PLZ'),
-					get_transl_field('tsl_mieter', 'stadt','Stadt'),
-					get_transl_field('tsl_mieter', 'telefon_1','Telefon'),
-					get_transl_field('tsl_mieter', 'kundenbetreuer','Kundenbetreuer'),
-					get_transl_field('tsl_mieter', 'belegt?','Belegt?'),
-					get_transl_field('tsl_mieter', 'aktiviert','Aktiviert')
+					get_transl_field('tsl_mieter', 'fullname', 'Vollständiger Name'),
+					get_transl_field('tsl_mieter', 'projekt', 'Projekt'),
+					get_transl_field('tsl_mieter', 'strabe_m', 'Straße'),
+					get_transl_field('tsl_mieter', 'nr', 'Nr.'),
+					get_transl_field('tsl_mieter', 'wohnungsnummer', 'Wohnungsnummer'),
+					get_transl_field('tsl_mieter', 'etage', 'Etage'),
+					get_transl_field('tsl_mieter', 'flugel', 'Flügel'),
+					get_transl_field('tsl_mieter', 'plz', 'PLZ'),
+					get_transl_field('tsl_mieter', 'stadt', 'Stadt'),
+					get_transl_field('tsl_mieter', 'telefon_1', 'Telefon'),
+					get_transl_field('tsl_mieter', 'kundenbetreuer', 'Kundenbetreuer'),
+					get_transl_field('tsl_mieter', 'belegt?', 'Belegt?'),
+					get_transl_field('tsl_mieter', 'aktiviert', 'Aktiviert')
 
 			);
 
@@ -135,14 +135,10 @@
 			]);
 
 			?>
-      </div>
-    </div>
+		</div>
 	</div>
 </div>
-</div>
 <?php init_tail(); ?>
-
-
 
 
 <script>
@@ -184,29 +180,28 @@
 
 
 	//---------------------------------------------------
-  var table = $('#na_datatable').DataTable( { "language": {
-		  "info": "Zeige _START_ bis _END_ von _TOTAL_ Einträge",
-		  "searchPlaceholder": "Suchen",
-  	       "search": "",
-		  "sLengthMenu": "_MENU_",
-		  "paginate": {
-			  "previous": "zurück",
-			  "next": "vor",
+	var table = $('#na_datatable').DataTable({
+		"language": {
+			"info": "Zeige _START_ bis _END_ von _TOTAL_ Einträge",
+			"searchPlaceholder": "Suchen",
+			"search": "",
+			"sLengthMenu": "_MENU_",
+			"paginate": {
+				"previous": "zurück",
+				"next": "vor",
 
-		  }
-	  },
-	  'responsive': true,
-    "ajax": "<?=base_url('admin/mieter/datatable_json')?>",
-    "order": [[0,'asc']],
-    "columnDefs": [
-    { "targets": 0, "name": "id", 'searchable':true, 'orderable':true},
-    { "targets": 1, "name": "username", 'searchable':true, 'orderable':true},
-    { "targets": 2, "name": "description", 'searchable':true, 'orderable':true},
-    { "targets": 3, "name": "created_at", 'searchable':true, 'orderable':true},
-    ]
-  });
-
-
+			}
+		},
+		'responsive': true,
+		"ajax": "<?=base_url('admin/mieter/datatable_json')?>",
+		"order": [[0, 'asc']],
+		"columnDefs": [
+			{"targets": 0, "name": "id", 'searchable': true, 'orderable': true},
+			{"targets": 1, "name": "username", 'searchable': true, 'orderable': true},
+			{"targets": 2, "name": "description", 'searchable': true, 'orderable': true},
+			{"targets": 3, "name": "created_at", 'searchable': true, 'orderable': true},
+		]
+	});
 
 
 </script>

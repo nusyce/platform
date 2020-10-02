@@ -12,7 +12,6 @@
 	<title>Plateform</title>
 	<link rel="apple-touch-icon" href="<?= base_url($this->general_settings['favicon']); ?>">
 	<link rel="shortcut icon" type="image/x-icon" href="<?= base_url($this->general_settings['favicon']); ?>">
-	<link href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,600%7CIBM+Plex+Sans:300,400,500,600,700" rel="stylesheet">
 
 	<!-- BEGIN: Vendor CSS-->
 	<link rel="stylesheet" type="text/css" href="<?= base_url()?>/assets/app/vendors/css/vendors.min.css">
@@ -24,6 +23,7 @@
 	<link rel="stylesheet" type="text/css" href="<?= base_url()?>/assets/app/css/bootstrap.css">
 	<link rel="stylesheet" type="text/css" href="<?= base_url()?>/assets/app/css/bootstrap-extended.css">
 	<link rel="stylesheet" type="text/css" href="<?= base_url()?>/assets/app/css/colors.css">
+	<link rel="stylesheet" type="text/css" href="<?= base_url()?>/assets/plugins/bootstrap-select/css/bootstrap-select.css">
 	<link rel="stylesheet" type="text/css" href="<?= base_url()?>/assets/app/css/components.css">
 	<link rel="stylesheet" type="text/css" href="<?= base_url()?>/assets/app/css/themes/dark-layout.css">
 	<link rel="stylesheet" type="text/css" href="<?= base_url()?>/assets/app/css/themes/semi-dark-layout.css">

@@ -257,30 +257,28 @@ pre code {
 }
 
 .table thead th {
-	color: #475F7B;
-	border-top: none;
-	vertical-align: middle;
-	font-size: .8rem;
-	letter-spacing: 1px;
-	white-space: nowrap;
+	/* color: #475F7B; */
+	/* border-top: none; */
+	/* vertical-align: middle; */
+	/* white-space: nowrap; */
 	/* padding: 10px !important; */
-	vertical-align: middle;
-	color: #2d2d2d;
-	font-weight: 400;
-	border-top: 1px solid #f0f0f0 !important;
-	border-left: 0;
-	border-right: 1px solid #f0f0f0;
-	border-bottom: 0;
-	background-color: #f0f0f0;
+	/* vertical-align: middle; */
+	/* color: #2d2d2d; */
+	/* font-weight: 400; */
+	/* border-top: 1px solid #f0f0f0 !important; */
+	/* border-left: 0; */
+	/* border-right: 1px solid #f0f0f0; */
+	/* border-bottom: 0; */
+	/* background-color: #f0f0f0; */
 	/* padding: 10px; */
-	padding-left: 0px !important;
-	padding-right: 30px !important;
+	/* padding-left: 0px !important; */
+	/* padding-right: 30px !important; */
 }
 
 .table td {
-	vertical-align: middle;
-	border-bottom: 1px solid #DFE3E7;
-	border-top: none;
+	/* vertical-align: middle; */
+	/* border-bottom: 1px solid #DFE3E7; */
+	/* border-top: none; */
 }
 
 .table td a {
@@ -356,10 +354,10 @@ pre code {
 /*  label css  */
 /*------------*/
 label {
-	color: #475F7B;
-	font-size: 0.8rem;
-	text-transform: uppercase;
-	font-weight: 500;
+	/* color: #475F7B; */
+	/* font-size: 0.8rem; */
+	/* text-transform: uppercase; */
+	/* font-weight: 500; */
 }
 
 /*   Floating label Group css  */

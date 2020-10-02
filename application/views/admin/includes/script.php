@@ -32,9 +32,11 @@ app_js_alerts();
 <!-- BEGIN: Page Vendor JS-->
 <script src="<?= base_url()?>/assets/plugin/datatables/datatables.js"></script>
 <script src="<?= base_url()?>/assets/app/vendors/js/tables/datatable/dataTables.bootstrap4.min.js"></script>
-<script src="<?= base_url()?>/assets/app//vendors/js/tables/datatable/dataTables.buttons.min.js"></script>
+<!--<script src="<?/*= base_url()*/?>/assets/app//vendors/js/tables/datatable/dataTables.buttons.min.js"></script>-->
 <script src="<?= base_url()?>/assets/app/vendors/js/tables/datatable/buttons.html5.min.js"></script>
 <script src="<?= base_url()?>/assets/app/vendors/js/tables/datatable/buttons.print.min.js"></script>
+<script src="<?= base_url()?>/assets/plugins/bootstrap-select/js/bootstrap-select.js"></script>
+<script src="<?= base_url()?>/assets/plugins/jQueryUI/jquery-ui.js"></script>
 <!--<script src="<?/*= base_url()*/?>/assets/app/app-assets/vendors/js/tables/datatable/buttons.bootstrap.min.js"></script>
 --><script src="<?= base_url()?>/assets/app/vendors/js/tables/datatable/pdfmake.min.js"></script>
 <script src="<?= base_url()?>/assets/app/vendors/js/tables/datatable/vfs_fonts.js"></script>

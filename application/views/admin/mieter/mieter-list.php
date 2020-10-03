@@ -21,7 +21,7 @@
 			</div>-->
 		</div>
 		<!-- For Messages -->
-		<?php //$this->load->view('admin/includes/_messages.php') ?>
+		<?php  set_alert('success','le test dsds'); ?>
 		<div class="card">
 			<div id="page-header">
 				<div class="d-inline-block" style="display: flex !important;">

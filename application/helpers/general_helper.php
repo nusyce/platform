@@ -347,7 +347,7 @@ function is_mobile()
  */
 function set_alert($type, $message)
 {
-	get_instance()->session->set_flashdata('message-' . $type, $message);
+	get_instance()->session->set_flashdata( $type, $message);
 }
 
 /**

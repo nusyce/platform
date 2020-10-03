@@ -190,13 +190,13 @@ function get_alert_class()
 {
     $CI          = &get_instance();
     $alert_class = '';
-    if ($CI->session->flashdata('message-success')) {
+    if ($CI->session->flashdata('success')) {
         $alert_class = 'success';
-    } elseif ($CI->session->flashdata('message-warning')) {
+    } elseif ($CI->session->flashdata('warning')) {
         $alert_class = 'warning';
-    } elseif ($CI->session->flashdata('message-info')) {
+    } elseif ($CI->session->flashdata('info')) {
         $alert_class = 'info';
-    } elseif ($CI->session->flashdata('message-danger')) {
+    } elseif ($CI->session->flashdata('error')) {
         $alert_class = 'danger';
     }
 

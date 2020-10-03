@@ -1559,3 +1559,307 @@ table .row-options {
 	border-right: 1px solid #f0f0f0;
 	border-bottom: 0;
 }
+
+
+.animated {
+	-webkit-animation-duration: 1s;
+	animation-duration: 1s;
+	-webkit-animation-fill-mode: both;
+	animation-fill-mode: both
+}
+
+@-webkit-keyframes fadeIn {
+	from {
+		opacity: 0
+	}
+	to {
+		opacity: 1
+	}
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0
+	}
+	to {
+		opacity: 1
+	}
+}
+
+.fadeIn {
+	-webkit-animation-name: fadeIn;
+	animation-name: fadeIn
+}
+
+@-webkit-keyframes fadeOut {
+	from {
+		opacity: 1
+	}
+	to {
+		opacity: 0
+	}
+}
+
+@keyframes fadeOut {
+	from {
+		opacity: 1
+	}
+	to {
+		opacity: 0
+	}
+}
+
+.fadeOut {
+	-webkit-animation-name: fadeOut;
+	animation-name: fadeOut
+}
+
+@-webkit-keyframes fadeInRight {
+	from {
+		opacity: 0;
+		-webkit-transform: translate3d(100%, 0, 0);
+		transform: translate3d(100%, 0, 0)
+	}
+	to {
+		opacity: 1;
+		-webkit-transform: none;
+		transform: none
+	}
+}
+
+@keyframes fadeInRight {
+	from {
+		opacity: 0;
+		-webkit-transform: translate3d(100%, 0, 0);
+		transform: translate3d(100%, 0, 0)
+	}
+	to {
+		opacity: 1;
+		-webkit-transform: none;
+		transform: none
+	}
+}
+
+.fadeInRight {
+	-webkit-animation-name: fadeInRight;
+	animation-name: fadeInRight
+}
+
+@-webkit-keyframes fadeInLeft {
+	from {
+		opacity: 0;
+		-webkit-transform: translate3d(-100%, 0, 0);
+		transform: translate3d(-100%, 0, 0)
+	}
+	to {
+		opacity: 1;
+		-webkit-transform: none;
+		transform: none
+	}
+}
+
+@keyframes fadeInLeft {
+	from {
+		opacity: 0;
+		-webkit-transform: translate3d(-100%, 0, 0);
+		transform: translate3d(-100%, 0, 0)
+	}
+	to {
+		opacity: 1;
+		-webkit-transform: none;
+		transform: none
+	}
+}
+
+.fadeInLeft {
+	-webkit-animation-name: fadeInLeft;
+	animation-name: fadeInLeft
+}
+
+@-webkit-keyframes fadeOutLeft {
+	from {
+		opacity: 1
+	}
+	to {
+		opacity: 0;
+		-webkit-transform: translate3d(-100%, 0, 0);
+		transform: translate3d(-100%, 0, 0)
+	}
+}
+
+@keyframes fadeOutLeft {
+	from {
+		opacity: 1
+	}
+	to {
+		opacity: 0;
+		-webkit-transform: translate3d(-100%, 0, 0);
+		transform: translate3d(-100%, 0, 0)
+	}
+}
+
+.fadeOutLeft {
+	-webkit-animation-name: fadeOutLeft;
+	animation-name: fadeOutLeft
+}
+
+@-webkit-keyframes fadeOutRight {
+	from {
+		opacity: 1
+	}
+	to {
+		opacity: 0;
+		-webkit-transform: translate3d(100%, 0, 0);
+		transform: translate3d(100%, 0, 0)
+	}
+}
+
+@keyframes fadeOutRight {
+	from {
+		opacity: 1
+	}
+	to {
+		opacity: 0;
+		-webkit-transform: translate3d(100%, 0, 0);
+		transform: translate3d(100%, 0, 0)
+	}
+}
+
+.fadeOutRight {
+	-webkit-animation-name: fadeOutRight;
+	animation-name: fadeOutRight
+}
+
+.table .alert-danger {
+	color: #a94442 !important;
+	background-color: #f2dede !important;
+	border-color: #ebccd1 !important
+}
+
+.alert {
+	padding: 10px 15px;
+	font-size: 14px
+}
+
+.alert:not(.float-alert) span[data-notify=icon] {
+	float: left;
+	font-size: 18px;
+	margin-top: 0
+}
+
+.float-alert.alert span[data-notify=icon] {
+	font-size: 20px;
+	display: block;
+	left: 13px;
+	position: absolute;
+	top: 50%;
+	margin-top: -11px
+}
+
+.alert.float-alert .alert-title {
+	margin-left: 30px;
+	font-weight: 500
+}
+
+body.rtl .alert.float-alert .alert-title {
+	float: left
+}
+
+.alert:not(.float-alert) .alert-title {
+	margin-left: 10px
+}
+
+.alert.float-alert button.close {
+	position: absolute;
+	right: 10px;
+	top: 50%;
+	margin-top: -13px;
+	z-index: 1033;
+	background-color: #fff;
+	display: block;
+	border-radius: 50%;
+	opacity: .4;
+	line-height: 11px;
+	width: 25px;
+	height: 25px;
+	outline: 0 !important;
+	text-align: center;
+	padding: 3px;
+	font-weight: 400
+}
+
+.alert.float-alert button.close:hover {
+	opacity: .55
+}
+
+.alert.float-alert .close ~ span {
+	display: block;
+	max-width: 89%
+}
+
+.alert.alert-dismissible button.close {
+	right: -2px
+}
+
+.announcement .alert-dismissible .close {
+	top: -4px
+}
+
+body.rtl .announcement .alert-dismissible .close {
+	right: 13px
+}
+
+.small, small {
+	font-size: 70%
+}
+
+@-webkit-keyframes loader {
+	0% {
+		background: #f0f0f0
+	}
+	10% {
+		background: #c5c5c5
+	}
+	40% {
+		background: #f0f0f0
+	}
+}
+
+@keyframes loader {
+	0% {
+		background: #f0f0f0
+	}
+	10% {
+		background: #c5c5c5
+	}
+	40% {
+		background: #f0f0f0
+	}
+}
+@media (min-width: 768px) {
+	.form-inline textarea.form-control {
+		display: block !important;
+		width: 100%
+	}
+
+	.page-leads-admin .float-alert {
+		width: 18%
+	}
+
+	.form-inline .popover-content .form-group {
+		margin-bottom: 15px
+	}
+}
+
+
+.float-alert {
+	display: inline-block;
+	margin: 0 auto;
+	position: fixed;
+	-webkit-transition: all .5s ease-in-out;
+	transition: all .5s ease-in-out;
+	z-index: 1031;
+	top: 20px;
+	right: 20px
+}
+

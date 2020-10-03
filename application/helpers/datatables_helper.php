@@ -346,20 +346,20 @@ function get_datatables_language_array()
 		'infoEmpty' => preg_replace("/{(\d+)}/", _l('dt_entries'), _l('dt_info_empty')),
 		'infoFiltered' => preg_replace("/{(\d+)}/", _l('dt_entries'), _l('dt_info_filtered')),
 		'lengthMenu' => '_MENU_',
-		'loadingRecords' => _l('dt_loading_records'),
+		'loadingRecords' => _l('Lade...'),
 		'processing' => '<div class="dt-loader"></div>',
 		'search' => '<div class="input-group"><span class="input-group-addon"><span class="fa fa-search"></span></span>',
 		'searchPlaceholder' => _l('Suchen'),
-		'zeroRecords' => _l('dt_zero_records'),
+		'zeroRecords' => _l('Keine passenden Einträge gefunden'),
 		'paginate' => [
-			'first' => _l('dt_paginate_first'),
-			'last' => _l('dt_paginate_last'),
+			'first' => _l('Erste'),
+			'last' => _l('Letzte'),
 			'next' => _l('vor'),
 			'previous' => _l('zurück'),
 		],
 		'aria' => [
-			'sortAscending' => _l('dt_sort_ascending'),
-			'sortDescending' => _l('dt_sort_descending'),
+			'sortAscending' => _l('Aktivieren, um Spalte aufsteigend zu sortieren'),
+			'sortDescending' => _l('Aktivieren, um Spalte absteigend zu sortieren'),
 		],
 	];
 

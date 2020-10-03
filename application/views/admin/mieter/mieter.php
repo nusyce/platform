@@ -16,10 +16,10 @@
 				</div>
 			</div>
 
-		<?php $this->load->view('admin/includes/_messages.php') ?>
+		<?php set_alert('error','dfsklkflsdf'); ?>
 			<div class="panel-body">
 		<form action="<?php echo base_url('admin/mieter/save')?>" class="client-form" autocomplete="off" method="post" accept-charset="utf-8">
-						<div class="row">
+						s<div class="row">
 						<input type="hidden" name="<?php echo $this->security->get_csrf_token_name();?>" value="<?php echo $this->security->get_csrf_hash();?>">
 							<div class="col-md-6">
 							<h3>Private Informationen</h3>

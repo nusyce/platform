@@ -88,7 +88,7 @@ function app_js_alerts()
 {
     $CI         = &get_instance();
     $alertclass = get_alert_class();
-
+/*
     // Available only for admin area
     if ($CI->session->has_userdata('system-popup')) {
         echo '<script>';
@@ -104,10 +104,10 @@ function app_js_alerts()
 
     if ($alertclass == '') {
         return;
-    }
+    }*/
 
     $alert_message = '';
-    $alert         = $CI->session->flashdata('message-' . $alertclass);
+    $alert         = $CI->session->flashdata($alertclass);
     if (is_array($alert)) {
         foreach ($alert as $alert_data) {
             $alert_message .= '<span>' . $alert_data . '</span><br />';
@@ -115,11 +115,14 @@ function app_js_alerts()
     } else {
         $alert_message .= $alert;
     }
-    echo '<script>';
-    echo '$(function(){
+    if ($alertclass){
+
+		echo '<script>';
+		echo '$(function(){
             alert_float("' . $alertclass . '","' . $alert_message . '");
         });';
-    echo '</script>';
+		echo '</script>';
+	}
 }
 
 /**

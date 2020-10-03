@@ -104,7 +104,8 @@ function renderDataTable(selector, url, notsearchable, notsortable, fnserverpara
 			bootstrap: true
 		},
 		dom: "<'row'><'row'<'col-md-7'lB><'col-md-5'f>>rt<'row'<'col-md-4'i>><'row'<'#colvis'><'.dt-page-jump'>p>",
-		"pageLength": app.options.tables_pagination_limit,
+		//"pageLength": app.options.tables_pagination_limit,
+		"pageLength": 200,
 		"lengthMenu": [length_options, length_options_names],
 		"columnDefs": [{
 			"searchable": false,
@@ -168,7 +169,7 @@ function renderDataTable(selector, url, notsearchable, notsortable, fnserverpara
 			"url": url,
 			"type": "POST",
 			"data": function (d) {
-				if (typeof (csrfTokenHash) !== 'undefined') { 
+				if (typeof (csrfTokenHash) !== 'undefined') {
 					d[csrfTokenName] = csrfTokenHash;
 				}
 				for (var key in fnserverparams) {
@@ -181,6 +182,7 @@ function renderDataTable(selector, url, notsearchable, notsortable, fnserverpara
 		},
 		buttons: get_datatable_buttons(table),
 	};
+
 	/*	if (table.hasClass('scroll-responsive') || app.options.scroll_responsive_tables == 1) {
 			dtSettings.responsive = false;
 		}*/
@@ -757,7 +759,7 @@ function alert_float(type, message, timeout) {
 	});
 
 	el.append('<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>');
-	el.append('<span class="fa fa-bell-o" data-notify="icon"></span>');
+	el.append('<span class="fa fa-bell" data-notify="icon"></span>');
 	el.append("<span class=\"alert-title\">" + message + "</span>");
 
 	$("body").append(el);

@@ -50,6 +50,14 @@ class Users extends MY_Controller {
 		echo json_encode($records);						   
 	}
 
+
+	public function render($users = '')
+	{
+		$this->app->get_renderable_data('users/table', ['users' => $users]);
+	}
+
+
+
 	//-----------------------------------------------------------
 	function change_status()
 	{   

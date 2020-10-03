@@ -16,6 +16,7 @@ class App
 	 */
 	private $quick_actions = [];
 
+
 	/**
 	 * CI Instance
 	 * @deprecated 1.9.8 Use $this->ci instead
@@ -396,7 +397,6 @@ class App
 				array_push($this->available_languages, $language);
 			}
 		}
-
 		/**
 		 * Media folder
 		 * @var string

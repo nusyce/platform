@@ -67,11 +67,10 @@
 
 	</style>
 
-
 	<script>
 		var admin_url = "<?php echo base_url('admin/') ?>";
-		var csrfTokenName = "<?php $this->security->get_csrf_token_name(); ?>";
-		var csrfTokenHash = "<?php echo $this->security->get_csrf_hash(); ?>";
+		var csrfTokenName = "<?= $this->security->get_csrf_token_name(); ?>";
+		var csrfTokenHash = "<?= $this->security->get_csrf_hash(); ?>";
 	</script>
 
 

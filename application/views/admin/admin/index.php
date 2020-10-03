@@ -1,101 +1,157 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed'); ?>
 <?php init_head(); ?>
 
-<!-- For Messages --><div class="app-content content">
+<!-- For Messages -->
+<div class="app-content content">
 	<div class="content-overlay"></div>
 	<div class="content-wrapper">
 		<div class="content-header row">
 		</div>
 		<div class="content-body">
-         <!-- For Messages -->
-        <?php $this->load->view('admin/includes/_messages.php') ?>
-        <div class="card">
-            <div class="card-body" style="margin-left: 15px;">
-                <div class="d-inline-block">
-                  <h3 class="card-title">
+			<!-- For Messages -->
+			<?php $this->load->view('admin/includes/_messages.php') ?>
+			<div class="card">
+				<div id="page-header">
+					<div class="d-inline-block" style="display: flex !important;">
 
-                    <?= trans('admin_list') ?>
-                  </h3>
-              </div>
-				<div class="d-inline-block float-right">
-					<a href="<?php echo base_url('admin/admin/add');?>" class="btn btn-success"> Add New User</a>
+						<h3 class="card-title nomb"><span>Mitarbeiter</span>
+							<a id="edit-menu" href="#"><i class="fa fa-pencil"></i></a></h3>
+						</h3>
+						<a style="margin-left: 10px" href="#"
+						   class="btn btn-info btntrans pull-left display-block"><?php echo 'Translate'; ?></a>
+					</div>
 				</div>
-            </div>
+				<div class="d-inline-block float-right" style="margin-top: 10px">
+					<a href="<?php echo base_url('admin/admin/add'); ?>"
+					   class="btn btn-success"><?php echo 'Erstellen'; ?></a>
+				</div>
 
-                <?php echo form_open("/",'class="filterdata"') ?>    
-                <div class="row row-search" style="margin-left: 25px;">
-                    <div class="col-md-3" >
-                        <div class="form-group">
-                            <select name="type" class="form-control" onchange="filter_data()" >
-                                <option value=""><?= trans('all_admin_types') ?></option>
-                                <?php foreach($admin_roles as $admin_role):?>
-                                    <option value="<?=$admin_role['admin_role_id']?>"><?=$admin_role['admin_role_title']?></option>
-                                <?php endforeach;?>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <select name="status" class="form-control" onchange="filter_data()" >
-                                <option value=""><?= trans('all_status') ?></option>
-                                <option value="1"><?= trans('active') ?></option>
-                                <option value="0"><?= trans('inactive') ?></option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <input type="text" name="keyword" class="form-control"  placeholder="<?= trans('search_from_here') ?>..." onkeyup="filter_data()" />
-                        </div>
-                    </div>
-                </div>
-                <?php echo form_close(); ?> 
+				<?php
+				$total = ''; ?>
+				<div class="col-md-4" style="padding-right: 0px;  padding-left: 0px;margin-top: 10px">
+					<div class="panel_s">
+						<div class="panel-body" style="padding: 15px  15px;">
+							<?= widget_status_stats('mieters', $title); ?>
 
-        </div>
-    </section>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="card">
+
+				<!--			<?php /*echo form_open("/", 'class="filterdata"') */ ?>
+				<div class="row row-search" style="margin-left: 25px;">
+					<div class="col-md-3">
+						<div class="form-group">
+							<select name="type" class="form-control" onchange="filter_data()">
+								<option value=""><? /*= trans('all_admin_types') */ ?></option>
+								<?php /*foreach ($admin_roles as $admin_role): */ ?>
+									<option value="<? /*= $admin_role['admin_role_id'] */ ?>"><? /*= $admin_role['admin_role_title'] */ ?></option>
+								<?php /*endforeach; */ ?>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-2">
+						<div class="form-group">
+							<select name="status" class="form-control" onchange="filter_data()">
+								<option value=""><? /*= trans('all_status') */ ?></option>
+								<option value="1"><? /*= trans('active') */ ?></option>
+								<option value="0"><? /*= trans('inactive') */ ?></option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<input type="text" name="keyword" class="form-control"
+								   placeholder="<? /*= trans('search_from_here') */ ?>..." onkeyup="filter_data()"/>
+						</div>
+					</div>
+				</div>
+				--><?php /*echo form_close(); */ ?>
+
+				<?php
+				$table_data = array(
+						'<span class="hide"> - </span><div class="checkbox mass_select_all_wrap"><input type="checkbox" id="mass_select_all" data-to-table="staff"><label></label></div>',
+						get_transl_field('tsl_staff', 'vorname', 'Vorname'),
+						get_transl_field('tsl_staff', 'nachname', 'Nachname'),
+						get_transl_field('tsl_staff', 'rolle', 'Rolle'),
+						get_transl_field('tsl_staff', 'email', 'Email'),
+						get_transl_field('tsl_staff', 'telefonnummer', 'Telefonnummer'),
+						get_transl_field('tsl_staff', 'letztes_login', 'Letztes Login'),
+						get_transl_field('tsl_staff', 'aktiv', 'Aktiv'),
+				);
+				render_datatable($table_data, (isset($class) ? $class : 'user'), [], [
+						'data-last-order-identifier' => 'user',
+						'data-default-order' => '',
+				]);
+				?>
+
+			</div>
+			</section>
 
 
-    <!-- Main content -->
-
-    	<div class="card">
-
-               <!-- Load Admin list (json request)-->
-               <div class="data_container"></div>
-
-       </div>
-
+		</div>
 	</div>
-</div>
-<?php init_tail(); ?>
+	<?php init_tail(); ?>
 
 
-<!-- DataTables -->
-<script src="<?= base_url() ?>assets/plugins/datatables/jquery.dataTables.js"></script>
-<script src="<?= base_url() ?>assets/plugins/datatables/dataTables.bootstrap4.js"></script>
-<script>
-  $(function () {
-    $("#example1").DataTable();
-  });
+	<script>
 
-</script> 
+		// Init the table
+		var table_user = $('.table-user');
+		if (table_user.length) {
+			// Add additional server params $_POST
+			var LeadsServerParams = {};
 
-<script>
-//------------------------------------------------------------------
-function filter_data()
-{
-$('.data_container').html('<div class="text-center"><img src="<?=base_url('assets/dist/img')?>/loading.png"/></div>');
-$.post('<?=base_url('admin/admin/filterdata')?>',$('.filterdata').serialize(),function(){
-	$('.data_container').load('<?=base_url('admin/admin/list_data')?>');
-});
-}
-//------------------------------------------------------------------
-function load_records()
-{
-$('.data_container').html('<div class="text-center"><img src="<?=base_url('assets/dist/img')?>/loading.png"/></div>');
-$('.data_container').load('<?=base_url('admin/admin/list_data')?>');
-}
-load_records();
 
-//---------------------------------------------------------------------
+			belegunTableServer = leadsTableNotSortable = [];
+			var filterArray = [];
+			var ContractsServerParams = {};
+			$.each($('._hidden_inputs._filters input'), function () {
+				ContractsServerParams[$(this).attr('name')] = '[name="' + $(this).attr('name') + '"]';
+			});
 
-</script>
+			var _table_api = renderDataTable(table_user, admin_url + 'users/render', [0], [0], LeadsServerParams, [1, 'desc'], filterArray);
+
+			$.each(LeadsServerParams, function (i, obj) {
+				$('#' + i).on('change', function () {
+					table_mieter.DataTable().ajax.reload()
+							.columns.adjust()
+							.responsive.recalc();
+				});
+			});
+		}
+		$("body").on("change", ".tgl_checkbox", function () {
+			console.log('checked');
+			$.post('<?=base_url("admin/users/change_status")?>',
+					{
+						'<?php echo $this->security->get_csrf_token_name(); ?>': '<?php echo $this->security->get_csrf_hash(); ?>',
+						id: $(this).data('id'),
+						status: $(this).is(':checked') == true ? 1 : 0
+					},
+					function (data) {
+						$.notify("Status Changed Successfully", "success");
+					});
+		});
+	</script>
+	<script>
+		//------------------------------------------------------------------
+		function filter_data() {
+			$('.data_container').html('<div class="text-center"><img src="<?=base_url('assets/dist/img')?>/loading.png"/></div>');
+			$.post('<?=base_url('admin/admin/filterdata')?>', $('.filterdata').serialize(), function () {
+				$('.data_container').load('<?=base_url('admin/admin/list_data')?>');
+			});
+		}
+
+		//------------------------------------------------------------------
+		function load_records() {
+			$('.data_container').html('<div class="text-center"><img src="<?=base_url('assets/dist/img')?>/loading.png"/></div>');
+			$('.data_container').load('<?=base_url('admin/admin/list_data')?>');
+		}
+
+		load_records();
+
+		//---------------------------------------------------------------------
+
+	</script>

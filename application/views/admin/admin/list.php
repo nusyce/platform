@@ -52,9 +52,70 @@
 		<?php endforeach; ?>
 		</tbody>
 	</table>
+	<a href="#" class="bulk-actions-btn table-btn delete-all hide" id="sqdsqd"
+	   data-table=".table-user"><?php echo _l('Alle löschen'); ?></a>
+	<?php
+	$table_data = array(
+			'<span class="hide"> - </span><div class="checkbox mass_select_all_wrap"><input type="checkbox" id="mass_select_all" data-to-table="staff"><label></label></div>',
+			get_transl_field('tsl_staff', 'vorname','Vorname'),
+			get_transl_field('tsl_staff', 'nachname','Nachname'),
+			get_transl_field('tsl_staff', 'rolle','Rolle'),
+			get_transl_field('tsl_staff', 'email','Email'),
+			get_transl_field('tsl_staff', 'telefonnummer','Telefonnummer'),
+			get_transl_field('tsl_staff', 'letztes_login','Letztes Login'),
+			get_transl_field('tsl_staff', 'aktiv','Aktiv'),
+	);
+	render_datatable($table_data, 'user');
+	?>
 </div>
 
+
 <script>
+
+	// Init the table
+	var table_user = $('.table-user');
+	if (table_user.length) {
+		// Add additional server params $_POST
+		var LeadsServerParams = {};
+
+
+		belegunTableServer = leadsTableNotSortable = [];
+		var filterArray = [];
+		var ContractsServerParams = {};
+		$.each($('._hidden_inputs._filters input'), function () {
+			ContractsServerParams[$(this).attr('name')] = '[name="' + $(this).attr('name') + '"]';
+		});
+
+		var _table_api = renderDataTable(table_user, admin_url + 'users/render', [0], [0], LeadsServerParams, [1, 'desc'], filterArray);
+
+		$.each(LeadsServerParams, function (i, obj) {
+			$('#' + i).on('change', function () {
+				table_mieter.DataTable().ajax.reload()
+						.columns.adjust()
+						.responsive.recalc();
+			});
+		});
+	}
+
+
+	<script type="text/javascript">
+			$("body").on("change", ".tgl_checkbox", function () {
+				console.log('checked');
+				$.post('<?=base_url("admin/users/change_status")?>',
+						{
+							'<?php echo $this->security->get_csrf_token_name(); ?>': '<?php echo $this->security->get_csrf_hash(); ?>',
+							id: $(this).data('id'),
+							status: $(this).is(':checked') == true ? 1 : 0
+						},
+						function (data) {
+							$.notify("Status Changed Successfully", "success");
+						});
+			});
+</script>
+
+
+<script>
+
 	//---------------------------------------------------
 	var table = $('#na_datatable').DataTable({
 		"language": {

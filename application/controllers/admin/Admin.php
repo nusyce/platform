@@ -5,8 +5,8 @@ class Admin extends MY_Controller
     function __construct(){
 
         parent::__construct();
-        auth_check(); // check login auth
-        $this->rbac->check_module_access();
+    //    auth_check(); // check login auth
+       // $this->rbac->check_module_access();
 		$this->load->model('admin/admin_roles_model', 'admin_roles');
 		$this->load->model('admin/admin_model', 'admin');
 		$this->load->model('admin/Activity_model', 'activity_model');
@@ -35,6 +35,14 @@ class Admin extends MY_Controller
 		$this->load->view('admin/admin/index', $data);
 
 	}
+
+
+
+	public function render($users = '')
+	{
+		$this->app->get_renderable_data('admin/table', ['users' => $users]);
+	}
+
 
 	//---------------------------------------------------------
 	function filterdata(){

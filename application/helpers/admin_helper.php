@@ -551,7 +551,6 @@ function render_admin_js_variables()
         'google_client_id' => get_option('google_client_id'),
         'google_api' => get_option('google_api_key'),
     ];*/
-
     // by remove it means do not prefix it
 
     $lang = [

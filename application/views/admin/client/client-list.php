@@ -26,7 +26,9 @@
 			<div id="page-header">
 				<div class="d-inline-block" style="display: flex !important;">
 
-					<h3 class="card-title nomb" ><span>KUNDEN</span></h3>
+					<h3 class="card-title nomb" ><span>KUNDEN</span>
+						<a id="edit-menu" href="#"><i class="fa fa-pencil"></i></a></h3>
+					</h3>
 					<a style="margin-left: 10px" href="<?php echo base_url('admin/client/translation'); ?>"
 					   class="btn btn-info btntrans pull-left display-block"><?php echo 'Translate'; ?></a>
 				</div>

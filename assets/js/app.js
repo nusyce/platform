@@ -161,15 +161,15 @@ function renderDataTable(selector, url, notsearchable, notsortable, fnserverpara
 			if (th_first_child.find('input[type="checkbox"]').length > 0) {
 				th_first_child.addClass('not-export');
 			}
-		/*	mainWrapperHeightFix();*/
+			/*	mainWrapperHeightFix();*/
 		},
 		"order": defaultorder,
 		"ajax": {
 			"url": url,
 			"type": "POST",
 			"data": function (d) {
-				if (typeof (csrfData) !== 'undefined') {
-					d[csrfData['token_name']] = csrfData['hash'];
+				if (typeof (csrfTokenHash) !== 'undefined') { 
+					d[csrfTokenName] = csrfTokenHash;
 				}
 				for (var key in fnserverparams) {
 					d[key] = $(fnserverparams[key]).val();
@@ -181,10 +181,9 @@ function renderDataTable(selector, url, notsearchable, notsortable, fnserverpara
 		},
 		buttons: get_datatable_buttons(table),
 	};
-
-	if (table.hasClass('scroll-responsive') || app.options.scroll_responsive_tables == 1) {
-		dtSettings.responsive = false;
-	}
+	/*	if (table.hasClass('scroll-responsive') || app.options.scroll_responsive_tables == 1) {
+			dtSettings.responsive = false;
+		}*/
 
 	table = table.dataTable(dtSettings);
 	var tableApi = table.DataTable();
@@ -219,37 +218,6 @@ function renderDataTable(selector, url, notsearchable, notsortable, fnserverpara
 			}
 		});
 
-		// For for not blurring out when clicked on the link
-		// Causing issues hidden column still to be shown as not hidden because the link is focused
-		/* $('body').on('click', '.buttons-columnVisibility a', function() {
-			 $(this).blur();
-		 });*/
-		/*
-				table.on('column-visibility.dt', function(e, settings, column, state) {
-					var hidden = [];
-					$.each(tableApi.columns()[0], function() {
-						var visible = tableApi.column($(this)).visible();
-						var columnHeader = $(tableApi.column($(this)).header());
-						if (columnHeader.hasClass('toggleable')) {
-							if (!visible) {
-								hidden.push(columnHeader.attr('id'))
-							}
-						}
-					});
-					var data = {};
-					data.id = table.attr('id');
-					data.hidden = hidden;
-					if (data.id) {
-						$.post(admin_url + 'staff/save_hidden_table_columns', data).fail(function(data) {
-							// Demo usage, prevent multiple alerts
-							if ($('body').find('.float-alert').length === 0) {
-								alert_float('danger', data.responseText);
-							}
-						});
-					} else {
-						console.error('Table that have ability to show/hide columns must have an ID');
-					}
-				});*/
 	}
 
 	// Fix for hidden tables colspan not correct if the table is empty

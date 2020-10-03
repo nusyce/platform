@@ -42,11 +42,11 @@
 	        $this->recaptcha_status = $global_data['recaptcha_status'];
 
 	        $site_language = ($this->general_settings['default_language'] != "")?$this->general_settings['default_language'] : "english";
-			$language = ($this->session->userdata('site_lang') != "") ? $this->session->userdata('site_lang') : $site_language;
+			/*$language = ($this->session->userdata('site_lang') != "") ? $this->session->userdata('site_lang') : $site_language;
 			$language = strtolower(get_lang_name_by_id($language));
 			$language='german';
 			$this->config->set_item('language', $language);
-			$this->lang->load(array($language), $language);
+			$this->lang->load(array($language), $language);*/
 
 		}
 

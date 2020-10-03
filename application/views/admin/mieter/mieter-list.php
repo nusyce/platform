@@ -21,7 +21,7 @@
 			</div>-->
 		</div>
 		<!-- For Messages -->
-		<?php  set_alert('success','le test dsds'); ?>
+
 		<div class="card">
 			<div id="page-header">
 				<div class="d-inline-block" style="display: flex !important;">
@@ -182,28 +182,19 @@
 
 
 	//---------------------------------------------------
-	var table = $('#na_datatable').DataTable({
-		"language": {
-			"info": "Zeige _START_ bis _END_ von _TOTAL_ Einträge",
-			"searchPlaceholder": "Suchen",
-			"search": "",
-			"sLengthMenu": "_MENU_",
-			"paginate": {
-				"previous": "zurück",
-				"next": "vor",
-
-			}
-		},
-		'responsive': true,
-		"ajax": "<?=base_url('admin/mieter/datatable_json')?>",
-		"order": [[0, 'asc']],
-		"columnDefs": [
-			{"targets": 0, "name": "id", 'searchable': true, 'orderable': true},
-			{"targets": 1, "name": "username", 'searchable': true, 'orderable': true},
-			{"targets": 2, "name": "description", 'searchable': true, 'orderable': true},
-			{"targets": 3, "name": "created_at", 'searchable': true, 'orderable': true},
-		]
+	$("body").on("change", ".onoffswitch-checkbox", function () {
+		console.log('checked');
+		$.post('<?=base_url("admin/mieter/change_status")?>',
+				{
+					'<?php echo $this->security->get_csrf_token_name(); ?>': '<?php echo $this->security->get_csrf_hash(); ?>',
+					id: $(this).data('id'),
+					status: $(this).is(':checked') == true ? 1 : 0
+				},
+				function (data) {
+					$.notify("Status Changed Successfully", "success");
+				});
 	});
+
 
 
 </script>

@@ -86,12 +86,12 @@ class Mieter extends MY_Controller
 		if (!empty($_POST)) {
 
 
-			$this->form_validation->set_rules('fullname', 'fullname', 'trim|required');
+			//$this->form_validation->set_rules('fullname', 'fullname', 'trim|required');
 			//$this->form_validation->set_rules('strabe', 'strabe', 'trim|required');
 			//$this->form_validation->set_rules('country', 'country', 'trim|required');
 
-
-			if ($this->form_validation->run() == FALSE) {
+            unset($_POST['ci_csrf_token']);
+			/*if ($this->form_validation->run() == FALSE) {
 				$data = array(
 					'errors' => validation_errors()
 				);
@@ -102,7 +102,7 @@ class Mieter extends MY_Controller
 					redirect(base_url('admin/mieter/mieter'), 'refresh');
 				}
 
-			}
+			}*/
 			if (isset($_POST['id']) && !empty($_POST['id'])) {
 
 				$this->mieter_model->update($_POST['id'], $_POST);

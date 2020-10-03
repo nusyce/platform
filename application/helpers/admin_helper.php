@@ -47,14 +47,10 @@ function widget_status_stats($table, $title = '')
         $wherett = db_prefix() . $tt . '.project IN  ("' . $stf_project . ' ")';
     }*/
     $total = total_rows(db_prefix() . $table, $wherett);
-    if($table!='admin')
-	{
+
 		$active = total_rows(db_prefix() . $table, $where.'active=1');
 		$not_active = total_rows(db_prefix() . $table, $where.' active=0');
-	}else{
-		$active = total_rows(db_prefix() . $table, $where.'is_active=1');
-		$not_active = total_rows(db_prefix() . $table, $where.'is_active=0');
-	}
+
 
     $percentData = percentVal($active, $total);
     ob_start()

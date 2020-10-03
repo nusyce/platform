@@ -24,7 +24,7 @@ class Admin_model extends CI_Model{
 	function get_admin_roles()
 	{
 		$this->db->from('mar_admin_roles');
-		$this->db->where('admin_role_status',1);
+		$this->db->where('active',1);
 		$query=$this->db->get();
 		return $query->result_array();
 	}
@@ -34,7 +34,7 @@ class Admin_model extends CI_Model{
 	function get_admin_by_id($id)
 	{
 		$this->db->from('mar_admin');
-		$this->db->join('mar_admin_roles','mar_admin_roles.admin_role_id=mar_admin.admin_role_id');
+
 		$this->db->where('admin_id',$id);
 		$query=$this->db->get();
 		return $query->row_array();
@@ -98,9 +98,9 @@ public function edit_admin($data, $id){
 
 	//-----------------------------------------------------
 function change_status()
-{		
-	$this->db->set('is_active',$this->input->post('status'));
-	$this->db->where('admin_id',$this->input->post('id'));
+{
+	$this->db->set('active',$this->input->post('status'));
+	$this->db->where('admin_id',$_POST['id']);
 	$this->db->update('mar_admin');
 
 } 

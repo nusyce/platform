@@ -52,7 +52,7 @@ class Client extends MY_Controller {
 		if(!empty($_POST)) {
 
 
-			$this->form_validation->set_rules('company', 'company', 'trim|required');
+			/*$this->form_validation->set_rules('company', 'company', 'trim|required');
 			$this->form_validation->set_rules('strabe', 'strabe', 'trim|required');
 			$this->form_validation->set_rules('country', 'country', 'trim|required');
 
@@ -70,7 +70,7 @@ class Client extends MY_Controller {
 				redirect(base_url('admin/client/client'), 'refresh');
 			}
 				
-			}
+			}*/
 			unset($_POST['ci_csrf_token']);
 			if(isset($_POST['userid']) && !empty($_POST['userid']))
 			{

@@ -513,7 +513,7 @@ body.footer-hidden footer {
 }
 
 .main-menu.menu-light .navigation > li.nav-item.open.has-sub.open, .main-menu.menu-light .navigation > li.nav-item.open.has-sub.sidebar-group-active, .main-menu.menu-light .navigation > li.nav-item.sidebar-group-active.has-sub.open, .main-menu.menu-light .navigation > li.nav-item.sidebar-group-active.has-sub.sidebar-group-active {
-	border-radius: 0.267rem;
+	/* border-radius: 0.267rem; */
 	border: 1px solid #DFE3E7;
 	background-color: #e3e8ee;
 	transition: none;

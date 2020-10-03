@@ -31,7 +31,7 @@
 				<div class="col-md-4" style="padding-right: 0px;  padding-left: 0px;margin-top: 10px">
 					<div class="panel_s">
 						<div class="panel-body" style="padding: 15px  15px;">
-							<?= widget_status_stats('mieters', $title); ?>
+							<?= widget_status_stats('admin', $title); ?>
 
 						</div>
 					</div>
@@ -81,8 +81,8 @@
 						get_transl_field('tsl_staff', 'letztes_login', 'Letztes Login'),
 						get_transl_field('tsl_staff', 'aktiv', 'Aktiv'),
 				);
-				render_datatable($table_data, (isset($class) ? $class : 'user'), [], [
-						'data-last-order-identifier' => 'user',
+				render_datatable($table_data, (isset($class) ? $class : 'admin'), [], [
+						'data-last-order-identifier' => 'admin',
 						'data-default-order' => '',
 				]);
 				?>
@@ -99,8 +99,8 @@
 	<script>
 
 		// Init the table
-		var table_user = $('.table-user');
-		if (table_user.length) {
+		var table_admin = $('.table-admin');
+		if (table_admin.length) {
 			// Add additional server params $_POST
 			var LeadsServerParams = {};
 
@@ -112,7 +112,7 @@
 				ContractsServerParams[$(this).attr('name')] = '[name="' + $(this).attr('name') + '"]';
 			});
 
-			var _table_api = renderDataTable(table_user, admin_url + 'users/render', [0], [0], LeadsServerParams, [1, 'desc'], filterArray);
+			var _table_api = renderDataTable(table_admin, admin_url + 'admin/render', [0], [0], LeadsServerParams, [1, 'desc'], filterArray);
 
 			$.each(LeadsServerParams, function (i, obj) {
 				$('#' + i).on('change', function () {
@@ -122,9 +122,9 @@
 				});
 			});
 		}
-		$("body").on("change", ".tgl_checkbox", function () {
+		$("body").on("change", ".onoffswitch-checkbox", function () {
 			console.log('checked');
-			$.post('<?=base_url("admin/users/change_status")?>',
+			$.post('<?=base_url("admin/admin/change_status")?>',
 					{
 						'<?php echo $this->security->get_csrf_token_name(); ?>': '<?php echo $this->security->get_csrf_hash(); ?>',
 						id: $(this).data('id'),

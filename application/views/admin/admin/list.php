@@ -73,7 +73,7 @@
 <script>
 
 	// Init the table
-	var table_user = $('.table-user');
+	var table_admin = $('.table-admin');
 	if (table_user.length) {
 		// Add additional server params $_POST
 		var LeadsServerParams = {};
@@ -86,7 +86,7 @@
 			ContractsServerParams[$(this).attr('name')] = '[name="' + $(this).attr('name') + '"]';
 		});
 
-		var _table_api = renderDataTable(table_user, admin_url + 'users/render', [0], [0], LeadsServerParams, [1, 'desc'], filterArray);
+		var _table_api = renderDataTable(table_admin, admin_url + 'admin/render', [0], [0], LeadsServerParams, [1, 'desc'], filterArray);
 
 		$.each(LeadsServerParams, function (i, obj) {
 			$('#' + i).on('change', function () {
@@ -98,7 +98,7 @@
 	}
 
 
-	<script type="text/javascript">
+
 			$("body").on("change", ".tgl_checkbox", function () {
 				console.log('checked');
 				$.post('<?=base_url("admin/users/change_status")?>',

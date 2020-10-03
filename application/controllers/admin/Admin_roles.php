@@ -36,7 +36,7 @@ class Admin_roles extends MY_Controller
 
 		$this->admin_roles->delete($id);
 		$this->session->set_flashdata('msg','Role has been Deleted Successfully.');	
-		redirect('admin/admin_roles');
+		redirect('admin/admin/admin_roles');
 	}
 	
 	//-----------------------------------------------------------------
@@ -48,7 +48,7 @@ class Admin_roles extends MY_Controller
 		{
 			$this->admin_roles->insert();	
 			$this->session->set_flashdata('success', 'Record Added Successfully');	
-			redirect('admin/admin_roles');
+			redirect('admin/admin/admin_roles');
 		}
 
 		$data['title'] = trans('add_new_role');
@@ -67,7 +67,7 @@ class Admin_roles extends MY_Controller
 		{
 			$this->admin_roles->update();
 			$this->session->set_flashdata('success', 'Record updated Successfully');		
-			redirect('admin/admin_roles');
+			redirect('admin/admin/admin_roles');
 		}
 		if($id=="") 
 			redirect('admin/admin_roles');
@@ -112,6 +112,10 @@ class Admin_roles extends MY_Controller
 		else 
 	    	echo 'true';
     }
+	public function render($admin_role = '')
+	{
+		$this->app->get_renderable_data('admin_roles/table', ['admin-role' => $admin_role]);
+	}
 
     /* SIDE MENU & SUB MENU */
 

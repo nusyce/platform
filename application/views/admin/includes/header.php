@@ -23,7 +23,7 @@
 
 					</ul>
 				</div>
-				<ul class="nav navbar-nav float-right">
+				<ul class="nav navbar-nav float-right" style="float: right !important;">
 					<br>
 					<div class="digital-clock"></div>
 					<!--<li class="dropdown dropdown-language nav-item"><a class="dropdown-toggle nav-link" id="dropdown-flag" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="flag-icon flag-icon-us"></i><span class="selected-language">English</span></a>
@@ -156,7 +156,7 @@
 							<div class="user-nav d-sm-flex d-none"><span style="color: white" class="user-name"><?= ucwords($this->session->userdata('username')); ?></span></div><span><img class="round" src="<?= base_url()?>/assets/img/user-placeholder.jpg" alt="avatar" height="40" width="40"></span>
 						</a>
 						<div class="dropdown-menu dropdown-menu-right pb-0"><!--<i class="bx bx-user mr-50"></i> Edit Profile</a><a class="dropdown-item" href="app-email.html"><i class="bx bx-envelope mr-50"></i> My Inbox</a><a class="dropdown-item" href="app-todo.html"><i class="bx bx-check-square mr-50"></i> Task</a><a class="dropdown-item" href="app-chat.html"><i class="bx bx-message mr-50"></i> Chats</a>-->
-							<a class="dropdown-item" href="<?= base_url('admin/pack') ?>">Pakets</a>
+							<a class="dropdown-item" href="<?= base_url('admin/pack') ?>">Membership</a>
 							<div class="dropdown-divider mb-0"></div>
 							<a class="dropdown-item" href="<?= base_url('admin/auth/logout') ?>"><!--<i class="bx bx-power-off mr-50"></i>-->Abmelden</a>
 						</div>

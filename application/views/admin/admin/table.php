@@ -4,27 +4,24 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 
 $aColumns = [
-	'1',
+	'admin_id',
 	'firstname',
 	'lastname',
-	db_prefix() . 'roles.name as role',
+	2,
 	'email',
 	'mobile_no',
 	'updated_at',
-	'is_active as active',
+	'active as active',
 ];
-$sIndexColumn = 'id';
-$sTable = db_prefix() . 'users';
+$where = [];
+$sIndexColumn = 'admin_id';
+$sTable = db_prefix() . 'admin';
 
-$join = ['INNER JOIN ' . db_prefix() . 'roles ON ' . db_prefix() . 'roles.roleid = ' . db_prefix() . 'users.role'];
+$join = ['INNER JOIN ' . db_prefix() . 'roles ON ' . db_prefix() . 'roles.roleid = ' . db_prefix() . 'admin.admin_role_id'];
 $i = 0;
 
 
-$result = data_tables_init($aColumns, $sIndexColumn, $sTable, $join, $where, [
-	'profile_image',
-	'lastname',
-	'id',
-]);
+$result = data_tables_init($aColumns, $sIndexColumn, $sTable, $join, $where, []);
 
 $output = $result['output'];
 $rResult = $result['rResult'];
@@ -53,7 +50,7 @@ foreach ($rResult as $aRow) {
 			}
 
 			$_data = '<div class="onoffswitch">
-                <input type="checkbox"  data-switch-url="' . admin_url() . 'staff/change_staff_status" name="onoffswitch" class="onoffswitch-checkbox" id="c_' . $aRow['id'] . '" data-id="' . $aRow['id'] . '" ' . $checked . '>
+                <input type="checkbox"  data-switch-url="' . admin_url() . 'admin/change_status" name="onoffswitch" class="onoffswitch-checkbox" id="c_' . $aRow['id'] . '" data-id="' . $aRow['id'] . '" ' . $checked . '>
                 <label class="onoffswitch-label" for="c_' . $aRow['id'] . '"></label>
             </div>';
 
@@ -63,10 +60,10 @@ foreach ($rResult as $aRow) {
 			/*$_data = '<a href="' . admin_url('staff/profile/' . $aRow['id']) . '">' . staff_profile_image($aRow['id'], [
 					'staff-profile-image-small',
 				]) . '</a>';*/
-			$_data = ' <a href="' . admin_url('staff/member/' . $aRow['id']) . '">' . $aRow['firstname'] . ' ' . $aRow['lastname'] . '</a>';
+			$_data = ' <a href="' . admin_url('admin/edit/' . $aRow['admin_id']) . '">' . $aRow['firstname'] . ' ' . $aRow['lastname'] . '</a>';
 
 			$_data .= '<div class="row-options">';
-			$_data .= '<a href="' . admin_url('staff/member/' . $aRow['id']) . '">' . _l('view') . '</a>';
+			$_data .= '<a href="' . admin_url('admin/edit/' . $aRow['admin_id']) . '">' . _l('view') . '</a>';
 
 			/*  if (($has_permission_delete && ($has_permission_delete && !is_admin($aRow['id']))) || is_admin()) {
 				  if ($has_permission_delete && $output['iTotalRecords'] > 1 && $aRow['id'] != get_staff_user_id()) {
@@ -84,7 +81,7 @@ foreach ($rResult as $aRow) {
 		}
 		$row[] = $_data;
 	}
-	$_data = ' <a href="' . admin_url('staff/member/' . $aRow['id']) . '">' . $aRow['firstname'] . '</a>';
+	$_data = ' <a href="' . admin_url('admin/edit/' . $aRow['admin_id']) . '">' . $aRow['firstname'] . '</a>';
 
 	$row[] = $_data;
 	$row[] = $aRow['lastname'];
@@ -98,8 +95,8 @@ foreach ($rResult as $aRow) {
 	}
 
 	$_data = '<div class="onoffswitch">
-                <input type="checkbox"  data-switch-url="' . admin_url() . 'staff/change_staff_status" name="onoffswitch" class="onoffswitch-checkbox" id="c_' . $aRow['id'] . '" data-id="' . $aRow['id'] . '" ' . $checked . '>
-                <label class="onoffswitch-label" for="c_' . $aRow['id'] . '"></label>
+                <input type="checkbox"  data-switch-url="' . admin_url() . 'admin/change_status" name="onoffswitch" class="onoffswitch-checkbox" id="c_' . $aRow['admin_id'] . '" data-id="' . $aRow['admin_id'] . '" ' . $checked . '>
+                <label class="onoffswitch-label" for="c_' . $aRow['admin_id'] . '"></label>
             </div>';
 	$row[] = $_data;
 	$row['DT_RowClass'] = 'has-row-options';

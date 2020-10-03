@@ -5,16 +5,21 @@
 	<div class="content-wrapper">
 		<div class="content-header row">
 		</div>
-		<div class="card card-default color-palette-bo">
-			<div class="d-inline-block">
-				<h3 class="card-title nomb">
-					<?= trans('general_settings') ?> </h3>
+
+		<div class="content-body">
+			<div class="card">
+
+				<div class="d-inline-block">
+					<h3 class="card-title" style="margin: 0;">
+						<?php echo get_menu_option(c_menu(), 'General Settings') ?> </h3>
+				</div>
+
+
 			</div>
-		</div>
-		<div class="card card-default color-palette-bo">
-			<div class="card-body">
+			<?php $this->load->view('admin/includes/_messages.php') ?>
+			<div class="panel-body">
 				<!-- For Messages -->
-				<?php $this->load->view('admin/includes/_messages.php') ?>
+
 
 				<?php echo form_open_multipart(base_url('admin/general_settings/add')); ?>
 				<!-- Nav tabs -->

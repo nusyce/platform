@@ -141,7 +141,18 @@
 
 
 	//---------------------------------------------------
-
+	$("body").on("change", ".onoffswitch-checkbox", function () {
+		console.log('checked');
+		$.post('<?=base_url("admin/client/change_status")?>',
+				{
+					'<?php echo $this->security->get_csrf_token_name(); ?>': '<?php echo $this->security->get_csrf_hash(); ?>',
+					id: $(this).data('id'),
+					status: $(this).is(':checked') == true ? 1 : 0
+				},
+				function (data) {
+					$.notify("Status Changed Successfully", "success");
+				});
+	});
 
 
 </script>

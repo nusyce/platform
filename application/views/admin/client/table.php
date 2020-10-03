@@ -15,7 +15,7 @@ $aColumns = [
 	1,
 	db_prefix() . 'clients.email as email',
 	db_prefix() . 'clients.phonenumber as phonenumber',
-	db_prefix() . 'clients.active',
+	'active',
 	db_prefix() . 'clients.userid as userid',
 	1,
 	db_prefix() . 'clients.datecreated as datecreated',
@@ -95,9 +95,12 @@ foreach ($rResult as $aRow) {
 	$row[] = ($aRow['phonenumber'] ? '<a href="tel:' . $aRow['phonenumber'] . '">' . $aRow['phonenumber'] . '</a>' : '');
 
 	// Toggle active/inactive customer
-	$toggleActive = '<div class="onoffswitch" data-toggle="tooltip" data-title="' . _l('customer_active_inactive_help') . '">
-    <input type="checkbox"' . ($aRow['registration_confirmed'] == 0 ? ' disabled' : '') . ' data-switch-url="' . admin_url() . 'clients/change_client_status" name="onoffswitch" class="onoffswitch-checkbox" id="' . $aRow['userid'] . '" data-id="' . $aRow['userid'] . '" ' . ($aRow[db_prefix() . 'clients.active'] == 1 ? 'checked' : '') . '>
-    <label class="onoffswitch-label" for="' . $aRow['userid'] . '"></label>
+	if ($aRow['active'] == 1) {
+		$checked = 'checked';
+	}
+	$toggleActive = '<div class="onoffswitch" >
+    <input type="checkbox" data-switch-url="' . admin_url() . 'client/change_status" name="onoffswitch" class="onoffswitch-checkbox" id="c_' . $aRow['userid'] . '" data-id="' . $aRow['userid'] . '" ' . $checked. '>
+    <label class="onoffswitch-label" for="c_' . $aRow['userid'] . '"></label>
     </div>';
 
 	// For exporting

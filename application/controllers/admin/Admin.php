@@ -38,9 +38,9 @@ class Admin extends MY_Controller
 
 
 
-	public function render($users = '')
+	public function render($admins = '')
 	{
-		$this->app->get_renderable_data('admin/table', ['users' => $users]);
+		$this->app->get_renderable_data('admin/table', ['admin' => $admins]);
 	}
 
 
@@ -66,6 +66,7 @@ class Admin extends MY_Controller
 		$this->rbac->check_operation_access(); // check opration permission
 
 		$this->admin->change_status();
+
 	}
 	
 	//--------------------------------------------------
@@ -76,21 +77,21 @@ class Admin extends MY_Controller
 		$data['admin_roles']=$this->admin->get_admin_roles();
 
 		if($this->input->post('submit')){
-				$this->form_validation->set_rules('username', 'Username', 'trim|alpha_numeric|is_unique[ci_admin.username]|required');
+				$this->form_validation->set_rules('username', 'Username', 'trim|alpha_numeric|is_unique[mar_admin.username]|required');
 				$this->form_validation->set_rules('firstname', 'Firstname', 'trim|required');
 				$this->form_validation->set_rules('lastname', 'Lastname', 'trim|required');
 				$this->form_validation->set_rules('email', 'Email', 'trim|valid_email|required');
 				$this->form_validation->set_rules('mobile_no', 'Number', 'trim|required');
 				$this->form_validation->set_rules('password', 'Password', 'trim|required');
 				$this->form_validation->set_rules('role', 'Role', 'trim|required');
-				if ($this->form_validation->run() == FALSE) {
+				/*if ($this->form_validation->run() == FALSE) {
 					$data = array(
 						'errors' => validation_errors()
 					);
 					$this->session->set_flashdata('errors', $data['errors']);
 					redirect(base_url('admin/admin/add'),'refresh');
 				}
-				else{
+				*/
 					$data = array(
 						'admin_role_id' => $this->input->post('role'),
 						'username' => $this->input->post('username'),
@@ -99,7 +100,7 @@ class Admin extends MY_Controller
 						'email' => $this->input->post('email'),
 						'mobile_no' => $this->input->post('mobile_no'),
 						'password' =>  password_hash($this->input->post('password'), PASSWORD_BCRYPT),
-						'is_active' => 1,
+						'active' => 1,
 						'created_at' => date('Y-m-d : h:m:s'),
 						'updated_at' => date('Y-m-d : h:m:s'),
 					);
@@ -113,7 +114,7 @@ class Admin extends MY_Controller
 						$this->session->set_flashdata('success', 'Admin has been added successfully!');
 						redirect(base_url('admin/admin'));
 					}
-				}
+
 			}
 			else
 			{
@@ -131,7 +132,7 @@ class Admin extends MY_Controller
 		$data['admin_roles'] = $this->admin->get_admin_roles();
 
 		if($this->input->post('submit')){
-			$this->form_validation->set_rules('username', 'Username', 'trim|alpha_numeric|required');
+			/*$this->form_validation->set_rules('username', 'Username', 'trim|alpha_numeric|required');
 			$this->form_validation->set_rules('firstname', 'Firstname', 'trim|required');
 			$this->form_validation->set_rules('lastname', 'Lastname', 'trim|required');
 			$this->form_validation->set_rules('email', 'Email', 'trim|valid_email|required');
@@ -144,8 +145,8 @@ class Admin extends MY_Controller
 				);
 				$this->session->set_flashdata('errors', $data['errors']);
 				redirect(base_url('admin/admin/edit/'.$id),'refresh');
-			}
-			else{
+			}*/
+
 				$data = array(
 					'admin_role_id' => $this->input->post('role'),
 					'username' => $this->input->post('username'),
@@ -153,7 +154,7 @@ class Admin extends MY_Controller
 					'lastname' => $this->input->post('lastname'),
 					'email' => $this->input->post('email'),
 					'mobile_no' => $this->input->post('mobile_no'),
-					'is_active' => 1,
+					'active' => $this->input->post('status'),
 					'updated_at' => date('Y-m-d : h:m:s'),
 				);
 
@@ -161,24 +162,23 @@ class Admin extends MY_Controller
 				$data['password'] = password_hash($this->input->post('password'), PASSWORD_BCRYPT);
 
 				$data = $this->security->xss_clean($data);
+
 				$result = $this->admin->edit_admin($data, $id);
 
 				if($result){
-					// Activity Log 
+					// Activity Log
 					$this->activity_model->add_log(5);
 
 					$this->session->set_flashdata('success', 'Admin has been updated successfully!');
 					redirect(base_url('admin/admin'));
 				}
-			}
+
 		}
 		elseif($id==""){
 			redirect('admin/admin');
 		}
 		else{
 			$data['admin'] = $this->admin->get_admin_by_id($id);
-			
-
 			$this->load->view('admin/admin/edit', $data);
 
 		}		

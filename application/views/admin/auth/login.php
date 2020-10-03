@@ -55,7 +55,6 @@
 
 		</div>
 		<div class="col-md-6">
-			<?php $this->load->view('admin/includes/_messages.php') ?>
 		</div>
 		<div class="col-md-3">
 

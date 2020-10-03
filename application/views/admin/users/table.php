@@ -63,10 +63,10 @@ foreach ($rResult as $aRow) {
 			/*$_data = '<a href="' . admin_url('staff/profile/' . $aRow['id']) . '">' . staff_profile_image($aRow['id'], [
 					'staff-profile-image-small',
 				]) . '</a>';*/
-			$_data = ' <a href="' . admin_url('staff/member/' . $aRow['id']) . '">' . $aRow['firstname'] . ' ' . $aRow['lastname'] . '</a>';
+			$_data = ' <a href="' . admin_url('admin/edit/' . $aRow['id']) . '">' . $aRow['firstname'] . ' ' . $aRow['lastname'] . '</a>';
 
 			$_data .= '<div class="row-options">';
-			$_data .= '<a href="' . admin_url('staff/member/' . $aRow['id']) . '">' . _l('view') . '</a>';
+			$_data .= '<a href="' . admin_url('admin/edit/' . $aRow['id']) . '">' . _l('view') . '</a>';
 
 			/*  if (($has_permission_delete && ($has_permission_delete && !is_admin($aRow['id']))) || is_admin()) {
 				  if ($has_permission_delete && $output['iTotalRecords'] > 1 && $aRow['id'] != get_staff_user_id()) {
@@ -84,7 +84,7 @@ foreach ($rResult as $aRow) {
 		}
 		$row[] = $_data;
 	}
-	$_data = ' <a href="' . admin_url('staff/member/' . $aRow['id']) . '">' . $aRow['firstname'] . '</a>';
+	$_data = ' <a href="' . admin_url('admin/edit/' . $aRow['id']) . '">' . $aRow['firstname'] . '</a>';
 
 	$row[] = $_data;
 	$row[] = $aRow['lastname'];

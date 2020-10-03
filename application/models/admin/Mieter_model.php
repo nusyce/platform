@@ -115,7 +115,7 @@ class Mieter_model extends CI_Model
 	 * Update client status Active/Inactive
 	 */
 	public
-	function change_status($id, $status)
+	function change_status_new($id, $status)
 	{
 		$this->db->where('id', $id);
 		$this->db->update(db_prefix() . 'mieters', [
@@ -132,7 +132,7 @@ class Mieter_model extends CI_Model
 		return false;
 	}
 
-	function change_status_old()
+	function change_status()
 	{
 		$this->db->set('active', $this->input->post('status'));
 		$this->db->where('id', $this->input->post('id'));
@@ -155,7 +155,7 @@ class Mieter_model extends CI_Model
 
 
 		$this->db->delete('mar_mieters', array('id' => $id));
-		$this->session->set_flashdata('success', 'Mieter has been Deleted Successfully.');
+		$this->session->set_flashdata('error', 'Mieter has been Deleted Successfully.');
 		redirect('admin/mieter/');
 
 	}

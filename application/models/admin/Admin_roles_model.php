@@ -27,7 +27,7 @@ class Admin_roles_model extends CI_Model{
 	function insert()
 	{		
 		$this->db->set('admin_role_title',$this->input->post('admin_role_title'));
-		$this->db->set('admin_role_status',$this->input->post('admin_role_status'));
+		$this->db->set('active',$this->input->post('admin_role_status'));
 		$this->db->set('admin_role_created_on',date('Y-m-d h:i:sa'));
 		$this->db->insert('mar_admin_roles');
 	}
@@ -36,7 +36,7 @@ class Admin_roles_model extends CI_Model{
 	function update()
 	{		
 		$this->db->set('admin_role_title',$this->input->post('admin_role_title'));
-		$this->db->set('admin_role_status',$this->input->post('admin_role_status'));
+		$this->db->set('active',$this->input->post('admin_role_status'));
 		$this->db->set('admin_role_modified_on',date('Y-m-d h:i:sa'));
 		$this->db->where('admin_role_id',$this->input->post('admin_role_id'));
 		$this->db->update('mar_admin_roles');
@@ -45,7 +45,7 @@ class Admin_roles_model extends CI_Model{
 	//-----------------------------------------------------
 	function change_status()
 	{		
-		$this->db->set('admin_role_status',$this->input->post('status'));
+		$this->db->set('active',$this->input->post('status'));
 		$this->db->where('admin_role_id',$this->input->post('id'));
 		$this->db->update('mar_admin_roles');
 	} 

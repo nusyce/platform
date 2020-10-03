@@ -196,8 +196,10 @@ function get_alert_class()
         $alert_class = 'warning';
     } elseif ($CI->session->flashdata('info')) {
         $alert_class = 'info';
-    } elseif ($CI->session->flashdata('error')) {
-        $alert_class = 'danger';
+    } elseif ($CI->session->flashdata('errors')) {
+        $alert_class = 'errors';
+    }elseif ($CI->session->flashdata('error')) {
+        $alert_class = 'error';
     }
 
     //return hooks()->apply_filters('alert_class', $alert_class);

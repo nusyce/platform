@@ -37,7 +37,7 @@ class Client_model extends CI_Model{
 
 
 		$this->db->delete('mar_clients', array('userid' => $id));
-		$this->session->set_flashdata('success','Client has been Deleted Successfully.');
+		$this->session->set_flashdata('error','Client has been Deleted Successfully.');
 		redirect('admin/client/');
 
 	}

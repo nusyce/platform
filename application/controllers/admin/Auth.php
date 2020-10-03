@@ -47,7 +47,7 @@ class Auth extends MY_Controller {
 						redirect(base_url('admin/auth/login'));
 						exit();
 					}
-					if($result['is_active'] == 0){
+					if($result['active'] == 0){
 						$this->session->set_flashdata('error', 'Account is disabled by Admin!');
 						redirect(base_url('admin/auth/login'));
 						exit();
@@ -81,7 +81,7 @@ class Auth extends MY_Controller {
 						}
 					}
 					else{
-						$this->session->set_flashdata('errors', 'Invalid Username or Password!');
+						set_alert('errors', 'Invalid Username or Password!');
 						redirect(base_url('admin/auth/login'));
 					}
 				}

@@ -7,19 +7,19 @@
 		</div>
 		<div class="content-body">
 			<div class="card">
-				<div class="card-header">
+
 					<div class="d-inline-block">
-						<h3 class="card-title">Mieter</h3>
+						<h3 class="card-title" style="margin: 0;">Mieter</h3>
 
 					</div>
 
-				</div>
+
 			</div>
 
-		<?php set_alert('error','dfsklkflsdf'); ?>
+
 			<div class="panel-body">
 		<form action="<?php echo base_url('admin/mieter/save')?>" class="client-form" autocomplete="off" method="post" accept-charset="utf-8">
-						s<div class="row">
+						<div class="row">
 						<input type="hidden" name="<?php echo $this->security->get_csrf_token_name();?>" value="<?php echo $this->security->get_csrf_hash();?>">
 							<div class="col-md-6">
 							<h3>Private Informationen</h3>
@@ -140,8 +140,8 @@
 								<div class="col-md-12">
 								<?php $projects = get_all_projects();
 										$customer_default_projektname = "";
-										$selected = (isset($mieter) ? $mieter->projektname : $customer_default_projektname);
-										echo render_select('projektname', $projects, array('name', array('name')), 'Projekt', $selected, array('data-none-selected-text' => 'dropdown_non_selected_tex'));
+										$selected = (isset($mieter) ? $mieter->project : $customer_default_projektname);
+										echo render_select('project', $projects, array('name', array('name')), 'Projekt', $selected, array('data-none-selected-text' => 'dropdown_non_selected_tex'));
 										?>
 									</div>
 									<div class="col-md-6">

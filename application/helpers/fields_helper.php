@@ -301,7 +301,7 @@ function render_select($name, $options, $option_attrs = [], $label = '', $select
         $select_attrs['data-width'] = '100%';
     }
     if (!isset($select_attrs['data-none-selected-text'])) {
-        $select_attrs['data-none-selected-text'] = 'dropdown_non_selected_tex';
+       //	 $select_attrs['data-none-selected-text'] = 'dropdown_non_selected_tex';
         $select_attrs['data-none-selected-text'] = 'Nichts ausgewählt';
     }
     foreach ($select_attrs as $key => $val) {

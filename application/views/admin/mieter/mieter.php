@@ -141,7 +141,7 @@
 								<?php $projects = get_all_projects();
 										$customer_default_projektname = "";
 										$selected = (isset($mieter) ? $mieter->project : $customer_default_projektname);
-										echo render_select('project', $projects, array('name', array('name')), 'Projekt', $selected, array('data-none-selected-text' => 'dropdown_non_selected_tex'));
+										echo render_select('project', $projects, array('name', array('name')), 'Projekt', $selected, array('data-none-selected-text' => 'Nichts ausgewählt'));
 										?>
 									</div>
 									<div class="col-md-6">

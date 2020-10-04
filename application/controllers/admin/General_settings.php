@@ -48,6 +48,26 @@ class General_settings extends MY_Controller {
 			'city' => $this->input->post('city'),
 			'updated_at' => date('Y-m-d : h:m:s'),
 		);
+		update_option('f_company', $_POST['company']);
+		update_option('f_vorname', $_POST['vorname']);
+		update_option('f_nachname', $_POST['nachname']);
+		update_option('f_strabe', $_POST['strabe']);
+		update_option('f_hausnummer', $_POST['hausnummer']);
+		update_option('f_zip', $_POST['zip']);
+		update_option('f_city', $_POST['city']);
+		update_option('f_email', $_POST['email']);
+		update_option('f_phonenumber_1', $_POST['phonenumber_1']);
+		update_option('f_mobil', $_POST['mobil']);
+		update_option('f_website', $_POST['website']);
+		update_option('f_firm_id', $_POST['firm_id']);
+		update_option('name_der_bank', $_POST['name_der_bank']);
+		update_option('iban', $_POST['iban']);
+		update_option('bic', $_POST['bic']);
+
+
+		update_option('name_der_bank', $_POST['name_der_bank']);
+		update_option('iban', $_POST['iban']);
+		update_option('bic', $_POST['bic']);
 
 		$old_logo = $this->input->post('old_logo');
 		$old_favicon = $this->input->post('old_favicon');

@@ -42,21 +42,24 @@
 								<?php $value = (isset($general_settings) ? $general_settings['nachname'] : ''); ?>
 								<?php echo render_input('nachname', 'Nachname', $value); ?>
 								<?php $value = (isset($general_settings) ? $general_settings['strabe'] : ''); ?>
-								<?php echo render_input('strabe', 'Stra�e', $value); ?>
+								<?php echo render_input('strabe', 'Straße', $value); ?>
 								<?php $value = (isset($general_settings) ? $general_settings['hausnummer'] : ''); ?>
 								<?php echo render_input('hausnummer', 'Hausnummer', $value); ?>
 								<?php $value = (isset($general_settings) ? $general_settings['zip'] : ''); ?>
 								<?php echo render_input('zip', 'Postleitzahl', $value); ?>
 								<?php $value = (isset($general_settings) ? $general_settings['city'] : ''); ?>
 								<?php echo render_input('city', 'Ort', $value); ?>
-								<div class="form-group">
-									<label class="control-label"><?= trans('default_language') ?></label>
+								<!--<div class="form-group">
+									<label class="control-label"><?/*= trans('default_language') */?></label>
 									<?php
-									$options = array_column($languages, 'name', 'id');
+/*									$options = array_column($languages, 'name', 'id');
 									echo form_dropdown('language', $options, $general_settings['default_language'], 'class="form-control"');
-									?>
-								</div>
-
+									*/?>
+								</div>-->
+								<p style="font-weight: bold"> Meine Bankdaten</p>
+								<?php echo render_input('name_der_bank', 'Name der Bank', get_option('f_name_der_bank')); ?>
+								<?php echo render_input('iban', 'IBAN', get_option('f_iban')); ?>
+								<?php echo render_input('bic', 'BIC', get_option('f_bic')); ?>
 							</div>
 							<div class="col-md-6">
 								<?php $value = (isset($general_settings) ? $general_settings['email'] : ''); ?>
@@ -69,28 +72,28 @@
 								<?php echo render_input('mobil', 'Mobil', $value); ?>
 								<?php $value = (isset($general_settings) ? $general_settings['website'] : ''); ?>
 								<?php
-								echo render_input('website', 'client_website', $value);
-								?>
+/*								echo render_input('website', 'client_website', $value);
+								*/?>
 
 								<?php $value = (isset($general_settings) ? $general_settings['firm_id'] : ''); ?>
 								<?php echo render_input('firm_id', 'Umsatzsteuer-ID', $value); ?>
-								<div class="form-group">
-									<label class="control-label"><?= trans('favicon') ?> (25*25)</label><br/>
-									<?php if (!empty($general_settings['favicon'])): ?>
+								<!--<div class="form-group">
+									<label class="control-label"><?/*= trans('favicon') */?> (25*25)</label><br/>
+									<?php /*if (!empty($general_settings['favicon'])): */?>
 										<p><img style="width: 200px;"
-												src="<?= base_url($general_settings['favicon']); ?>"
+												src="<?/*= base_url($general_settings['favicon']); */?>"
 												class="favicon"></p>
-									<?php endif; ?>
+									<?php /*endif; */?>
 									<input type="file" name="favicon" accept=".png, .jpg, .jpeg, .gif, .svg">
-									<p><small class="text-success"><?= trans('allowed_types') ?>: gif, jpg, png,
+									<p><small class="text-success"><?/*= trans('allowed_types') */?>: gif, jpg, png,
 											jpeg</small></p>
 									<input type="hidden" name="old_favicon"
-										   value="<?php echo html_escape($general_settings['favicon']); ?>">
-								</div>
+										   value="<?php /*echo html_escape($general_settings['favicon']); */?>">
+								</div>-->
 								<div class="form-group">
 									<label class="control-label"><?= trans('logo') ?></label><br/>
-									<?php if (!empty($general_settings['logo'])): ?>
-										<p><img src="<?= base_url($general_settings['logo']); ?>" class="logo"
+									<?php if (!empty($general_settings['favicon'])): ?>
+										<p><img src="<?= base_url($general_settings['favicon']); ?>" class="logo"
 												width="150">
 										</p>
 									<?php endif; ?>
@@ -113,7 +116,7 @@
 				</div>
 
 				<div class="box-footer">
-					<input type="submit" name="submit" value="<?= trans('save_changes') ?>"
+					<input type="submit" name="submit" value="Speichern"
 						   class="btn btn-primary pull-right">
 				</div>
 				<?php echo form_close(); ?>

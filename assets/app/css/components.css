@@ -3968,6 +3968,8 @@ tr:hover .row-options {
 	border: 1px solid #dce1ef;
 	border-radius: 4px;
 	padding: 20px;
+	margin-bottom: 50px;
+	padding-bottom: 60px;
 	position: relative;
 }
 

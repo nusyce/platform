@@ -65,7 +65,7 @@ class RBAC
 	//--------------------------------------------------------------	
 	function check_operation_access()
 	{
-		if($this->obj->is_supper){
+	/*	if($this->obj->is_supper){
 			return 1;
 		}
 		elseif(!$this->check_operation_permission($this->obj->uri->segment(3)))
@@ -74,7 +74,7 @@ class RBAC
 			$back_to =$_SERVER['REQUEST_URI'];
 			$back_to = $this->obj->functions->encode($back_to);
 			redirect('access_denied/index/'.$back_to);
-		}
+		}*/
 	}
 
 	//--------------------------------------------------------------	

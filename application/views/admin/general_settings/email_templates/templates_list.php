@@ -124,7 +124,7 @@
 				content : $('iframe').contents().find('.wysihtml5-editor').html(),
 		},
 		function(data){
-			$.notify("Template Updated Successfully", "success");
+			//$.notify("Template Updated Successfully", "success");
 		});
     });
     // 

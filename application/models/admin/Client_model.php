@@ -15,9 +15,8 @@ class Client_model extends CI_Model{
 			
 			$data['datecreated']=date('d-m-y h:i:s');
 			$this->db->insert('mar_clients', $data);
+return true;
 
-		set_alert('success', 'added_successfully');
-		redirect('admin/client/');
 
 	}
 	function change_status()
@@ -25,6 +24,7 @@ class Client_model extends CI_Model{
 		$this->db->set('active',$this->input->post('status'));
 		$this->db->where('userid',$this->input->post('id'));
 		$this->db->update('mar_clients');
+		set_alert('success', 'changed_successfully');
 	}
 	public function get_by_id($id){
 		$query = $this->db->get_where('mar_clients', array('userid' => $id));
@@ -37,17 +37,16 @@ class Client_model extends CI_Model{
 
 
 		$this->db->delete('mar_clients', array('userid' => $id));
-		$this->session->set_flashdata('error','Client has been Deleted Successfully.');
-		redirect('admin/client/');
+		return true;
+
 
 	}
 	public function update($id,$data){
 		
 		    $this->db->where(array('userid' => $id));
 			$this->db->update('mar_clients', $data);
+		return true;
 
-			$this->session->set_flashdata('success','Client has been Updated Successfully.');
-		redirect('admin/client/');
 
 
 

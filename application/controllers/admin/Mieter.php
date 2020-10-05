@@ -58,7 +58,12 @@ class Mieter extends MY_Controller
 	{
 		// $records = $this->activity_model->get_activity_log();
 		// var_dump($records);exit();
-		$this->mieter_model->delete($id);
+		$result=$this->mieter_model->delete($id);
+			if($result){
+				set_alert('error', 'Deleted Successfully.');
+				redirect('admin/mieter/');
+
+			}
 
 	}
 
@@ -105,10 +110,20 @@ class Mieter extends MY_Controller
 			}*/
 			if (isset($_POST['id']) && !empty($_POST['id'])) {
 
-				$this->mieter_model->update($_POST['id'], $_POST);
+				$result=$this->mieter_model->update($_POST['id'], $_POST);
+				if($result){
+					set_alert('success', 'Updated Successfully.');
+					redirect('admin/mieter/');
+
+				}
 			} else {
 
-				$this->mieter_model->add($_POST);
+				$result=$this->mieter_model->add($_POST);
+				if($result){
+					set_alert('success', 'Added Successfully.');
+					redirect('admin/mieter/');
+
+				}
 			}
 
 		}
@@ -172,11 +187,11 @@ class Mieter extends MY_Controller
 
 
 	/* Change client status / active / inactive */
-	public function change_status($id, $status)
+	public function change_status()
 	{
-		if ($this->input->is_ajax_request()) {
-			$this->mieter_model->change_status($id, $status);
-		}
+
+			$this->mieter_model->change_status();
+
 	}
 
 

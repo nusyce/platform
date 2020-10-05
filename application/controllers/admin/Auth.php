@@ -114,22 +114,21 @@ class Auth extends MY_Controller {
 		            }
 		        }
 
-				$this->form_validation->set_rules('username', 'Username', 'trim|alpha_numeric|is_unique[mar_admin.username]|required');
+				/*$this->form_validation->set_rules('username', 'Username', 'trim|alpha_numeric|is_unique[mar_admin.username]|required');
 				$this->form_validation->set_rules('firstname', 'Firstname', 'trim|required');
 				$this->form_validation->set_rules('lastname', 'Lastname', 'trim|required');
 				$this->form_validation->set_rules('email', 'Email', 'trim|valid_email|is_unique[mar_admin.email]|required');
 				$this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[8]');
 				$this->form_validation->set_rules('confirm_password', 'Password Confirmation', 'trim|required|matches[password]');
-
 				if ($this->form_validation->run() == FALSE) {
 					$data = array(
 						'errors' => validation_errors()
 					);
-					$this->session->set_flashdata('form_data', $this->input->post());
-					$this->session->set_flashdata('errors', $data['errors']);
+
+					set_alert('errors', 'Les mots de passes sont differents');
 					redirect(base_url('admin/auth/register'),'refresh');
 				}
-				else{
+				else{*/
 					$data = array(
 						'username' => $this->input->post('username'),
 						'firstname' => $this->input->post('firstname'),
@@ -137,7 +136,7 @@ class Auth extends MY_Controller {
 						'admin_role_id' => 2, // By default i putt role is 2 for registraiton
 						'email' => $this->input->post('email'),
 						'password' =>  password_hash($this->input->post('password'), PASSWORD_BCRYPT),
-						'is_active' => 1,
+						'active' => 1,
 						'is_verify' => 0,
 						'token' => md5(rand(0,1000)),
 						'last_ip' => '',
@@ -167,7 +166,7 @@ class Auth extends MY_Controller {
 							echo 'Email Error';
 						}
 					}
-				}
+
 			}
 			else{
 				$data['title'] = 'Create an Account';

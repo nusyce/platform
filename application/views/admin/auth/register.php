@@ -21,36 +21,36 @@
 
     <div class="card">
       <div class="card-body register-card-body">
-        <p class="login-box-msg"><?= trans('register_new_membership') ?></p>
+        <h4 class="login-box-msg">register new membership</h4>
 
         <?php $this->load->view('admin/includes/_messages.php') ?>
 
         <?php echo form_open(base_url('admin/auth/register'), 'class="login-form" '); ?>
           <div class="form-group has-feedback">
-             <input type="text" name="username" id="name" value="" class="form-control" placeholder="<?= trans('username') ?>" >
+             <input type="text" name="username" id="name" value="" class="form-control" placeholder="username" >
           </div>
           <div class="form-group has-feedback">
-            <input type="text" name="firstname" id="firstname" value="" class="form-control" placeholder="<?= trans('firstname') ?>" >
+            <input type="text" name="firstname" id="firstname" value="" class="form-control" placeholder="firstname" >
           </div>
           <div class="form-group has-feedback">
-           <input type="text" name="lastname" id="lastname" value="" class="form-control" placeholder="<?= trans('lastname') ?>" >
+           <input type="text" name="lastname" id="lastname" value="" class="form-control" placeholder="lastname" >
           </div>
           <div class="form-group has-feedback">
-             <input type="text" name="email" id="email" value="" class="form-control" placeholder="<?= trans('email') ?>" >
+             <input type="text" name="email" id="email" value="" class="form-control" placeholder="email'" >
           </div>
           <div class="form-group has-feedback">
-             <input type="password" name="password" id="password" class="form-control" placeholder="<?= trans('password') ?>" >
+             <input type="password" name="password" id="password" class="form-control" placeholder="password" >
           </div>
           <div class="form-group has-feedback">
-              <input type="password" name="confirm_password" id="confirm_password" class="form-control" placeholder="<?= trans('confirm') ?>" >
+              <input type="password" name="confirm_password" id="confirm_password" class="form-control" placeholder="confirm" >
           </div>
           <div class="row">
             <div class="col-8">
-              <div class="checkbox icheck">
+
                 <label>
-                  <input type="checkbox"> <?= trans('i_agree_to_the') ?> <a href="#"><?= trans('terms') ?></a>
+                  <input type="checkbox"> i agree to the terms</a>
                 </label>
-              </div>
+
             </div>
             <?php if($this->recaptcha_status): ?>
               <div class="recaptcha-cnt">
@@ -58,14 +58,14 @@
               </div>
             <?php endif; ?>
             <!-- /.col -->
-            <div class="col-4">
-              <input type="submit" name="submit" id="submit" class="btn btn-primary btn-block btn-flat" value="<?= trans('register') ?>">
+			  <div class="col-5" >
+              <input type="submit" name="submit" id="submit" class="btn btn-primary btn-block btn-flat" value="register">
             </div>
             <!-- /.col -->
           </div>
         <?php echo form_close(); ?>
 
-        <a href="<?= base_url('admin/auth/login'); ?>" class="text-center"><?= trans('i_already_have_membership') ?></a>
+        <a href="<?= base_url('admin/auth/login'); ?>" class="text-center">i already have membership</a>
       </div>
       <!-- /.form-box -->
     </div><!-- /.card -->

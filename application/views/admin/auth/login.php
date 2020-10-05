@@ -80,11 +80,11 @@
 				</div>
 				<div class="row">
 					<div class="col-7">
-						<div class="checkbox icheck">
+
 							<label>
-								<input type="checkbox"> <?= trans('remember_me') ?>
+								<input type="checkbox">remember me
 							</label>
-						</div>
+
 					</div>
 
 					<!-- /.col -->
@@ -120,11 +120,11 @@
 				</div>
 				<div class="row">
 					<div class="col-7">
-						<div class="checkbox icheck">
+
 							<label>
-								<input type="checkbox"> <?= trans('remember_me') ?>
+								<input type="checkbox"> remember me
 							</label>
-						</div>
+
 					</div>
 					<!-- /.col -->
 					<div class="col-5" style="padding: 0">

@@ -6,7 +6,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 $aColumns = [
 	'admin_role_id',
 	'admin_role_title',
-	'active',
+	'active as active',
 
 ];
 $where = [];
@@ -36,12 +36,10 @@ foreach ($rResult as $aRow) {
 										<i class="fa fa-sliders"></i>
 									</a>';
 	$row[] = $_data;
-	if ($aRow['active'] == 1) {
-		$checked = 'checked';
-	}
+
 	$_data = '<div class="onoffswitch">
-                <input type="checkbox"  data-switch-url="' . admin_url() . 'admin_roles/change_status" name="onoffswitch" class="onoffswitch-checkbox" id="c_' . $aRow['admin_id'] . '" data-id="' . $aRow['admin_id'] . '" ' . $checked . '>
-                <label class="onoffswitch-label" for="c_' . $aRow['admin_id'] . '"></label>
+                <input type="checkbox"  data-switch-url="' . admin_url() . 'admin_roles/change_status" name="onoffswitch" class="onoffswitch-checkbox" id="c_' . $aRow['admin_role_id'] . '" data-id="' . $aRow['admin_role_id'] . '" ' . ($aRow['active'] == 1 ? 'checked' : '') . '>
+                <label class="onoffswitch-label" for="c_' . $aRow['admin_role_id'] . '"></label>
             </div>';
 	$row[] = $_data;
 

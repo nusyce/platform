@@ -65,7 +65,7 @@ foreach ($rResult as $aRow) {
 	$company = '<a href="' . $url . '">' . $company . '</a>';
 
 	$company .= '<div class="row-options">';
-	$company .= '<a href="' . admin_url('client/client/' . $aRow['userid'] . ($isPerson && $aRow['contact_id'] ? '?group=contacts' : '')) . '">' . _l('view') . '</a>';
+	$company .= '<a href="' . admin_url('client/client/' . $aRow['userid'] . ($isPerson && $aRow['contact_id'] ? '?group=contacts' : '')) . '">' . _l('Bearbeiten') . '</a>';
 
 	/*if ($aRow['registration_confirmed'] == 0 && is_admin()) {
 		$company .= ' | <a href="' . admin_url('clients/confirm_registration/' . $aRow['userid']) . '" class="text-success bold">' . _l('confirm_registration') . '</a>';
@@ -74,7 +74,7 @@ foreach ($rResult as $aRow) {
 		$company .= ' | <a href="' . admin_url('clients/client/' . $aRow['userid'] . '?tab=customer_admins') . '">' . _l('customer_contacts') . '</a>';
 	}*/
 	if ($hasPermissionDelete) {
-		$company .= ' | <a href="' . admin_url('client/delete/' . $aRow['userid']) . '" class="text-danger _delete">' . _l('delete') . '</a>';
+		$company .= ' | <a href="' . admin_url('client/delete/' . $aRow['userid']) . '" class="text-danger _delete">' . _l('löschen') . '</a>';
 	}
 
 	$company .= '</div>';

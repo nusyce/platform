@@ -66,15 +66,15 @@ class Admin_roles extends MY_Controller
 		if($this->input->post('submit'))
 		{
 			$this->admin_roles->update();
-			$this->session->set_flashdata('success', 'Record updated Successfully');		
+			$this->session->set_flashdata('success', 'Record updated Successfully');
 			redirect('admin/admin/admin_roles');
 		}
-		if($id=="") 
-			redirect('admin/admin_roles');
+		if($id=="")
+			redirect('admin/admin/admin_roles');
 
 		$data['title'] = trans('edit_role');
 		$data['record'] = $this->admin_roles->get_role_by_id($id);
-		
+
 
 		$this->load->view('admin/admin_roles/edit', $data);
 

@@ -33,7 +33,7 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1">admin_role</label>
+                                    <label for="exampleInputEmail1">Role</label>
                                     <input class="form-control" type="text" name="admin_role_title" value="<?=isset($record['admin_role_title'])?$record['admin_role_title']:''?>" required="">
                                 </div>
                             </div>
@@ -54,7 +54,7 @@
                                 </div>  
                             </div>
 							<div class="col-sm-12">
-								<button type="submit" class="btn btn-success pull-right">Speichern</button>
+								<input type="submit" name="submit" value="Speichern" class="btn btn-primary pull-right">
 							</div>
                         </div>
                     </div>

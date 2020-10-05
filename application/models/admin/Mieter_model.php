@@ -137,6 +137,7 @@ class Mieter_model extends CI_Model
 		$this->db->set('active', $this->input->post('status'));
 		$this->db->where('id', $this->input->post('id'));
 		$this->db->update('mar_mieters');
+		set_alert('success', 'changed_successfully');
 	}
 
 	public function add($data)
@@ -145,8 +146,8 @@ class Mieter_model extends CI_Model
 
 		$data['created_at'] = date('d-m-y h:i:s');
 		$this->db->insert('mar_mieters', $data);
-		$this->session->set_flashdata('success', 'Mieter has been Added Successfully.');
-		redirect('admin/mieter/');
+		return true;
+
 
 	}
 
@@ -155,8 +156,8 @@ class Mieter_model extends CI_Model
 
 
 		$this->db->delete('mar_mieters', array('id' => $id));
-		$this->session->set_flashdata('error', 'Mieter has been Deleted Successfully.');
-		redirect('admin/mieter/');
+		return true;
+
 
 	}
 
@@ -165,9 +166,8 @@ class Mieter_model extends CI_Model
 
 		$this->db->where(array('id' => $id));
 		$this->db->update('mar_mieters', $data);
+		return true;
 
-		$this->session->set_flashdata('success', 'Mieter has been Updated Successfully.');
-		redirect('admin/mieter/');
 
 
 	}

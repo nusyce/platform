@@ -39,7 +39,12 @@ class Client extends MY_Controller {
 	{
 		// $records = $this->activity_model->get_activity_log();
 		// var_dump($records);exit();
-		$this->client_model->delete($id);
+		$result=$this->client_model->delete($id);
+		if($result){
+			set_alert('error','Deleted Successfully.');
+			redirect('admin/client/');
+
+		}
 
 	}
 	public function render($client = '')
@@ -75,11 +80,21 @@ class Client extends MY_Controller {
 			if(isset($_POST['userid']) && !empty($_POST['userid']))
 			{
 
-				$this->client_model->update($_POST['userid'],$_POST);
+				$result=$this->client_model->update($_POST['userid'],$_POST);
+				if($result){
+					set_alert('success','Updated Successfully.');
+					redirect('admin/client/');
+
+				}
 			}else
 			{
 
-				$this->client_model->add($_POST);
+				$result=$this->client_model->add($_POST);
+				if($result){
+					set_alert('success', 'Added Successfully');
+					redirect('admin/client/');
+
+				}
 			}
 
 		}

@@ -341,7 +341,7 @@ function render_datatable($headings = [], $class = '', $additional_classes = [''
 function get_datatables_language_array()
 {
 	$lang = [
-		'emptyTable' => preg_replace("/{(\d+)}/", _l('dt_entries'), _l('dt_empty_table')),
+		'emptyTable' => preg_replace("/{(\d+)}/", _l('dt_entries'), _l('Kein Aufnehmen')),
 		'info' => 'Zeige _START_ bis _END_ von _TOTAL_ Einträge',
 		'infoEmpty' => preg_replace("/{(\d+)}/", _l('dt_entries'), _l('dt_info_empty')),
 		'infoFiltered' => preg_replace("/{(\d+)}/", _l('dt_entries'), _l('dt_info_filtered')),

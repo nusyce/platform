@@ -58,11 +58,11 @@
 				</div>
 				<div class="row">
 					<div class="col-8">
-						<div class="checkbox icheck">
+
 							<label>
-								<input type="checkbox"> <?= trans('remember_me') ?>
+								<input type="checkbox"> remember me
 							</label>
-						</div>
+
 					</div>
 					<!-- /.col -->
 					<div class="col-4">

@@ -61,7 +61,7 @@
 				function (data) {
 
 					document.getElementById($(this).attr('id')).checked = $(this).is(':checked') == true ? 'checked' : '';
-					$.notify("Status Changed Successfully", "success");
+					//$.notify("Status Changed Successfully", "success");
 				});
 	});
 	$(document).ready(function () {

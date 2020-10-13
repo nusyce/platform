@@ -135,7 +135,7 @@ class Admin_roles extends MY_Controller
 
 		$this->rbac->check_operation_access(); // check opration permission
 
-		if($this->input->post('submit')){
+		if($this->input->server('REQUEST_METHOD') == 'POST'){
 			$this->form_validation->set_rules('module_name', 'Module Name', 'trim|required');
 			$this->form_validation->set_rules('controller_name', 'Controller Name', 'trim|required');
 			$this->form_validation->set_rules('fa_icon', 'fa_icon', 'trim');
@@ -146,7 +146,7 @@ class Admin_roles extends MY_Controller
 				$data = array(
 					'errors' => validation_errors()
 				);
-				$this->session->set_flashdata('errors', $data['errors']);
+				set_alert('errors', 'Données du formulaire incorrect');
 				redirect(base_url('admin/admin_roles/module_add'),'refresh');
 			}
 			else{

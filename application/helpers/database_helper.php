@@ -52,9 +52,9 @@ function get_views_tracking($rel_type, $rel_id)
  * @since  2.3.2 because of deprecation of logActivity
  * Log Activity for everything
  */
-function log_activity($description, $staffid = null)
+function log_activity($description)
 {
-    return \app\services\ActivityLogger::log($description, $staffid);
+    return \app\models\admin\Activity_model::add_log($description);
 }
 
 /**

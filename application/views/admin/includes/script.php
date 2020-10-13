@@ -44,6 +44,7 @@
 <!-- BEGIN: Page JS-->
 <!--<script src="<? /*= base_url()*/ ?>/assets/app/js/scripts/pages/dashboard-ecommerce.js"></script>
 -->
+<script <script type="text/javascript" id="tinymce-js" src="<?= base_url() ?>/assets/plugin/tinymce.min.js" ></script>
 <script src="<?= base_url() ?>/assets/plugins/validation/app-form-validation.js"></script>
 <!-- END: Page JS-->
 <script>

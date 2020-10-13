@@ -8,6 +8,7 @@ class Client extends MY_Controller {
 		auth_check(); // check login auth
 		$this->rbac->check_module_access();
 		$this->load->model('admin/Client_model', 'client_model');
+
 	}
 
 	public function index()

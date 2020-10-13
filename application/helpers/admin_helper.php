@@ -4,7 +4,23 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 use app\services\messages\Message;
 use app\services\messages\PopupMessage;
+function get_current($id = null)
+{
+	if (empty($id) && isset($GLOBALS['current_user'])) {
+		return $GLOBALS['current_user'];
+	}
 
+	// Staff not logged in
+	if (empty($id)) {
+		return null;
+	}
+
+	if (!class_exists('Admin_model', false)) {
+		get_instance()->load->model('Admin_model');
+	}
+
+	return get_instance()->Admin_model->get_admin_by_id($id);
+}
 function app_admin_head()
 {
     hooks()->do_action('app_admin_head');

@@ -15,6 +15,7 @@ class Client_model extends CI_Model{
 			
 			$data['datecreated']=date('d-m-y h:i:s');
 			$this->db->insert('mar_clients', $data);
+		log_activity('New client [ID: ' . $id . ']');
 return true;
 
 

@@ -15,9 +15,12 @@ class Activity extends MY_Controller {
 		// $records = $this->activity_model->get_activity_log();
 		// var_dump($records);exit();
 		$data['title'] = 'User Activity Log';
-		$this->load->view('admin/includes/_header');
 		$this->load->view('admin/activity/activity-list', $data);
-		$this->load->view('admin/includes/_footer');
+
+	}
+	public function render($activity = '')
+	{
+		$this->app->get_renderable_data('activity/table', ['activity' => $activity]);
 	}
 
 	public function datatable_json()
@@ -29,10 +32,10 @@ class Activity extends MY_Controller {
 		foreach ($records['data']  as $row) 
 		{  
 			$data[]= array(
-				++$i,
-				($row['username']) ? $row['username'] : $row['adminname'],
+
 				$row['description'],
-				date('F d, Y H:i',strtotime($row['created_at'])),	
+				date('F d, Y H:i',strtotime($row['created_at'])),
+				($row['username']) ? $row['username'] : $row['adminname'],
 			);
 		}
 		$records['data'] = $data;

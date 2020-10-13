@@ -27,13 +27,17 @@
 				<div class="d-inline-block" style="display: flex !important;">
 
 					<h3 class="card-title nomb" ><span>Activity Log</span>
-						</h3>
+
 					</h3>
 					<a style="margin-left: 10px" href="<?php echo base_url('admin/client/translation'); ?>"
-					   class="btn btn-info btntrans pull-left display-block"><?php echo 'Translate'; ?></a>
+					   class="btn btn-danger btntrans pull-left display-block"><?php echo 'LOG LEEREN'; ?></a>
 				</div>
 			</div>
 
+<div style="width: 25%">
+	<?php echo render_input('activity_log_date', 'utility_activity_log_filter_by_date', $value,'date'); ?>
+
+</div>
 
 			<?php
 			$total = ''; ?>
@@ -94,15 +98,8 @@
     if (table_activity.length) {
         // Add additional server params $_POST
         var LeadsServerParams = {
-            "strabe": "[name='strabe']",
-            "hausnummer": "[name='hausnummer']",
-            "mobiliert": "[name='mobiliert']",
-            "etage": "[name='etage']",
-            "plz": "[name='plz']",
-            "wohnungsnumme": "[name='wohnungsnummer']",
-            "stadt": "[name='stadt']",
-            "project": "[name='project']",
-            "flugel": "[name='flugel']",
+            "activity_log_date": "[name='activity_log_date']",
+
         };
 
 

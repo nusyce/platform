@@ -137,6 +137,7 @@ class Mieter_model extends CI_Model
 		$this->db->set('active', $this->input->post('status'));
 		$this->db->where('id', $this->input->post('id'));
 		$this->db->update('mar_mieters');
+		$this->Activity_model->add_log('Status Mieter changed [ID: ' . $this->input->post('id') . ']');
 		set_alert('success', 'changed_successfully');
 	}
 
@@ -146,6 +147,7 @@ class Mieter_model extends CI_Model
 
 		$data['created_at'] = date('d-m-y h:i:s');
 		$this->db->insert('mar_mieters', $data);
+		$this->Activity_model->add_log('New mieter [ID: ' . $this->db->insert_id() . ']');
 		return true;
 
 
@@ -156,6 +158,7 @@ class Mieter_model extends CI_Model
 
 
 		$this->db->delete('mar_mieters', array('id' => $id));
+		$this->Activity_model->add_log('Mieter deleted [ID: ' . $id . ']');
 		return true;
 
 
@@ -166,6 +169,7 @@ class Mieter_model extends CI_Model
 
 		$this->db->where(array('id' => $id));
 		$this->db->update('mar_mieters', $data);
+		$this->Activity_model->add_log('Mieter Updated [ID: ' . $id . ']');
 		return true;
 
 

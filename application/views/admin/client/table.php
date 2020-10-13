@@ -95,8 +95,11 @@ foreach ($rResult as $aRow) {
 	$row[] = ($aRow['phonenumber'] ? '<a href="tel:' . $aRow['phonenumber'] . '">' . $aRow['phonenumber'] . '</a>' : '');
 
 	// Toggle active/inactive customer
-	if ($aRow['active'] == 1) {
+	if ($aRow['active'] == 1 || $aRow['active'] == '1') {
 		$checked = 'checked';
+	}else
+	{
+		$checked = '';
 	}
 	$toggleActive = '<div class="onoffswitch" >
     <input type="checkbox" data-switch-url="' . admin_url() . 'client/change_status" name="onoffswitch" class="onoffswitch-checkbox" id="c_' . $aRow['userid'] . '" data-id="' . $aRow['userid'] . '" ' . $checked. '>

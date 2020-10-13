@@ -15,7 +15,7 @@ class Client_model extends CI_Model{
 			
 			$data['datecreated']=date('d-m-y h:i:s');
 			$this->db->insert('mar_clients', $data);
-		log_activity('New client [ID: ' . $id . ']');
+		$this->Activity_model->add_log('New client [ID: ' . $this->db->insert_id() . ']');
 return true;
 
 
@@ -25,6 +25,7 @@ return true;
 		$this->db->set('active',$this->input->post('status'));
 		$this->db->where('userid',$this->input->post('id'));
 		$this->db->update('mar_clients');
+		$this->Activity_model->add_log('Status client changed [ID: ' . $this->input->post('id') . ']');
 		set_alert('success', 'changed_successfully');
 	}
 	public function get_by_id($id){
@@ -38,6 +39,7 @@ return true;
 
 
 		$this->db->delete('mar_clients', array('userid' => $id));
+		$this->Activity_model->add_log('Client deleted [ID: ' . $id . ']');
 		return true;
 
 
@@ -46,6 +48,7 @@ return true;
 		
 		    $this->db->where(array('userid' => $id));
 			$this->db->update('mar_clients', $data);
+				$this->Activity_model->add_log('Client Updated [ID: ' . $id . ']');
 		return true;
 
 

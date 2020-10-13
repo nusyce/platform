@@ -42,8 +42,11 @@ foreach ($rResult as $aRow) {
 	$row[] = $_data;
 	$row[] = $aRow['mobile_no'];
 	$row[] = $aRow['updated_at'];
-	if ($aRow['active'] == 1) {
+	if ($aRow['active'] == 1 || $aRow['active'] == '1') {
 		$checked = 'checked';
+	}else
+	{
+		$checked = '';
 	}
 
 	$_data = '<div class="onoffswitch">

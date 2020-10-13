@@ -10,7 +10,7 @@ class Activity_model extends CI_Model{
 			mar_admin.username
 		');
 
-		$this->db->join('mar_admin','mar_admin.admin_id=mar_activity_log.admin_id','left');
+		$this->db->join('mar_admin','mar_admin.admin_id=mar_activity_log.admin_id');
 		$this->db->order_by('mar_activity_log.id','desc');
 		return $this->db->get('ci_activity_log')->result_array();
 	}

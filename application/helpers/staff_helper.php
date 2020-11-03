@@ -313,11 +313,11 @@ function get_staff($id = null)
         return null;
     }
 
-    if (!class_exists('staff_model', false)) {
-        get_instance()->load->model('staff_model');
+    if (!class_exists('admin_model', false)) {
+        get_instance()->load->model('admin_model');
     }
 
-    return get_instance()->staff_model->get($id);
+    return get_instance()->admin_model->get_admin_by_id($id);
 }
 
 /**
@@ -330,7 +330,7 @@ function staff_profile_image_url($staff_id, $type = 'small')
 {
     $url = base_url('assets/images/user-placeholder.jpg');
 
-    if ((string)$staff_id === (string)get_staff_user_id() && isset($GLOBALS['current_user'])) {
+    if ((string)$staff_id === (string)get_user_id() && isset($GLOBALS['current_user'])) {
         $staff = $GLOBALS['current_user'];
     } else {
         $CI = &get_instance();
@@ -373,7 +373,7 @@ function staff_profile_image($id, $classes = ['staff-profile-image'], $type = 's
 
     $blankImageFormatted = '<img src="' . $url . '" ' . $_attributes . ' class="' . implode(' ', $classes) . '" />';
 
-    if ((string)$id === (string)get_staff_user_id() && isset($GLOBALS['current_user'])) {
+    if ((string)$id === (string)get_user_id() && isset($GLOBALS['current_user'])) {
         $result = $GLOBALS['current_user'];
     } else {
         $CI = &get_instance();
@@ -381,7 +381,7 @@ function staff_profile_image($id, $classes = ['staff-profile-image'], $type = 's
 
         if (!$result) {
             $CI->db->select('profile_image,firstname,lastname');
-            $CI->db->where('staffid', $id);
+            $CI->db->where('admin_id', $id);
             $result = $CI->db->get(db_prefix() . 'staff')->row();
             $CI->app_object_cache->add('staff-profile-image-data-' . $id, $result);
         }
@@ -410,9 +410,9 @@ function staff_profile_image($id, $classes = ['staff-profile-image'], $type = 's
  * @param string $userid Optional
  * @return string Firstname and Lastname
  */
-function get_staff_full_name($userid = '')
+function get_user_full_name($userid = '')
 {
-    $tmpStaffUserId = get_staff_user_id();
+    $tmpStaffUserId = get_user_id();
     if ($userid == '' || $userid == $tmpStaffUserId) {
         if (isset($GLOBALS['current_user'])) {
             return $GLOBALS['current_user']->firstname . ' ' . $GLOBALS['current_user']->lastname;
@@ -446,7 +446,7 @@ function get_staff_default_language($staffid = '')
             return $GLOBALS['current_user']->default_language;
         }
 
-        $staffid = get_staff_user_id();
+        $staffid = get_user_id();
     }
     $CI = &get_instance();
     $CI->db->select('default_language');
@@ -462,7 +462,7 @@ function get_staff_default_language($staffid = '')
 
 function get_staff_recent_search_history($staff_id = null)
 {
-    $recentSearches = get_staff_meta($staff_id ? $staff_id : get_staff_user_id(), 'recent_searches');
+    $recentSearches = get_staff_meta($staff_id ? $staff_id : get_user_id(), 'recent_searches');
 
     if ($recentSearches == '') {
         $recentSearches = [];
@@ -480,7 +480,7 @@ function update_staff_recent_search_history($history, $staff_id = null)
     $history = array_unique($history);
     $history = array_splice($history, 0, $totalRecentSearches);
 
-    update_staff_meta($staff_id ? $staff_id : get_staff_user_id(), 'recent_searches', json_encode($history));
+    update_staff_meta($staff_id ? $staff_id : get_user_id(), 'recent_searches', json_encode($history));
 
     return $history;
 }
@@ -500,7 +500,7 @@ function is_staff_member($staff_id = '')
         if (isset($GLOBALS['current_user'])) {
             return $GLOBALS['current_user']->is_not_staff === '0';
         }
-        $staff_id = get_staff_user_id();
+        $staff_id = get_user_id();
     }
 
     $CI->db->where('staffid', $staff_id)

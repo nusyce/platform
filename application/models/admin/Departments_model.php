@@ -174,7 +174,7 @@ class Departments_model extends CI_Model
     public function get_staff_departments($userid = false, $onlyids = false)
     {
         if ($userid == false) {
-            $userid = get_staff_user_id();
+            $userid = get_user_id();
         }
         if ($onlyids == false) {
             $this->db->select();

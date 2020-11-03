@@ -310,7 +310,7 @@ class App
 	 */
 	public function get_media_folder()
 	{
-		return hooks()->apply_filters('get_media_folder', $this->media_folder);
+		return  $this->media_folder;
 	}
 
 	/**

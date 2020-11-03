@@ -37,6 +37,7 @@ class Paypal extends MY_Controller
     function create_payment_with_paypal()
     {
 
+
         // setup PayPal api context
         $this->_api_context->setConfig($this->config->item('settings'));
 
@@ -105,6 +106,7 @@ class Paypal extends MY_Controller
 		$pack_data = array(
 			'id' => $this->input->post('pack_id'),
 			'type' => 'monthly',
+			'company_id' => get_user_company(),
 			'created_at' => date('d-m-y h:i:s'),
 
 		);

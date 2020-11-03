@@ -168,7 +168,7 @@ class Projects_merge_fields extends App_merge_fields
         if (is_client_logged_in()) {
             $cf = get_contact_full_name(get_contact_user_id());
         } else {
-            $cf = get_staff_full_name(get_staff_user_id());
+            $cf = get_user_full_name(get_user_id());
         }
 
         $fields['{file_creator}']       = $cf;

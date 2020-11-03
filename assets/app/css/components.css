@@ -5,7 +5,7 @@
 - Responsive Layout CSS
 - Sidebar
 - Footer CSS
-- Main Menu 
+- Main Menu
 - Content Helpers
 -   Display
 -   Borders
@@ -870,7 +870,7 @@ body.footer-hidden footer {
 }
 
 .dropdown-notification {
-	padding: 13px 0;
+	padding: 0;
 }
 
 .dropdown-notification .nav-link-label {
@@ -3964,12 +3964,13 @@ tr:hover .row-options {
 }
 
 .panel-body {
-	background: #fbfdff;
+	background: white;
 	border: 1px solid #dce1ef;
 	border-radius: 4px;
 	padding: 20px;
-	margin-bottom: 50px;
-	padding-bottom: 60px;
+	/* margin-bottom: 50px; */
+	/* margin-top: 20px; */
+	/* padding-bottom: 60px; */
 	position: relative;
 }
 
@@ -4179,4 +4180,13 @@ table.dataTable td, table.dataTable th {
 
 .dataTables_paginate {
 	float: right !important;
+}
+.block-reply{
+	margin-top: 25px !important;
+}
+.panel-footer{
+	background-color: #f7f9fa;
+	font-size: 12px;
+	padding-bottom: 5px;
+	padding-top: 5px;
 }

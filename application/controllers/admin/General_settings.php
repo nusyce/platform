@@ -77,10 +77,10 @@ class General_settings extends MY_Controller {
 		if(!empty($_FILES['logo']['name']))
 		{
 			$this->functions->delete_file($old_logo);
-
+			$this->functions->delete_file($old_favicon);
 			$result = $this->functions->file_insert($path, 'logo', 'image', '9097152');
 			if($result['status'] == 1){
-				$data['logo'] = $path.$result['msg'];
+				$data['favicon'] = $path.$result['msg'];
 			}
 			else{
 				$this->session->set_flashdata('error', $result['msg']);

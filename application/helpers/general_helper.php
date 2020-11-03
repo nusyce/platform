@@ -36,7 +36,7 @@ function is_rtl($client_area = false)
 		if (isset($GLOBALS['current_user'])) {
 			$direction = $GLOBALS['current_user']->direction;
 		} else {
-			$CI->db->select('direction')->from(db_prefix() . 'staff')->where('staffid', get_staff_user_id());
+			$CI->db->select('direction')->from(db_prefix() . 'staff')->where('staffid', get_user_id());
 			$direction = $CI->db->get()->row()->direction;
 		}
 
@@ -91,9 +91,9 @@ function render_project_select($projekts, $selected = '', $lang_key = '', $name 
 {
 
 	$CI = &get_instance();
-	$CI->load->model('Projects_model');
+	$CI->load->model('admin/Projects_model');
 	$projekts = $CI->Projects_model->get();
-	return render_select($name, $projekts, ['id', 'name'], $lang_key, $selected);
+	return render_select($name, $projekts, ['id', 'name'], get_transl_field('tsl_tasks', 'projekt', 'Projekt'), $selected);
 
 }
 
@@ -216,7 +216,7 @@ function get_current_date_format($php = false)
 	$format = get_option('dateformat');
 	$format = explode('|', $format);
 
-	$format = hooks()->apply_filters('get_current_date_format', $format, $php);
+	$format = $format;
 
 	if ($php == false) {
 		return $format[1];
@@ -260,37 +260,46 @@ function is_staff_logged_in()
 {
 	return get_instance()->session->has_userdata('staff_logged_in');
 }
+function my_pusher(){
+	$options = array(
+		'cluster' => 'eu',
+		'useTLS' => true
+	);
+	$pusher = new Pusher\Pusher(
+		'30fc7858781856990d1c',
+		'0b76ddb72a6f22f071b1',
+		'1090878',
+		$options
+	);
+	return $pusher;
 
+}
 /**
  * Return logged staff User ID from session
  * @return mixed
  */
-function get_staff_user_id()
+function get_user_id()
 {
 	$CI = &get_instance();
-
-	if (defined('API')) {
-		$CI->load->config('rest');
-
-		$api_key_variable = $CI->config->item('rest_key_name');
-		$key_name = 'HTTP_' . strtoupper(str_replace('-', '_', $api_key_variable));
-
-		if ($key = $CI->input->server($key_name)) {
-			$CI->db->where('key', $key);
-			$key = $CI->db->get($CI->config->item('rest_keys_table'))->row();
-			if ($key) {
-				return $key->user_id;
-			}
-		}
-	}
-
-	if (!is_staff_logged_in()) {
-		return false;
-	}
-
 	return $CI->session->userdata('admin_id');
 }
-
+function get_user_company()
+{
+	$CI = &get_instance();
+	return $CI->session->userdata('my_company');
+}
+function get_user_company_id()
+{
+	if(!empty(get_user_company()))
+	{
+		$id=get_user_company()->id;
+	}
+	else
+	{
+		$id=1;
+	}
+	return $id;
+}
 /**
  * Return logged client User ID from session
  * @return mixed
@@ -571,7 +580,7 @@ function _dt($date, $is_timesheet = false)
 		$date = date(get_current_date_format(true) . ' g:i A', $date);
 	}
 
-	return hooks()->apply_filters('after_format_datetime', $date, ['original' => $original, 'is_timesheet' => $is_timesheet]);
+	return $date;
 }
 
 /**
@@ -588,10 +597,7 @@ function to_sql_date($date, $datetime = false)
 	$to_date = 'Y-m-d';
 	$from_format = get_current_date_format(true);
 
-	$date = hooks()->apply_filters('before_sql_date_format', $date, [
-			'from_format' => $from_format,
-			'is_datetime' => $datetime,
-	]);
+	$date = $date;
 
 	if ($datetime == false) {
 		return hooks()->apply_filters('to_sql_date_formatted', date_format(date_create_from_format($from_format, $date), $to_date));
@@ -618,7 +624,7 @@ function to_sql_date($date, $datetime = false)
 	$date = _simplify_date_fix($date, $from_format);
 	$d = strftime('%Y-%m-%d %H:%M:%S', strtotime($date));
 
-	return hooks()->apply_filters('to_sql_date_formatted', $d);
+	return $d;
 }
 
 function to_sql_datedv($date)
@@ -838,10 +844,10 @@ function csrf_jquery_token()
  */
 function app_happy_text($text)
 {
-	$regex = hooks()->apply_filters('app_happy_text_regex', 'congratulations!?|congrats!?|happy!?|feel happy!?|awesome!?|yay!?');
+	$regex = 'congratulations!?|congrats!?|happy!?|feel happy!?|awesome!?|yay!?';
 	$re = '/' . $regex . '/i';
 
-	$app_happy_color = hooks()->apply_filters('app_happy_text_color', 'rgb(255, 59, 0)');
+	$app_happy_color ='rgb(255, 59, 0)';
 
 	preg_match_all($re, $text, $matches, PREG_SET_ORDER, 0);
 	foreach ($matches as $match) {

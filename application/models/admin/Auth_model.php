@@ -25,6 +25,12 @@ class Auth_model extends CI_Model{
 	//--------------------------------------------------------------------
 	public function register($data){
 		$this->db->insert('mar_admin', $data);
+		return $this->db->insert_id();
+	}
+	public function add_company_id($user_id,$company_id){
+		$this->db->set('company_id',$company_id);
+		$this->db->where('admin_id',$user_id);
+		$this->db->update('mar_admin');
 		return true;
 	}
 

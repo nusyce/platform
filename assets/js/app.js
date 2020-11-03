@@ -5,7 +5,392 @@
 
 $.fn.dataTableExt.sErrMode = 'throw';
 
+function new_task(url) {
+	url = typeof (url) != 'undefined' ? url : admin_url + 'task/task';
 
+	var $leadModal = $('#lead-modal');
+	if ($leadModal.is(':visible')) {
+		url += '&opened_from_lead_id=' + $leadModal.find('input[name="leadid"]').val();
+		if (url.indexOf('?') === -1) {
+			url = url.replace('&', '?');
+		}
+		$leadModal.modal('hide');
+	}
+
+	var $taskSingleModal = $('#task-modal');
+	if ($taskSingleModal.is(':visible')) {
+		$taskSingleModal.modal('hide');
+	}
+
+	var $taskEditModal = $('#_task_modal');
+	if ($taskEditModal.is(':visible')) {
+		$taskEditModal.modal('hide');
+	}
+
+	requestGet(url).done(function (response) {
+		$('#_task').html(response);
+		init_selectpicker();
+		$("body").find('#_task_modal').modal({show: true, backdrop: 'static'});
+	}).fail(function (error) {
+		alert_float('danger', error.responseText);
+	})
+}
+function edit_task(task_id) {
+	requestGet('task/task/' + task_id).done(function (response) {
+
+		$('#_task').html(response);
+		$('#task-modal').modal('hide');
+		init_selectpicker();
+		$("body").find('#_task_modal').modal({show: true, backdrop: 'static'});
+	});
+}
+function init_task_modal(task_id, comment_id) {
+
+	var queryStr = '';
+	var $leadModal = $('#lead-modal');
+	var $taskAddEditModal = $('#_task_modal');
+	if ($leadModal.is(':visible')) {
+		queryStr += '?opened_from_lead_id=' + $leadModal.find('input[name="leadid"]').val();
+		$leadModal.modal('hide');
+	} else if ($taskAddEditModal.attr('data-lead-id') != undefined) {
+		queryStr += '?opened_from_lead_id=' + $taskAddEditModal.attr('data-lead-id');
+	}
+
+	requestGet('task/get_task_data/' + task_id + queryStr).done(function (response) {
+		$("#task-modal").remove();
+		$(document.body).append(response);
+
+		$("body").find('#task-modal').modal({show: true, backdrop: 'static'});
+		if (typeof (comment_id) != 'undefined') {
+			setTimeout(function () {
+				$('[data-task-comment-href-id="' + comment_id + '"]').click();
+			}, 1000);
+		}
+		recalculate_checklist_items_progress();
+	}).fail(function (data) {
+		$('#task-modal').modal('hide');
+		alert_float('danger', data.responseText);
+	});
+}
+
+function _task_append_html(html) {
+
+	var $taskModal = $('#task-modal');
+
+	$taskModal.find('.data').html(html);
+	//init_tasks_checklist_items(false, task_id);
+	recalculate_checklist_items_progress();
+	do_task_checklist_items_height();
+
+	setTimeout(function () {
+		$taskModal.modal('show');
+		// Init_tags_input is trigged too when task modal is shown
+		// This line prevents triggering twice.
+		if ($taskModal.is(':visible')) {
+			init_tags_inputs();
+		}
+		init_form_reminder('task');
+		fix_task_modal_left_col_height();
+
+		// Show the comment area on mobile when task modal is opened
+		// Because the user may want only to upload file, but if the comment textarea is not focused the dropzone won't be shown
+
+		if (is_mobile()) {
+			init_new_task_comment(true);
+		}
+
+	}, 150);
+}
+function fix_task_modal_left_col_height() {
+	if (!is_mobile()) {
+		$("body").find('.task-single-col-left').css('min-height', $("body").find('.task-single-col-right').outerHeight(true) + 'px');
+	}
+}
+function init_form_reminder(rel_type) {
+
+	var forms = !rel_type ? $('[id^="form-reminder-"]') : $('#form-reminder-' + rel_type);
+
+	$.each(forms, function (i, form) {
+		$(form).appFormValidator({
+			rules: {
+				date: 'required',
+				staff: 'required',
+				description: 'required'
+			},
+			submitHandler: reminderFormHandler
+		});
+	});
+
+}
+$("body").on('keypress', 'textarea[name="checklist-description"]', function (event) {
+	if (event.which == '13') {
+		var that = $(this);
+		update_task_checklist_item(that).done(function () {
+			add_task_checklist_item(that.attr('data-taskid'));init_task_modal()
+		});
+		return false;
+	}
+});
+
+/* Update tasks checklist items when focusing out */
+$("body").on('blur paste', 'textarea[name="checklist-description"]', function () {
+	update_task_checklist_item($(this));
+});
+$("body").on('change', 'input[name="checklist-box"]', function () {
+	requestGet(admin_url + 'task/checkbox_action/' + ($(this).parents('.checklist').data('checklist-id')) + '/' + ($(this).prop('checked') === true ? 1 : 0));
+	recalculate_checklist_items_progress();
+
+});
+function recalculate_checklist_items_progress() {
+
+	var total_finished = $('input[name="checklist-box"]:checked').length;
+	var total_checklist_items = $('input[name="checklist-box"]').length;
+
+	var percent = 0,
+		task_progress_bar = $('.task-progress-bar');
+	/*if (total_checklist_items == 0) {
+		// remove the heading for checklist items
+		$("body").find('.chk-heading').remove();
+		$('#task-no-checklist-items').removeClass('hide');
+	} else {
+		$('#task-no-checklist-items').addClass('hide');
+	}*/
+	if (total_checklist_items > 0) {
+		task_progress_bar.parents('.progress').removeClass('hide');
+		percent = (total_finished * 100) / total_checklist_items;
+	} else {
+		task_progress_bar.parents('.progress').addClass('hide');
+		return false;
+	}
+
+	task_progress_bar.css('width', percent.toFixed(2) + '%');
+	task_progress_bar.text(percent.toFixed(2) + '%');
+}
+function do_task_checklist_items_height(task_checklist_items) {
+	if (typeof (task_checklist_items) == 'undefined') {
+		task_checklist_items = $("body").find("textarea[name='checklist-description']");
+	}
+
+	$.each(task_checklist_items, function () {
+		var val = $(this).val();
+		if ($(this).outerHeight() < this.scrollHeight + parseFloat($(this).css("borderTopWidth")) + parseFloat($(this).css("borderBottomWidth"))) {
+			$(this).height(0).height(this.scrollHeight);
+			$(this).parents('.checklist').height(this.scrollHeight);
+		}
+		if (val === '') {
+			$(this).removeAttr('style');
+			$(this).parents('.checklist').removeAttr('style');
+		}
+	});
+}
+function init_new_task_comment(manual) {
+
+	if (tinymce.editors.task_comment) {
+		tinymce.remove('#task_comment');
+	}
+
+	if (typeof (taskCommentAttachmentDropzone) != 'undefined') {
+		taskCommentAttachmentDropzone.destroy();
+	}
+
+	$('#dropzoneTaskComment').removeClass('hide');
+	$('#addTaskCommentBtn').removeClass('hide');
+
+	taskCommentAttachmentDropzone = new Dropzone("#task-comment-form", appCreateDropzoneOptions({
+		uploadMultiple: true,
+		clickable: '#dropzoneTaskComment',
+		previewsContainer: '.dropzone-task-comment-previews',
+		autoProcessQueue: false,
+		addRemoveLinks: true,
+		parallelUploads: 20,
+		maxFiles: 20,
+		paramName: 'file',
+		sending: function (file, xhr, formData) {
+			formData.append("taskid", $('#addTaskCommentBtn').attr('data-comment-task-id'));
+			if (tinyMCE.activeEditor) {
+				formData.append("content", tinyMCE.activeEditor.getContent());
+			} else {
+				formData.append("content", $('#task_comment').val());
+			}
+			formData.append("moment", 0);
+		},
+		success: function (files, response) {
+			response = JSON.parse(response);
+			if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) {
+				_task_append_html(response.taskHtml);
+				tinymce.remove('#task_comment');
+			}
+		}
+	}));
+
+	var editorConfig = _simple_editor_config();
+	if (typeof (manual) == 'undefined' || manual === false) {
+		editorConfig.auto_focus = true;
+	}
+	var iOS = is_ios();
+	// Not working fine on iOs
+	if (!iOS) {
+		init_editor('#task_comment', editorConfig);
+	}
+}
+function delete_checklist_item(id, field) {
+	requestGetJSON('task/delete_checklist_item/' + id).done(function (response) {
+		if (response.success === true || response.success == 'true') {
+			$(field).parents('.checklist').remove();
+			recalculate_checklist_items_progress();
+		}
+	});
+}
+
+// Fetches task checklist items.
+function init_tasks_checklist_items(is_new, task_id) {
+	$.post(admin_url + 'task/init_checklist_items', {
+		taskid: task_id
+	}).done(function (data) {
+		$('#checklist-items').html(data);
+		if (typeof (is_new) != 'undefined') {
+			var first = $('#checklist-items').find('.checklist textarea').eq(0);
+			if (first.val() === '') {
+				first.focus();
+			}
+		}
+		recalculate_checklist_items_progress();
+		update_checklist_order();
+	});
+}
+function init_tags_inputs() {
+	appTagsInput();
+}
+
+
+
+
+function update_checklist_order() {
+	var order = [];
+	var items = $("body").find('.checklist');
+	if (items.length === 0) {
+		return;
+	}
+	var i = 1;
+	$.each(items, function () {
+		order.push([$(this).data('checklist-id'), i]);
+		i++;
+	});
+	var data = {};
+	data.order = order;
+	$.post(admin_url + 'task/update_checklist_order', data);
+}
+$(document).ready(function(){
+	$('[data-toggle="tooltip"]').tooltip();
+});
+
+// New task checklist item
+function add_task_checklist_item(task_id, description, e) {
+	if (e) {
+		$(e).addClass('disabled');
+	}
+
+	description = typeof (description) == 'undefined' ? '' : description;
+
+	$.post(admin_url + 'task/add_checklist_item', {
+		taskid: task_id,
+		description: description
+	}).done(function () {
+		init_tasks_checklist_items(true, task_id);
+	}).always(function () {
+		if (e) {
+			$(e).removeClass('disabled');
+		}
+	})
+}
+
+function update_task_checklist_item(textArea) {
+	var deferred = $.Deferred();
+	setTimeout(function () {
+		var description = textArea.val();
+		description = description.trim();
+		var listid = textArea.parents('.checklist').data('checklist-id');
+
+		$.post(admin_url + 'task/update_checklist_item', {
+			description: description,
+			listid: listid
+		}).done(function (response) {
+			deferred.resolve();
+			response = JSON.parse(response);
+			if (response.can_be_template === true) {
+				textArea.parents('.checklist').find('.save-checklist-template').removeClass('hide');
+			}
+			if (description === '') {
+				$('#checklist-items').find('.checklist[data-checklist-id="' + listid + '"]').remove();
+			}
+		});
+	}, 300);
+	return deferred.promise();
+}
+
+// Remove task checklist item from the task
+function delete_checklist_item(id, field) {
+	requestGetJSON('task/delete_checklist_item/' + id).done(function (response) {
+		if (response.success === true || response.success == 'true') {
+			$(field).parents('.checklist').remove();
+			recalculate_checklist_items_progress();
+		}
+	});
+}
+function task_mark_as(status, task_id, url) {
+	url = typeof (url) == 'undefined' ? 'task/mark_as/' + status + '/' + task_id : url;
+	var taskModalVisible = $('#task-modal').is(':visible');
+	url += '?single_task=' + taskModalVisible;
+	$("body").append('<div class="dt-loader"></div>');
+	requestGetJSON(url).done(function (response) {
+		$("body").find('.dt-loader').remove();
+		if (response.success === true || response.success == 'true') {
+			reload_tasks_tables();
+			if (taskModalVisible) {
+				_task_append_html(response.taskHtml);
+			}
+			$('#status-tasks').html(response.data);
+			if (status == 5 && typeof (_maybe_remove_task_from_project_milestone) == 'function') {
+				_maybe_remove_task_from_project_milestone(task_id);
+			}
+			if ($('.tasks-kanban').length === 0) {
+				alert_float('success', response.message);
+			}
+		}
+	});
+}
+function reload_tasks_tables() {
+	var av_tasks_tables = ['.table-task', '.table-rel-tasks', '.table-rel-tasks-leads', '.table-timesheets', '.table-timesheets-report'];
+	$.each(av_tasks_tables, function (i, selector) {
+		if ($.fn.DataTable.isDataTable(selector)) {
+			$(selector).DataTable().ajax.reload(null, false);
+		}
+	});
+}
+function remove_assignee(id, task_id,field) {
+	if (confirm_delete()) {
+		requestGetJSON('task/remove_assignee/' + id + '/' + task_id).done(function (response) {
+			if (response.success === true || response.success == 'true') {
+				$(field).parents('.task-user').remove();
+
+			}
+		});
+	}
+}
+
+function task_change_priority(priority_id, task_id) {
+	url = 'task/change_priority/' + priority_id + '/' + task_id;
+	var taskModalVisible = $('#task-modal').is(':visible');
+	url += '?single_task=' + taskModalVisible;
+	requestGetJSON(url).done(function (response) {
+		if (response.success === true || response.success == 'true') {
+			reload_tasks_tables();
+			if (taskModalVisible) {
+				_task_append_html(response.taskHtml);
+			}
+		}
+	});
+}
 // For manually modals where no close is defined
 $(document).keyup(function (e) {
 	if (e.keyCode == 27) { // escape key maps to keycode `27`
@@ -18,6 +403,22 @@ $(document).keyup(function (e) {
 		}
 	}
 });
+
+function init_selectpicker() {
+	appSelectPicker();
+}
+function appSelectPicker(element) {
+
+	if (typeof(element) == 'undefined') {
+		element = $("body").find('select.selectpicker');
+	}
+
+	if (element.length) {
+		element.selectpicker({
+			showSubtext: true
+		});
+	}
+}
 
 
 // Datatbles inline/offline - no serverside

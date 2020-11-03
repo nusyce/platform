@@ -224,7 +224,7 @@ class Leads_merge_fields extends App_merge_fields
         $fields['{lead_description}']        = $lead->description;
 
         if ($lead->assigned != 0) {
-            $fields['{lead_assigned}'] = get_staff_full_name($lead->assigned);
+            $fields['{lead_assigned}'] = get_user_full_name($lead->assigned);
         }
 
         if ($lead->country != 0) {

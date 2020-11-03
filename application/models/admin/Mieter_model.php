@@ -3,6 +3,7 @@
 class Mieter_model extends CI_Model
 {
 
+
 	public function get_mieter()
 	{
 
@@ -81,7 +82,7 @@ class Mieter_model extends CI_Model
 				$data['haustiere'] = $data['haustiere'] == 'on' ? 1 : 0;
 				$data['raucher'] = $data['raucher'] == 'on' ? 1 : 0;
 			}
-			//$data['userid'] = get_staff_user_id();
+			//$data['userid'] = get_user_id();
 			$data['userid'] = 1;
 			$data['active'] = 1;
 
@@ -146,13 +147,26 @@ class Mieter_model extends CI_Model
 
 
 		$data['created_at'] = date('d-m-y h:i:s');
+		$data['company_id']=get_user_company_id();
 		$this->db->insert('mar_mieters', $data);
 		$this->Activity_model->add_log('New mieter [ID: ' . $this->db->insert_id() . ']');
 		return true;
 
 
 	}
+	public function get($id = '', $where = [], $for_editor = false)
+	{
+		$this->db->where($where);
 
+		if (is_numeric($id)) {
+			$this->db->where(db_prefix() . 'mieters.id', $id);
+			$mieter = $this->db->get(db_prefix() . 'mieters')->row();
+
+		} else {
+			$this->db->order_by('fullname', 'asc');
+			return $this->db->get(db_prefix() . 'mieters')->result_array();
+		}
+	}
 	public function delete($id)
 	{
 

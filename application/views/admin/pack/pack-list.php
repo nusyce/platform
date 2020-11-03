@@ -12,13 +12,13 @@
 		<div class="content-body">
 
 			<div class="card">
-				<div class="card-header">
 
-						<h2 class="card-title" style="text-align: center">
-							Membership Pakets</h2>
-
-
+				<div class="d-inline-block">
+					<h3 class="card-title" style="margin: 0;">
+						MEMBERSHIP PACKETS </h3>
 				</div>
+
+
 			</div>
 			<?php $this->load->view('admin/includes/_messages.php') ?>
 			<div class="panel-body">

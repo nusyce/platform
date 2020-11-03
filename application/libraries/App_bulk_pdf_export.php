@@ -209,9 +209,9 @@ class App_bulk_pdf_export
 
         if (!$this->can_view) {
             $whereUser = '';
-            $whereUser .= '(invoiceid IN (SELECT id FROM ' . db_prefix() . 'invoices WHERE addedfrom=' . get_staff_user_id() . ')';
+            $whereUser .= '(invoiceid IN (SELECT id FROM ' . db_prefix() . 'invoices WHERE addedfrom=' . get_user_id() . ')';
             if (get_option('allow_staff_view_invoices_assigned') == 1) {
-                $whereUser .= ' OR invoiceid IN (SELECT id FROM ' . db_prefix() . 'invoices WHERE sale_agent=' . get_staff_user_id() . ')';
+                $whereUser .= ' OR invoiceid IN (SELECT id FROM ' . db_prefix() . 'invoices WHERE sale_agent=' . get_user_id() . ')';
             }
             $whereUser .= ')';
             $this->ci->db->where($whereUser);
@@ -247,7 +247,7 @@ class App_bulk_pdf_export
      */
     protected function estimates()
     {
-        $noPermissionQuery = get_estimates_where_sql_for_staff(get_staff_user_id());
+        $noPermissionQuery = get_estimates_where_sql_for_staff(get_user_id());
 
         $this->ci->db->select('id');
         $this->ci->db->from(db_prefix() . 'estimates');
@@ -279,7 +279,7 @@ class App_bulk_pdf_export
      */
     protected function invoices()
     {
-        $noPermissionQuery = get_invoices_where_sql_for_staff(get_staff_user_id());
+        $noPermissionQuery = get_invoices_where_sql_for_staff(get_user_id());
         $notSentQuery      = 'sent=0 AND status NOT IN(2,5)' . (!$this->can_view ? ' AND (' . $noPermissionQuery . ')' : '');
 
         $this->ci->db->select('id');
@@ -316,7 +316,7 @@ class App_bulk_pdf_export
      */
     public function proposals()
     {
-        $noPermissionQuery = get_proposals_sql_where_staff(get_staff_user_id());
+        $noPermissionQuery = get_proposals_sql_where_staff(get_user_id());
 
         $this->ci->db->select('id');
         $this->ci->db->from(db_prefix() . 'proposals');
@@ -356,7 +356,7 @@ class App_bulk_pdf_export
         }
 
         if (!$this->can_view) {
-            $this->ci->db->where('addedfrom', get_staff_user_id());
+            $this->ci->db->where('addedfrom', get_user_id());
         }
 
         $this->ci->db->order_by($this->get_date_column(), 'desc');

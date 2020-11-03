@@ -1961,7 +1961,7 @@ input[type=number]::-webkit-outer-spin-button {
 	letter-spacing: 0.05rem;
 	font-size: 1.2rem;
 	margin-bottom: 1.2rem;
-	text-transform: capitalize;
+	text-transform: uppercase;
 }
 
 .card .card-bordered {
@@ -2931,7 +2931,9 @@ _:-ms-lang(x),
 .round {
 	border-radius: 1.5rem;
 }
-
+.main-tasks-table-href-name{
+	white-space: nowrap;
+}
 .square {
 	border-radius: 0;
 }
@@ -2944,7 +2946,10 @@ _:-ms-lang(x),
 .bx {
 	font-size: 1.2rem;
 }
-
+.staff-profile-image-small{
+	width: 40px;
+	border-radius: 25px;
+}
 /* drag n drop - bullets none on drag - as default */
 /*------------------------------------------------*/
 .gu-mirror {

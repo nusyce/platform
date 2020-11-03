@@ -30,7 +30,7 @@
 									   aria-expanded="true">
 										Kunden Details </a>
 								</li>
-								<li style="    margin-left: 10px;" role="presentation" class="active">
+								<li style="    margin-left: 10px;" role="presentation" class="">
 									<a href="#leistungsempfanger" aria-controls="contact_info" role="tab"
 									   data-toggle="tab" aria-expanded="true">
 										Leistungsempfänger</a>

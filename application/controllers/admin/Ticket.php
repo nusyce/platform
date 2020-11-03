@@ -14,7 +14,7 @@ class Ticket extends MY_Controller
     }
 	public function render($ticket = '')
 	{
-		$this->app->get_renderable_data('ticket/table', ['ticket' => $ticket]);
+		$this->app->get_renderable_data('tickets/table', ['ticket' => $ticket]);
 	}
     public function index($status = '', $userid = '')
     {
@@ -51,7 +51,7 @@ class Ticket extends MY_Controller
         $this->load->model('admin/departments_model');
         $data['statuses']             = $this->tickets_model->get_ticket_status();
 
-        $data['staff_deparments_ids'] = $this->departments_model->get_staff_departments(get_staff_user_id(), true);
+        $data['staff_deparments_ids'] = $this->departments_model->get_staff_departments(get_user_id(), true);
         $data['departments']          = $this->departments_model->get();
         $data['priorities']           = $this->tickets_model->get_priority();
         $data['services']             = $this->tickets_model->get_service();
@@ -67,11 +67,12 @@ class Ticket extends MY_Controller
     {
         if ($this->input->post()) {
             $data            = $this->input->post();
-            $data['message'] = html_purify($this->input->post('message', false));
-            $id              = $this->tickets_model->add($data, get_staff_user_id());
+            $data['message'] = $this->input->post('message');
+            $id              = $this->tickets_model->add($data, $this->session->userdata('admin_id'));
             if ($id) {
                 set_alert('success', _l('new_ticket_added_successfully', $id));
-                redirect(admin_url('tickets/ticket/' . $id));
+               redirect(admin_url('ticket/ticket/' . $id));
+				//redirect(admin_url('ticket'));
             }
         }
         if ($userid !== false) {
@@ -126,17 +127,19 @@ class Ticket extends MY_Controller
 
         $response = $this->tickets_model->delete($ticketid);
 
-        if ($response == true) {
+        if ($response) {
             set_alert('success', _l('deleted', _l('ticket')));
+			redirect(admin_url('ticket'));
         } else {
             set_alert('warning', _l('problem_deleting', _l('ticket_lowercase')));
+			redirect(admin_url('ticket/ticket/' . $ticketid));
         }
 
-        if (strpos($_SERVER['HTTP_REFERER'], 'tickets/ticket') !== false) {
+        /*if (strpos($_SERVER['HTTP_REFERER'], 'tickets/ticket') !== false) {
             redirect(admin_url('tickets'));
         } else {
             redirect($_SERVER['HTTP_REFERER']);
-        }
+        }*/
     }
 
     public function delete_attachment($id)
@@ -147,7 +150,7 @@ class Ticket extends MY_Controller
                 $ticket     = $this->tickets_model->get_ticket_by_id($attachment->ticketid);
 
                 $this->load->model('departments_model');
-                $staff_departments = $this->departments_model->get_staff_departments(get_staff_user_id(), true);
+                $staff_departments = $this->departments_model->get_staff_departments(get_user_id(), true);
                 if (!in_array($ticket->department, $staff_departments)) {
                     set_alert('danger', _l('ticket_access_by_department_denied'));
                     redirect(admin_url('access_denied'));
@@ -175,7 +178,7 @@ class Ticket extends MY_Controller
         if (get_option('staff_access_only_assigned_departments') == 1) {
             if (!is_admin()) {
                 $this->load->model('departments_model');
-                $staff_departments = $this->departments_model->get_staff_departments(get_staff_user_id(), true);
+                $staff_departments = $this->departments_model->get_staff_departments(get_user_id(), true);
                 /*if (!in_array($data['ticket']->department, $staff_departments)) {
                     set_alert('danger', _l('ticket_access_by_department_denied'));
                     redirect(admin_url('access_denied'));
@@ -192,41 +195,43 @@ class Ticket extends MY_Controller
                 unset($data['ticket_add_response_and_back_to_list']);
             }
 
-            $data['message'] = html_purify($this->input->post('message', false));
-            $replyid         = $this->tickets_model->add_reply($data, $id, get_staff_user_id());
+            $data['message'] = $this->input->post('message');
+            $replyid         = $this->tickets_model->add_reply($data, $id, $this->session->userdata('admin_id'));
 
             if ($replyid) {
                 set_alert('success', _l('replied_to_ticket_successfully', $id));
             }
             if (!$returnToTicketList) {
-                redirect(admin_url('tickets/ticket/' . $id));
+                redirect(admin_url('ticket/ticket/' . $id));
             } else {
                 set_ticket_open(0, $id);
-                redirect(admin_url('tickets'));
+                redirect(admin_url('ticket'));
             }
         }
         // Load necessary models
-        $this->load->model('knowledge_base_model');
-        $this->load->model('departments_model');
+        //$this->load->model('knowledge_base_model');
+        //$this->load->model('departments_model');
 
         $data['statuses']                       = $this->tickets_model->get_ticket_status();
         $data['statuses']['callback_translate'] = 'ticket_status_translate';
 
-        $data['departments']        = $this->departments_model->get();
-        $data['predefined_replies'] = $this->tickets_model->get_predefined_reply();
+        //$data['departments']        = $this->departments_model->get();
+        //$data['predefined_replies'] = $this->tickets_model->get_predefined_reply();
         $data['priorities']         = $this->tickets_model->get_priority();
         $data['services']           = $this->tickets_model->get_service();
-        $whereStaff                 = [];
+        /*$whereStaff                 = [];
         if (get_option('access_tickets_to_none_staff_members') == 0) {
             $whereStaff['is_not_staff'] = 0;
         }
-        $data['staff']                = $this->staff_model->get('', $whereStaff);
-        $data['articles']             = $this->knowledge_base_model->get();
+        $data['staff']                = $this->staff_model->get('', $whereStaff);*/
+        //$data['articles']             = $this->knowledge_base_model->get();
         $data['ticket_replies']       = $this->tickets_model->get_ticket_replies($id);
         $data['bodyclass']            = 'top-tabs ticket single-ticket';
         $data['title']                = $data['ticket']->subject;
-        $data['ticket']->ticket_notes = $this->misc_model->get_notes($id, 'ticket');
-        add_admin_tickets_js_assets();
+        //$data['ticket']->ticket_notes = $this->misc_model->get_notes($id, 'ticket');
+		$data['ticket']->ticket_notes =[];
+		$data['ticket']->submitter =[];
+        //add_admin_tickets_js_assets();
         $this->load->view('admin/tickets/single', $data);
     }
 
@@ -260,12 +265,13 @@ class Ticket extends MY_Controller
             redirect(admin_url('tickets'));
         }
         $response = $this->tickets_model->delete_ticket_reply($ticket_id, $reply_id);
-        if ($response == true) {
-            set_alert('success', _l('deleted', _l('ticket_reply')));
-        } else {
-            set_alert('warning', _l('problem_deleting', _l('ticket_reply')));
-        }
-        redirect(admin_url('tickets/ticket/' . $ticket_id));
+		if ($response) {
+			set_alert('success', _l('deleted', _l('ticket_reply')));
+			redirect(admin_url('ticket/ticket/' . $ticket_id));
+		} else {
+			set_alert('warning', _l('problem_deleting', _l('ticket_reply')));
+			redirect(admin_url('ticket/ticket/' . $ticket_id));
+		}
     }
 
     public function change_status_ajax($id, $status)
@@ -287,7 +293,7 @@ class Ticket extends MY_Controller
                 if (get_option('staff_access_only_assigned_departments') == 1) {
                     $ticket = $this->tickets_model->get_ticket_by_id($this->input->post('ticketid'));
                     $this->load->model('departments_model');
-                    $staff_departments = $this->departments_model->get_staff_departments(get_staff_user_id(), true);
+                    $staff_departments = $this->departments_model->get_staff_departments(get_user_id(), true);
                     if (!in_array($ticket->department, $staff_departments) && !is_admin()) {
                         set_alert('success', _l('ticket_settings_updated_successfully_and_reassigned', $ticket->department_name));
                         echo json_encode([

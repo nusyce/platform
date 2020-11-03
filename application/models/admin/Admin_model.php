@@ -39,6 +39,27 @@ class Admin_model extends CI_Model{
 		$query=$this->db->get();
 		return $query->row_array();
 	}
+	public function get($id = '', $where = [], $withHidden = false)
+	{
+		$select_str = '*,CONCAT(firstname," ",lastname) as full_name';
+		// Used to prevent multiple queries on logged in staff to check the total unread notifications in core/AdminController.php
+
+		$this->db->select($select_str);
+
+
+
+		$this->db->where($where);
+		if (is_numeric($id)) {
+			$this->db->where('admin_id', $id);
+			$admin= $this->db->get(db_prefix() . 'admin')->row();
+
+
+			return $admin;
+		}
+		$this->db->order_by('firstname', 'desc');
+
+		return $this->db->get(db_prefix() . 'admin')->result_array();
+	}
 
 	//-----------------------------------------------------
 	function get_all()
@@ -84,7 +105,9 @@ class Admin_model extends CI_Model{
 
 	//-----------------------------------------------------
 public function add_admin($data){
+	$data['company_id']=get_user_company_id();
 	$this->db->insert('mar_admin', $data);
+	$this->Activity_model->add_log('New User [ID: ' . $this->db->insert_id() . ']');
 	return true;
 }
 
@@ -93,6 +116,7 @@ public function add_admin($data){
 public function edit_admin($data, $id){
 	$this->db->where('admin_id', $id);
 	$this->db->update('mar_admin', $data);
+	$this->Activity_model->add_log('User Updated [ID: ' . $id. ']');
 	return true;
 }
 
@@ -102,6 +126,7 @@ function change_status()
 	$this->db->set('active',$this->input->post('status'));
 	$this->db->where('admin_id',$_POST['id']);
 	$this->db->update('mar_admin');
+	$this->Activity_model->add_log('User Status Changed [ID: ' . $_POST['id']. ']');
 
 } 
 
@@ -110,6 +135,7 @@ function delete($id)
 {		
 	$this->db->where('admin_id',$id);
 	$this->db->delete('mar_admin');
+	$this->Activity_model->add_log('User Deleted [ID: ' . $id. ']');
 } 
 
 }

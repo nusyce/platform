@@ -215,7 +215,7 @@ function subscriptions_summary()
     foreach ($statuses as $status) {
         $where = ['status' => $status['id']];
         if (!has_permission('subscriptions', '', 'view')) {
-            $where['created_from'] = get_staff_user_id();
+            $where['created_from'] = get_user_id();
         }
         $summary[] = [
             'total' => total_rows(db_prefix() . 'subscriptions', $where),
@@ -225,7 +225,7 @@ function subscriptions_summary()
     }
 
     array_unshift($summary, [
-        'total' => total_rows(db_prefix() . 'subscriptions', 'date_subscribed IS NULL' . (!$has_permission_view ? ' AND created_from =' . get_staff_user_id() . '' : '')),
+        'total' => total_rows(db_prefix() . 'subscriptions', 'date_subscribed IS NULL' . (!$has_permission_view ? ' AND created_from =' . get_user_id() . '' : '')),
         'color' => '#03a9f4',
         'id'    => 'not_subscribed',
     ]);

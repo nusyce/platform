@@ -14,7 +14,8 @@ $aColumns = [
 	db_prefix() . 'admin.active as active',
 	db_prefix() . 'admin_roles.admin_role_title as role'
 ];
-$where = [];
+$where=[];
+array_push($where, 'AND company_id='.get_user_company_id());
 $sIndexColumn = 'admin_id';
 $sTable = db_prefix() . 'admin';
 

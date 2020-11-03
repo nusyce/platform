@@ -81,9 +81,9 @@ function add_notification($values)
         $data['fromclientid'] = get_contact_user_id();
         $data['from_fullname'] = get_contact_full_name(get_contact_user_id());
     } else {
-        $data['fromuserid'] = get_staff_user_id();
+        $data['fromuserid'] = get_user_id();
         $data['fromclientid'] = 0;
-        $data['from_fullname'] = get_staff_full_name(get_staff_user_id());
+        $data['from_fullname'] = get_user_full_name(get_user_id());
     }
 
     if (isset($data['fromcompany'])) {

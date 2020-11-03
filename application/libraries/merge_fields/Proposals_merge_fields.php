@@ -161,7 +161,7 @@ class Proposals_merge_fields extends App_merge_fields
         $fields['{proposal_state}']    = $proposal->state;
         $fields['{proposal_zip}']      = $proposal->zip;
         $fields['{proposal_country}']  = $proposal->short_name;
-        $fields['{proposal_assigned}'] = get_staff_full_name($proposal->assigned);
+        $fields['{proposal_assigned}'] = get_user_full_name($proposal->assigned);
 
         $custom_fields = get_custom_fields('proposal');
         foreach ($custom_fields as $field) {

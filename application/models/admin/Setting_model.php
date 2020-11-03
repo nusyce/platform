@@ -8,16 +8,16 @@ class Setting_model extends CI_Model
 
 	//-----------------------------------------------------
 	public function update_general_setting($data){
-		$this->db->where('id', 1);
-		$this->db->update('mar_firma', $data);
+		$this->db->where('id', get_user_company_id());
+		$this->db->update('mar_companies', $data);
 		return true;
 
 	}
 
 	//-----------------------------------------------------
 	public function get_general_settings(){
-		$this->db->where('id', 1);
-        $query = $this->db->get('mar_firma');
+		$this->db->where('id', (!empty(get_user_company_id())) ? get_user_company_id() : '1');
+        $query = $this->db->get('mar_companies');
         return $query->row_array();
 	}
 

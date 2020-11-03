@@ -483,16 +483,16 @@ function found_invoice_mode($modes, $invoiceid, $offline = true, $show_on_pdf = 
 function get_invoices_percent_by_status($status)
 {
     $has_permission_view = has_permission('invoices', '', 'view');
-    $total_invoices      = total_rows(db_prefix() . 'invoices', 'status NOT IN(5)' . (!$has_permission_view ? ' AND (' . get_invoices_where_sql_for_staff(get_staff_user_id()) . ')' : ''));
+    $total_invoices      = total_rows(db_prefix() . 'invoices', 'status NOT IN(5)' . (!$has_permission_view ? ' AND (' . get_invoices_where_sql_for_staff(get_user_id()) . ')' : ''));
 
     $data            = [];
     $total_by_status = 0;
     if (!is_numeric($status)) {
         if ($status == 'not_sent') {
-            $total_by_status = total_rows(db_prefix() . 'invoices', 'sent=0 AND status NOT IN(2,5)' . (!$has_permission_view ? ' AND (' . get_invoices_where_sql_for_staff(get_staff_user_id()) . ')' : ''));
+            $total_by_status = total_rows(db_prefix() . 'invoices', 'sent=0 AND status NOT IN(2,5)' . (!$has_permission_view ? ' AND (' . get_invoices_where_sql_for_staff(get_user_id()) . ')' : ''));
         }
     } else {
-        $total_by_status = total_rows(db_prefix() . 'invoices', 'status = ' . $status . ' AND status NOT IN(5)' . (!$has_permission_view ? ' AND (' . get_invoices_where_sql_for_staff(get_staff_user_id()) . ')' : ''));
+        $total_by_status = total_rows(db_prefix() . 'invoices', 'status = ' . $status . ' AND status NOT IN(5)' . (!$has_permission_view ? ' AND (' . get_invoices_where_sql_for_staff(get_user_id()) . ')' : ''));
     }
     $percent                 = ($total_invoices > 0 ? number_format(($total_by_status * 100) / $total_invoices, 2) : 0);
     $data['total_by_status'] = $total_by_status;
@@ -509,7 +509,7 @@ function get_invoices_percent_by_status($status)
 function staff_has_assigned_invoices($staff_id = '')
 {
     $CI       = &get_instance();
-    $staff_id = is_numeric($staff_id) ? $staff_id : get_staff_user_id();
+    $staff_id = is_numeric($staff_id) ? $staff_id : get_user_id();
     $cache    = $CI->app_object_cache->get('staff-total-assigned-invoices-' . $staff_id);
 
     if (is_numeric($cache)) {
@@ -590,7 +590,7 @@ function user_can_view_invoice($id, $staff_id = false)
 {
     $CI = &get_instance();
 
-    $staff_id = $staff_id ? $staff_id : get_staff_user_id();
+    $staff_id = $staff_id ? $staff_id : get_user_id();
 
     if (has_permission('invoices', $staff_id, 'view')) {
         return true;

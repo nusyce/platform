@@ -322,7 +322,7 @@ function get_user_pinned_projects()
     $CI->db->select(db_prefix() . 'projects.id, ' . db_prefix() . 'projects.name, ' . db_prefix() . 'projects.clientid, ' . get_sql_select_client_company());
     $CI->db->join(db_prefix() . 'projects', db_prefix() . 'projects.id=' . db_prefix() . 'pinned_projects.project_id');
     $CI->db->join(db_prefix() . 'clients', db_prefix() . 'clients.userid=' . db_prefix() . 'projects.clientid');
-    $CI->db->where(db_prefix() . 'pinned_projects.staff_id', get_staff_user_id());
+    $CI->db->where(db_prefix() . 'pinned_projects.staff_id', get_user_id());
     $projects = $CI->db->get(db_prefix() . 'pinned_projects')->result_array();
     $CI->load->model('projects_model');
 

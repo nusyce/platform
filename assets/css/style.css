@@ -2,11 +2,33 @@
 .main-menu.menu-light .navigation li a, .digital-clock, body.vertical-layout.vertical-menu-modern.menu-expanded .main-menu .navigation li.has-sub > a.nav-link:after {
 	color: #fff;
 }
-
+.task-info h5 {
+	font-size: 13px;
+	margin: 0;
+	font-weight: 400;
+}
+.task-info-heading {
+	font-size: 15px;
+}
+.checklist
+{
+	margin-top: 20px;
+}
+.task-info
+{
+	margin-top: 10px;
+}
+.font-medium {
+	font-size: 15px !important;
+}
 .menu-text {
 	font-size: 12px !important;
 }
+textarea[name=checklist-description] {resize: none;overflow: hidden;/* left: 25px; *//* top: 200px; */font-size: 14px;width: 85%;border-radius: 3px;border: 0;outline: 0;padding-left: 25px;padding-top: 12px;padding: 0;margin: 0;position: absolute;margin-left: 15px;}
 
+.mbot20 {
+	margin-bottom: 20px;
+}
 .main-menu.menu-light .navigation > li {
 	margin: 0 0;
 	transition: background-color 0.5s ease;
@@ -66,7 +88,28 @@ body.rtl div.dataTables_wrapper {
 	direction: rtl
 }
 
+.task-user {
+	border: 1px solid #f0f0f0;
+	padding: 2px;
+	border-radius: 50%;
+	vertical-align: middle;
+	margin-bottom: 5px;
+	display: inline-block;
+	position: relative;
+}
+.task-user:hover~.remove-task-user{
+	visibility: visible !important;
+}
+.remove-task-user {
+	position: absolute;
+	top: 35px;
+	left: 12px;
 
+
+}
+.progress-bar-default {
+	background-color: #727b86;
+}
 .edit-menu {
 	z-index: 999;
 	opacity: 0;
@@ -464,7 +507,7 @@ table.dataTable thead > tr > th {
 }
 
 .checkbox {
-	padding-left: 20px
+	padding-left: 20px;
 }
 
 label:not(.control-label) {

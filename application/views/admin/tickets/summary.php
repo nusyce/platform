@@ -43,7 +43,7 @@
        $departments_ids = $staff_deparments_ids;
      }
      if(count($departments_ids) > 0){
-      $where = 'AND department IN (SELECT departmentid FROM '.db_prefix().'staff_departments WHERE departmentid IN (' . implode(',', $departments_ids) . ') AND staffid="'.get_staff_user_id().'")';
+      $where = 'AND department IN (SELECT departmentid FROM '.db_prefix().'staff_departments WHERE departmentid IN (' . implode(',', $departments_ids) . ') AND staffid="'.get_user_id().'")';
     }
   }
 }

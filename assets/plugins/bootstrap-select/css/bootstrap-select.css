@@ -4,7 +4,22 @@
  * Copyright 2012-2019 SnapAppointments, LLC
  * Licensed under MIT (https://github.com/snapappointments/bootstrap-select/blob/master/LICENSE)
  */
-
+.btn-bottom-toolbar {
+	position: fixed;
+	bottom: 0;
+	padding: 15px;
+	padding-right: 41px;
+	margin: 0 0 0 -46px;
+	-webkit-box-shadow: 0 -4px 1px -4px rgba(0, 0, 0, .1);
+	box-shadow: 0 -4px 1px -4px rgba(0, 0, 0, .1);
+	background: #fff;
+	width: calc(100% - 211px);
+	z-index: 5;
+	border-top: 1px solid #ededed;
+}
+.tox-notifications-container{
+	display: none;
+}
 @-webkit-keyframes bs-notify-fadeOut {
   0% {
     opacity: 0.9;
@@ -30,8 +45,8 @@
   }
 }
 select.bs-select-hidden,
-.bootstrap-select > select.bs-select-hidden,
-select.selectpicker {
+.bootstrap-select > select.bs-select-hidden
+{
   display: none !important;
 }
 .bootstrap-select {

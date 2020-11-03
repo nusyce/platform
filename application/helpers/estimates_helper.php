@@ -241,7 +241,7 @@ function get_estimates_percent_by_status($status, $project_id = null)
         $where .= 'project_id=' . get_instance()->db->escape_str($project_id) . ' AND ';
     }
     if (!$has_permission_view) {
-        $where .= get_estimates_where_sql_for_staff(get_staff_user_id());
+        $where .= get_estimates_where_sql_for_staff(get_user_id());
     }
 
     $where = trim($where);
@@ -301,7 +301,7 @@ function get_estimates_where_sql_for_staff($staff_id)
 function staff_has_assigned_estimates($staff_id = '')
 {
     $CI       = &get_instance();
-    $staff_id = is_numeric($staff_id) ? $staff_id : get_staff_user_id();
+    $staff_id = is_numeric($staff_id) ? $staff_id : get_user_id();
     $cache    = $CI->app_object_cache->get('staff-total-assigned-estimates-' . $staff_id);
 
     if (is_numeric($cache)) {
@@ -323,7 +323,7 @@ function user_can_view_estimate($id, $staff_id = false)
 {
     $CI = &get_instance();
 
-    $staff_id = $staff_id ? $staff_id : get_staff_user_id();
+    $staff_id = $staff_id ? $staff_id : get_user_id();
 
     if (has_permission('estimates', $staff_id, 'view')) {
         return true;

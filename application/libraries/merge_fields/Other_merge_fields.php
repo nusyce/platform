@@ -110,7 +110,7 @@ class Other_merge_fields extends App_merge_fields
         if (!is_staff_logged_in() || is_client_logged_in()) {
             $fields['{email_signature}'] = get_option('email_signature');
         } else {
-            $this->ci->db->select('email_signature')->from(db_prefix().'staff')->where('staffid', get_staff_user_id());
+            $this->ci->db->select('email_signature')->from(db_prefix().'staff')->where('staffid', get_user_id());
             $signature = $this->ci->db->get()->row()->email_signature;
             if (empty($signature)) {
                 $fields['{email_signature}'] = get_option('email_signature');

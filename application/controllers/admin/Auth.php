@@ -7,6 +7,7 @@ class Auth extends MY_Controller {
 		parent::__construct();
 		$this->load->library('mailer');
 		$this->load->model('admin/auth_model', 'auth_model');
+		$this->load->model('admin/company_model', 'company_model');
 	}
 
 	//--------------------------------------------------------------
@@ -43,7 +44,7 @@ class Auth extends MY_Controller {
 				$result = $this->auth_model->login($data);
 				if($result){
 					if($result['is_verify'] == 0){
-						$this->session->set_flashdata('error', 'Please verify your email address!');
+						set_alert('error', 'Please verify your email address!');
 						redirect(base_url('admin/auth/login'));
 						exit();
 					}
@@ -54,7 +55,7 @@ class Auth extends MY_Controller {
 					}
 					if($result['admin_role_id'] !=1 && $result['admin_role_id'] !=2){
 						if($this->input->post('admin')) {
-							$this->session->set_flashdata('error', 'Account is not Admin!');
+							set_alert('error', 'Account is not Admin!');
 							redirect(base_url('admin/auth/login'));
 							exit();
 						}
@@ -67,9 +68,12 @@ class Auth extends MY_Controller {
 							'admin_role_id' => $result['admin_role_id'],
 							'admin_role' => $result['admin_role_title'],
 							'is_supper' => $result['is_supper'],
-							'is_admin_login' => TRUE
+							'is_admin_login' => TRUE,
+							'my_company' => $this->company_model->get($result['company_id'])
 						);
 						$this->session->set_userdata($admin_data);
+
+
 						$this->rbac->set_access_in_session(); // set access in session
 
 						if($result['is_supper'])
@@ -137,7 +141,7 @@ class Auth extends MY_Controller {
 						'email' => $this->input->post('email'),
 						'password' =>  password_hash($this->input->post('password'), PASSWORD_BCRYPT),
 						'active' => 1,
-						'is_verify' => 0,
+						'is_verify' => 1,
 						'token' => md5(rand(0,1000)),
 						'last_ip' => '',
 						'created_at' => date('Y-m-d : h:m:s'),
@@ -146,6 +150,18 @@ class Auth extends MY_Controller {
 					$data = $this->security->xss_clean($data);
 					$result = $this->auth_model->register($data);
 					if($result){
+
+						$data = array(
+							'company' => $this->input->post('companyname'),
+							'userid' => $result,
+							'active' => 1,
+							'created_at' => date('Y-m-d : h:m:s'),
+							'updated_at' => date('Y-m-d : h:m:s'),
+						);
+						$results = $this->company_model->add($data);
+						if($results){
+							$this->auth_model->add_company_id($result,$results);
+						}
 						//sending welcome email to user
 						$this->load->helper('email_helper');
 

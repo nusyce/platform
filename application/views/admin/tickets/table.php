@@ -9,21 +9,22 @@ $hasPermissionDelete = true;
 $this->ci->db->query("SET sql_mode = ''");
 
 $aColumns = [
-	'1',
-	'company',
-	1,
-	1,
-	db_prefix() . 'clients.email as email',
-	db_prefix() . 'clients.phonenumber as phonenumber',
-	'active',
-	db_prefix() . 'clients.userid as userid',
-	1,
-	db_prefix() . 'clients.datecreated as datecreated',
+	'ticketid',
+	'subject',
+	'service',
+	'assigned',
+	'status',
+	'priority',
+	'lastreply',
+	'date',
+
+
 ];
 
-$sIndexColumn = 'userid';
-$sTable = db_prefix() . 'clients';
-$where = [];
+$sIndexColumn = 'ticketid';
+$sTable = db_prefix() . 'tickets';
+$where=[];
+array_push($where, 'AND company_id='.get_user_company_id());
 // Add blank where all filter can be stored
 $filter = [];
 
@@ -38,103 +39,35 @@ $result = data_tables_init($aColumns, $sIndexColumn, $sTable, $join, $where, [])
 
 $output = $result['output'];
 $rResult = $result['rResult'];
-
+$i=1;
 foreach ($rResult as $aRow) {
 	$row = [];
 
 	// Bulk actions
-	$row[] = '<div class="checkbox multiple_action"><input type="checkbox" value="' . $aRow['userid'] . '"><label></label></div>';
+	$row[] = '<div class="checkbox multiple_action"><input type="checkbox" value="' . $aRow['ticketid'] . '"><label></label></div>';
 	// User id
-	$row[] = $aRow['userid'];
+	$row[] = $i;
 
 	// Company
-	$company = $aRow['company'];
-	$isPerson = false;
+	$subjectOutput = '<a href="' . admin_url('ticket/ticket/' . $aRow['ticketid']) . '">' . $aRow['subject'] . '</a>';
+	$subjectOutput .= '<div class="row-options">';
+	$subjectOutput .= '  <a href="' . admin_url('ticket/ticket/' . $aRow['ticketid']) . '">' . _l('Bearbeiten') . '</a>';
 
-	if ($company == '') {
-		$company = _l('no_company_view_profile');
-		$isPerson = true;
-	}
+	/*    if (has_permission('mieter', '', 'delete')) {*/
+	$subjectOutput .= ' | <a href="' . admin_url('ticket/delete/' . $aRow['ticketid']) . '" class="text-danger _delete">' . _l('löschen') . '</a>';
+	/* }*/
 
-	$url = admin_url('clients/client/' . $aRow['userid']);
-
-	if ($isPerson && $aRow['contact_id']) {
-		$url .= '?contactid=' . $aRow['contact_id'];
-	}
-
-	$company = '<a href="' . $url . '">' . $company . '</a>';
-
-	$company .= '<div class="row-options">';
-	$company .= '<a href="' . admin_url('client/client/' . $aRow['userid'] . ($isPerson && $aRow['contact_id'] ? '?group=contacts' : '')) . '">' . _l('Bearbeiten') . '</a>';
-
-	/*if ($aRow['registration_confirmed'] == 0 && is_admin()) {
-		$company .= ' | <a href="' . admin_url('clients/confirm_registration/' . $aRow['userid']) . '" class="text-success bold">' . _l('confirm_registration') . '</a>';
-	}
-	if (!$isPerson) {
-		$company .= ' | <a href="' . admin_url('clients/client/' . $aRow['userid'] . '?tab=customer_admins') . '">' . _l('customer_contacts') . '</a>';
-	}*/
-	if ($hasPermissionDelete) {
-		$company .= ' | <a href="' . admin_url('client/delete/' . $aRow['userid']) . '" class="text-danger _delete">' . _l('löschen') . '</a>';
-	}
-
-	$company .= '</div>';
-
-	$row[] = $company;
-
-	$row[] = 1;
-	$row[] = 1;
-	//$row[] = '<span style="text-align: center; display: block">'.$this->ci->clients_model->get_mieter_number($aRow['userid']).'</span>';
-
-	// Primary contact
-	//  $row[] = ($aRow['contact_id'] ? '<a href="' . admin_url('clients/client/' . $aRow['userid'] . '?contactid=' . $aRow['contact_id']) . '" target="_blank">' . $aRow['firstname'] . ' ' . $aRow['lastname'] . '</a>' : '');
-
-	// Primary contact email
-	$row[] = ($aRow['email'] ? '<a href="mailto:' . $aRow['email'] . '">' . $aRow['email'] . '</a>' : '');
-
-	// Primary contact phone
-	$row[] = ($aRow['phonenumber'] ? '<a href="tel:' . $aRow['phonenumber'] . '">' . $aRow['phonenumber'] . '</a>' : '');
-
-	// Toggle active/inactive customer
-	if ($aRow['active'] == 1) {
-		$checked = 'checked';
-	}
-	$toggleActive = '<div class="onoffswitch" >
-    <input type="checkbox" data-switch-url="' . admin_url() . 'client/change_status" name="onoffswitch" class="onoffswitch-checkbox" id="c_' . $aRow['userid'] . '" data-id="' . $aRow['userid'] . '" ' . $checked. '>
-    <label class="onoffswitch-label" for="c_' . $aRow['userid'] . '"></label>
-    </div>';
-
-	// For exporting
-
-
-	$row[] = $toggleActive;
-
-	// Customer groups parsing
-	$groupsRow = '';
-	if ($aRow['customerGroups']) {
-		$groups = explode(',', $aRow['customerGroups']);
-		foreach ($groups as $group) {
-			$groupsRow .= '<span class="label label-default mleft5 inline-block customer-group-list pointer">' . $group . '</span>';
-		}
-	}
-
-	// $row[] = $groupsRow;
-
-	//  $row[] = _dt($aRow['datecreated']);
-
-	// Custom fields add values
-	foreach ($customFieldsColumns as $customFieldColumn) {
-		$row[] = (strpos($customFieldColumn, 'date_picker_') !== false ? _d($aRow[$customFieldColumn]) : $aRow[$customFieldColumn]);
-	}
-
-	/*$row['DT_RowClass'] = 'has-row-options';
-
-	if ($aRow['registration_confirmed'] == 0) {
-		$row['DT_RowClass'] .= ' alert-info requires-confirmation';
-		$row['Data_Title'] = _l('customer_requires_registration_confirmation');
-		$row['Data_Toggle'] = 'tooltip';
-	}*/
-
+	$subjectOutput .= '</div>';
+	$row[] = $subjectOutput;
+	$row[] = $aRow['service'];
+	$row[] = $aRow['assigned'];
+	$status='<span class="label inline-block ticket-status-3" style="border:1px solid '.ticket_status_color($aRow['status']).';color: '.ticket_status_color($aRow['status']).'">'.ticket_status_translate($aRow['status']).'</span>';
+	$row[] = $status;
+	$row[] = $aRow['priority'];
+	$row[] = $aRow['lastreply'];
+	$row[] = $aRow['date'];
 
 
 	$output['aaData'][] = $row;
+	$i++;
 }

@@ -31,13 +31,14 @@
 	<link rel="stylesheet" type="text/css" href="<?= base_url() ?>/assets/app/css/themes/semi-dark-layout.css">
 	<!-- END: Theme CSS-->
 
+	<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 	<!-- BEGIN: Page CSS-->
 	<link rel="stylesheet" type="text/css"
 		  href="<?= base_url() ?>/assets/app/css/core/menu/menu-types/vertical-menu.css">
 	<link rel="stylesheet" type="text/css" href="<?= base_url() ?>/assets/app/css/pages/dashboard-ecommerce.css">
 	<!-- END: Page CSS-->
 
-
+	<link rel="stylesheet" type="text/css" href="<?= base_url() ?>/assets/app/css/select2.min.css">
 	<!-- END: Custom CSS-->
 	<link rel="stylesheet" type="text/css" href="<?= base_url() ?>/assets/plugin/datatables/datatables.css">
 	<link rel="stylesheet" type="text/css" id="roboto-css"

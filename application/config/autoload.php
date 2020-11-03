@@ -92,7 +92,7 @@ $autoload['drivers'] = array();
 $autoload['helper'] = array('url', 'file', 'security',
 	'data','database','settings', 'functions', 'common',
 	'fields_helper','countries_helper','projects_helper',
-	'files_helper','datatables','datatables','func','general','template','misc','tickets');
+	'files_helper','datatables','datatables','func','general','template','misc','tickets','tags','upload','custom_fields','tasks','pdf','func','themes');
 
 /*
 | -------------------------------------------------------------------
@@ -135,4 +135,4 @@ $autoload['language'] = array();
 |
 |	$autoload['model'] = array('first_model' => 'first');
 */
-$autoload['model'] = array('admin/Activity_model');
+$autoload['model'] = array('admin/projects_model','admin/Activity_model','admin/Tasks_model','admin/client_model','admin/Client_vault_entries_model');

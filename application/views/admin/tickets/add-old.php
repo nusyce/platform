@@ -61,7 +61,7 @@
 							<select name="assigned" id="assigned" class="form-control selectpicker" data-live-search="true" data-none-selected-text="<?php echo _l('dropdown_non_selected_tex'); ?>" data-width="100%">
 								<option value=""><?php echo _l('ticket_settings_none_assigned'); ?></option>
 								<?php foreach($staff as $member){ ?>
-									<option value="<?php echo $member['staffid']; ?>" <?php if($member['staffid'] == get_staff_user_id()){echo 'selected';} ?>>
+									<option value="<?php echo $member['staffid']; ?>" <?php if($member['staffid'] == get_user_id()){echo 'selected';} ?>>
 										<?php echo $member['firstname'] . ' ' . $member['lastname'] ; ?>
 									</option>
 								<?php } ?>

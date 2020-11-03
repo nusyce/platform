@@ -77,7 +77,7 @@ class Import_leads extends App_import
                     }
 
                     if (!isset($insert['addedfrom'])) {
-                        $insert['addedfrom'] = get_staff_user_id();
+                        $insert['addedfrom'] = get_user_id();
                     }
 
                     $insert['status'] = $this->ci->input->post('status');

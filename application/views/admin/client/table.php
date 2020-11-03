@@ -23,7 +23,9 @@ $aColumns = [
 
 $sIndexColumn = 'userid';
 $sTable = db_prefix() . 'clients';
-$where = [];
+$where=[];
+array_push($where, 'AND company_id='.get_user_company_id());
+
 // Add blank where all filter can be stored
 $filter = [];
 
@@ -38,14 +40,14 @@ $result = data_tables_init($aColumns, $sIndexColumn, $sTable, $join, $where, [])
 
 $output = $result['output'];
 $rResult = $result['rResult'];
-
+$i=1;
 foreach ($rResult as $aRow) {
 	$row = [];
 
 	// Bulk actions
 	$row[] = '<div class="checkbox multiple_action"><input type="checkbox" value="' . $aRow['userid'] . '"><label></label></div>';
 	// User id
-	$row[] = $aRow['userid'];
+	$row[] = $i;
 
 	// Company
 	$company = $aRow['company'];
@@ -140,4 +142,5 @@ foreach ($rResult as $aRow) {
 
 
 	$output['aaData'][] = $row;
+	$i++;
 }

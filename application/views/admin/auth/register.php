@@ -27,17 +27,20 @@
 
         <?php echo form_open(base_url('admin/auth/register'), 'class="login-form" '); ?>
           <div class="form-group has-feedback">
-             <input type="text" name="username" id="name" value="" class="form-control" placeholder="username" >
+             <input required type="text" name="username" id="name" value="" class="form-control" placeholder="username" >
           </div>
           <div class="form-group has-feedback">
-            <input type="text" name="firstname" id="firstname" value="" class="form-control" placeholder="firstname" >
+            <input type="text" required name="firstname" id="firstname" value="" class="form-control" placeholder="firstname" >
           </div>
           <div class="form-group has-feedback">
            <input type="text" name="lastname" id="lastname" value="" class="form-control" placeholder="lastname" >
           </div>
           <div class="form-group has-feedback">
-             <input type="text" name="email" id="email" value="" class="form-control" placeholder="email'" >
+             <input required type="text" name="email" id="email" value="" class="form-control" placeholder="email" >
           </div>
+		  <div class="form-group has-feedback">
+			  <input required type="text" name="companyname" id="companyname" value="" class="form-control" placeholder="companyname" >
+		  </div>
           <div class="form-group has-feedback">
              <input type="password" name="password" id="password" class="form-control" placeholder="password" >
           </div>

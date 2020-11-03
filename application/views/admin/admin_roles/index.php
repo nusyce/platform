@@ -26,16 +26,7 @@
 					   class="btn btn-success"><?php echo 'Erstellen'; ?></a>
 				</div>
 
-				<?php
-				$total = ''; ?>
-				<div class="col-md-4" style="padding-right: 0px;  padding-left: 0px;margin-top: 10px">
-					<div class="panel_s">
-						<div class="panel-body" style="padding: 15px  15px;">
-							<?= widget_status_stats('admin_roles', $title); ?>
 
-						</div>
-					</div>
-				</div>
 			</div>
 
 			<div class="card">
@@ -112,7 +103,7 @@
 
 			$.each(LeadsServerParams, function (i, obj) {
 				$('#' + i).on('change', function () {
-					table_mieter.DataTable().ajax.reload()
+					table_adminroles.DataTable().ajax.reload()
 							.columns.adjust()
 							.responsive.recalc();
 				});

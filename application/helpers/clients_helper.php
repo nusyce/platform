@@ -160,7 +160,7 @@ function app_init_customer_profile_tabs()
               db_prefix() . 'reminders',
             [
              'isnotified' => 0,
-             'staff'      => get_staff_user_id(),
+             'staff'      => get_user_id(),
              'rel_type'   => 'customer',
              'rel_id'     => $client_id,
            ]
@@ -588,7 +588,7 @@ function get_client_default_language($clientid = '')
  */
 function is_customer_admin($id, $staff_id = '')
 {
-    $staff_id = is_numeric($staff_id) ? $staff_id : get_staff_user_id();
+    $staff_id = is_numeric($staff_id) ? $staff_id : get_user_id();
     $CI       = &get_instance();
     $cache    = $CI->app_object_cache->get($id . '-is-customer-admin-' . $staff_id);
 
@@ -614,7 +614,7 @@ function is_customer_admin($id, $staff_id = '')
 function have_assigned_customers($staff_id = '')
 {
     $CI       = &get_instance();
-    $staff_id = is_numeric($staff_id) ? $staff_id : get_staff_user_id();
+    $staff_id = is_numeric($staff_id) ? $staff_id : get_user_id();
     $cache    = $CI->app_object_cache->get('staff-total-assigned-customers-' . $staff_id);
 
     if (is_numeric($cache)) {
@@ -894,7 +894,7 @@ function get_all_customer_attachments($id)
         $CI->db->select('clientid,id');
         $CI->db->where('clientid', $id);
         if (!$has_permission_expenses_view) {
-            $CI->db->where('addedfrom', get_staff_user_id());
+            $CI->db->where('addedfrom', get_user_id());
         }
 
         $CI->db->from(db_prefix() . 'expenses');
@@ -914,7 +914,7 @@ function get_all_customer_attachments($id)
     $has_permission_invoices_view = has_permission('invoices', '', 'view');
     $has_permission_invoices_own  = has_permission('invoices', '', 'view_own');
     if ($has_permission_invoices_view || $has_permission_invoices_own || get_option('allow_staff_view_invoices_assigned') == 1) {
-        $noPermissionQuery = get_invoices_where_sql_for_staff(get_staff_user_id());
+        $noPermissionQuery = get_invoices_where_sql_for_staff(get_user_id());
         // Invoices
         $CI->db->select('clientid,id');
         $CI->db->where('clientid', $id);
@@ -946,7 +946,7 @@ function get_all_customer_attachments($id)
         $CI->db->where('clientid', $id);
 
         if (!$has_permission_credit_notes_view) {
-            $CI->db->where('addedfrom', get_staff_user_id());
+            $CI->db->where('addedfrom', get_user_id());
         }
 
         $CI->db->from(db_prefix() . 'creditnotes');
@@ -967,7 +967,7 @@ function get_all_customer_attachments($id)
     $permission_estimates_own  = has_permission('estimates', '', 'view_own');
 
     if ($permission_estimates_view || $permission_estimates_own || get_option('allow_staff_view_proposals_assigned') == 1) {
-        $noPermissionQuery = get_estimates_where_sql_for_staff(get_staff_user_id());
+        $noPermissionQuery = get_estimates_where_sql_for_staff(get_user_id());
         // Estimates
         $CI->db->select('clientid,id');
         $CI->db->where('clientid', $id);
@@ -993,7 +993,7 @@ function get_all_customer_attachments($id)
     $has_permission_proposals_own  = has_permission('proposals', '', 'view_own');
 
     if ($has_permission_proposals_view || $has_permission_proposals_own || get_option('allow_staff_view_proposals_assigned') == 1) {
-        $noPermissionQuery = get_proposals_sql_where_staff(get_staff_user_id());
+        $noPermissionQuery = get_proposals_sql_where_staff(get_user_id());
         // Proposals
         $CI->db->select('rel_id,id');
         $CI->db->where('rel_id', $id);
@@ -1024,7 +1024,7 @@ function get_all_customer_attachments($id)
         $CI->db->select('client,id');
         $CI->db->where('client', $id);
         if (!$permission_contracts_view) {
-            $CI->db->where('addedfrom', get_staff_user_id());
+            $CI->db->where('addedfrom', get_user_id());
         }
         $CI->db->from(db_prefix() . 'contracts');
         $contracts = $CI->db->get()->result_array();
@@ -1115,9 +1115,9 @@ function _check_vault_entries_visibility($entries)
     $new = [];
     foreach ($entries as $entry) {
         if ($entry['visibility'] != 1) {
-            if ($entry['visibility'] == 2 && !is_admin() && $entry['creator'] != get_staff_user_id()) {
+            if ($entry['visibility'] == 2 && !is_admin() && $entry['creator'] != get_user_id()) {
                 continue;
-            } elseif ($entry['visibility'] == 3 && $entry['creator'] != get_staff_user_id() && !is_admin()) {
+            } elseif ($entry['visibility'] == 3 && $entry['creator'] != get_user_id() && !is_admin()) {
                 continue;
             }
         }

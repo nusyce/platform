@@ -90,7 +90,7 @@ class Estimate_merge_fields extends App_merge_fields
 
         $currency = get_currency($estimate->currency);
 
-        $fields['{estimate_sale_agent}']   = get_staff_full_name($estimate->sale_agent);
+        $fields['{estimate_sale_agent}']   = get_user_full_name($estimate->sale_agent);
         $fields['{estimate_total}']        = app_format_money($estimate->total, $currency);
         $fields['{estimate_subtotal}']     = app_format_money($estimate->subtotal, $currency);
         $fields['{estimate_link}']         = site_url('estimate/' . $estimate_id . '/' . $estimate->hash);

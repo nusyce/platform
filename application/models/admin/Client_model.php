@@ -14,11 +14,39 @@ class Client_model extends CI_Model{
 		
 			
 			$data['datecreated']=date('d-m-y h:i:s');
+		$data['company_id']=get_user_company_id();
 			$this->db->insert('mar_clients', $data);
 		$this->Activity_model->add_log('New client [ID: ' . $this->db->insert_id() . ']');
 return true;
 
 
+	}
+	public function get($id = '', $where = [])
+	{
+
+
+		if ((is_array($where) && count($where) > 0) || (is_string($where) && $where != '')) {
+			$this->db->where($where);
+		}
+
+		if (is_numeric($id)) {
+			$this->db->where(db_prefix() . 'clients.userid', $id);
+			$client = $this->db->get(db_prefix() . 'clients')->row();
+
+
+			$GLOBALS['client'] = $client;
+
+			return $client;
+		}
+
+
+
+		return $this->db->get(db_prefix() . 'clients')->result_array();
+	}
+	public function get_vault_entries($customer_id, $where = [])
+	{
+		//return $this->Client_vault_entries_model->get_by_customer_id($customer_id, $where);
+		return [];
 	}
 	function change_status()
 	{

@@ -239,9 +239,8 @@ function get_all_client_themes()
 function active_clients_theme()
 {
     $CI = & get_instance();
-
-    $theme = get_option('clients_default_theme');
-
+    //$theme = get_option('clients_default_theme');
+	$theme ='flat';
     if ($theme == '') {
         if (is_dir(VIEWPATH . 'themes/perfex')) {
             // In case the default theme still exists, just add it as default to prevent errors on clients area.

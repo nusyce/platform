@@ -16,7 +16,7 @@ function format_task_status($status, $text = false, $clean = false)
 
     $status_name = $status['name'];
 
-    $status_name = hooks()->apply_filters('task_status_name', $status_name, $status);
+    $status_name = $status_name;
 
     if ($clean == true) {
         return $status_name;
@@ -40,30 +40,30 @@ function format_task_status($status, $text = false, $clean = false)
  */
 function get_tasks_priorities()
 {
-    return hooks()->apply_filters('tasks_priorities', [
+    return  [
         [
             'id' => 1,
-            'name' => _l('task_priority_low'),
+            'name' => _l('low'),
             'color' => '#777',
 
         ],
         [
             'id' => 2,
-            'name' => _l('task_priority_medium'),
+            'name' => _l('medium'),
             'color' => '#03a9f4',
 
         ],
         [
             'id' => 3,
-            'name' => _l('task_priority_high'),
+            'name' => _l('high'),
             'color' => '#ff6f00',
         ],
         [
             'id' => 4,
-            'name' => _l('task_priority_urgent'),
+            'name' => _l('urgent'),
             'color' => '#fc2d42',
         ],
-    ]);
+    ];
 }
 
 /**
@@ -92,6 +92,7 @@ function get_task_subject_by_id($id)
 function get_task_status_by_id($id)
 {
     $CI = &get_instance();
+	$CI->load->model('admin/tasks_model');
     $statuses = $CI->tasks_model->get_statuses();
 
     $status = [
@@ -156,30 +157,33 @@ function task_priority_color($id)
  */
 function format_members_by_ids_and_names($ids, $names, $hidden_export_table = true, $image_class = 'staff-profile-image-small')
 {
-    $outputAssignees = '';
+    $outputAssignees = '<div class="task_users_wrapper" style="width: 150px">';
     $exportAssignees = '';
 
     $assignees = explode(',', $names);
     $assigneeIds = explode(',', $ids);
     foreach ($assignees as $key => $assigned) {
+		$outputAssignees .='<div class="task-user" data-toggle="tooltip" data-title="jorge bush">';
         $assignee_id = $assigneeIds[$key];
         $assignee_id = trim($assignee_id);
         if ($assigned != '') {
             $outputAssignees .=
-                staff_profile_image($assignee_id, [
+				get_user_profile_image($assignee_id, [
                     $image_class . ' mright5',
                 ], 'small', [
                     'data-toggle' => 'tooltip',
-                    'data-title' => $assigned,
+                    'title' => $assigned,
                 ]);
+			$outputAssignees .='<span class="hide" style="display: none">' . mb_substr($exportAssignees, 0, -2) . '</span><br>';
             $exportAssignees .= $assigned . ', ';
         }
+		$outputAssignees .='</div>';
     }
 
     if ($exportAssignees != '') {
-        $outputAssignees .= '<span class="hide">' . mb_substr($exportAssignees, 0, -2) . '</span>';
+        $outputAssignees .= '<span class="hide" style="display: none">' . mb_substr($exportAssignees, 0, -2) . '</span>';
     }
-
+	$outputAssignees .='</div>';
     return $outputAssignees;
 }
 
@@ -452,10 +456,11 @@ function tasks_summary_data($rel_id = null, $rel_type = null)
     $statuses = $CI->tasks_model->get_statuses();
     foreach ($statuses as $status) {
         $tasks_where = 'status = ' . $CI->db->escape_str($status['id']);
-        if (!has_permission('tasks', '', 'view')) {
+       /* if (!has_permission('tasks', '', 'view')) {
             $tasks_where .= ' ' . get_tasks_where_string();
-        }
-        $tasks_my_where = 'id IN(SELECT taskid FROM ' . db_prefix() . 'task_assigned WHERE staffid=' . get_staff_user_id() . ') AND status=' . $CI->db->escape_str($status['id']);
+        }*/
+		$tasks_where .= ' ' . get_tasks_where_string();
+        $tasks_my_where = 'id IN(SELECT taskid FROM ' . db_prefix() . 'task_assigned WHERE user_id=' . get_user_id() . ') AND status=' . $CI->db->escape_str($status['id']);
         if ($rel_id && $rel_type) {
             $tasks_where .= ' AND rel_id=' . $CI->db->escape_str($rel_id) . ' AND rel_type="' . $CI->db->escape_str($rel_type) . '"';
             $tasks_my_where .= ' AND rel_id=' . $CI->db->escape_str($rel_id) . ' AND rel_type="' . $CI->db->escape_str($rel_type) . '"';
@@ -516,7 +521,7 @@ function get_sql_select_task_assignees_ids()
 
 function get_sql_select_task_asignees_full_names()
 {
-    return '(SELECT GROUP_CONCAT(CONCAT(firstname, \' \', lastname) SEPARATOR ",") FROM ' . db_prefix() . 'task_assigned JOIN ' . db_prefix() . 'staff ON ' . db_prefix() . 'staff.staffid = ' . db_prefix() . 'task_assigned.staffid WHERE taskid=' . db_prefix() . 'tasks.id ORDER BY ' . db_prefix() . 'task_assigned.staffid)';
+    return '(SELECT GROUP_CONCAT(CONCAT(firstname, \' \', lastname) SEPARATOR ",") FROM ' . db_prefix() . 'task_assigned JOIN ' . db_prefix() . 'admin ON ' . db_prefix() . 'admin.admin_id = ' . db_prefix() . 'task_assigned.user_id WHERE taskid=' . db_prefix() . 'tasks.id ORDER BY ' . db_prefix() . 'task_assigned.user_id)';
 }
 
 function get_sql_select_task_total_checklist_items()
@@ -537,9 +542,9 @@ function get_sql_select_task_total_finished_checklist_items()
  */
 function get_tasks_where_string($table = true)
 {
-    $_tasks_where = '(' . db_prefix() . 'tasks.id IN (SELECT taskid FROM ' . db_prefix() . 'task_assigned WHERE staffid = ' . get_staff_user_id() . ') OR ' . db_prefix() . 'tasks.id IN (SELECT taskid FROM ' . db_prefix() . 'task_followers WHERE staffid = ' . get_staff_user_id() . ') OR (addedfrom=' . get_staff_user_id() . ' AND is_added_from_contact=0)';
+    $_tasks_where = '(' . db_prefix() . 'tasks.id IN (SELECT taskid FROM ' . db_prefix() . 'task_assigned WHERE user_id = ' . get_user_id() . ') OR ' . db_prefix() . 'tasks.id IN (SELECT taskid FROM ' . db_prefix() . 'task_followers WHERE user_id = ' . get_user_id() . ') OR (addedfrom=' . get_user_id() . ' AND is_added_from_contact=0)';
     if (get_option('show_all_tasks_for_project_member') == 1) {
-        $_tasks_where .= ' OR (' . db_prefix() . 'tasks.rel_type="project" AND ' . db_prefix() . 'tasks.rel_id IN (SELECT project_id FROM ' . db_prefix() . 'project_members WHERE staff_id=' . get_staff_user_id() . '))';
+        $_tasks_where .= ' OR (' . db_prefix() . 'tasks.rel_type="project" AND ' . db_prefix() . 'tasks.rel_id IN (SELECT project_id FROM ' . db_prefix() . 'project_members WHERE staff_id=' . get_user_id() . '))';
     }
     $_tasks_where .= ' OR is_public = 1)';
     if ($table == true) {

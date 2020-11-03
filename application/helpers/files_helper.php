@@ -118,8 +118,7 @@ function is_image($path)
  */
 function get_html5_video_extensions()
 {
-    return hooks()->apply_filters(
-        'html5_video_extensions',
+    return
         [
             'mp4',
             'm4v',
@@ -127,8 +126,7 @@ function get_html5_video_extensions()
             'ogv',
             'ogg',
             'flv',
-        ]
-    );
+        ];
 }
 /**
  * Check if filename/path is video file

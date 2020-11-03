@@ -25,7 +25,7 @@ function leads_app_admin_head_data()
 function is_lead_creator($lead_id, $staff_id = '')
 {
     if (!is_numeric($staff_id)) {
-        $staff_id = get_staff_user_id();
+        $staff_id = get_user_id();
     }
 
     return total_rows(db_prefix() . 'leads', [
@@ -94,7 +94,7 @@ function get_leads_summary()
     $totalStatuses         = count($statuses);
     $has_permission_view   = has_permission('leads', '', 'view');
     $sql                   = '';
-    $whereNoViewPermission = '(addedfrom = ' . get_staff_user_id() . ' OR assigned=' . get_staff_user_id() . ' OR is_public = 1)';
+    $whereNoViewPermission = '(addedfrom = ' . get_user_id() . ' OR assigned=' . get_user_id() . ' OR is_public = 1)';
 
     $statuses[] = [
         'lost'  => true,

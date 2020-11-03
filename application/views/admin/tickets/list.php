@@ -26,30 +26,18 @@
 			<div id="page-header">
 				<div class="d-inline-block" style="display: flex !important;">
 
-					<h3 class="card-title nomb" ><span>Tickets</span>
+					<h3 class="card-title nomb" ><span>Ticketsystem</span>
 						<a id="edit-menu" href="#"><i class="fa fa-pencil"></i></a></h3>
 					</h3>
-					<a style="margin-left: 10px" href="<?php echo base_url('admin/client/translation'); ?>"
-					   class="btn btn-info btntrans pull-left display-block"><?php echo 'Translate'; ?></a>
+					<a href="<?php echo base_url('admin/ticket/add'); ?>"
+					   class="btn btn-success"><?php echo 'Erstellen'; ?></a>
 				</div>
 			</div>
-			<div class="d-inline-block float-right" style="margin-top: 10px">
-				<a href="<?php echo base_url('admin/ticket/add'); ?>"
-				   class="btn btn-success"><?php echo 'Erstellen'; ?></a>
 
-
-			</div>
 
 			<?php
 			$total = ''; ?>
-			<div class="col-md-4" style="padding-right: 0px;  padding-left: 0px;margin-top: 10px">
-				<div class="panel_s">
-					<div class="panel-body" style="padding: 15px  15px;">
-						<?= widget_status_stats('clients', $title); ?>
 
-					</div>
-				</div>
-			</div>
 		</div>
 		<div class="card">
 			<!--	<div class="table-responsive">
@@ -81,11 +69,14 @@
 				'<span class="hide"> - </span><div class="checkbox mass_select_all_wrap"><input type="checkbox" id="mass_select_all" data-to-table="ticket"><label></label></div>',
 				'ID',
 				get_transl_field('tsl_tickets', 'betreff', 'Betreff'),
-				get_transl_field('tsl_tickets', 'tags', 'Tags'),
-				get_transl_field('tsl_tickets', 'abteilung', 'Abteilung'),
+				//get_transl_field('tsl_tickets', 'tags', 'Tags'),
+				//get_transl_field('tsl_tickets', 'abteilung', 'Abteilung'),
 				get_transl_field('tsl_tickets', 'service', 'Service'),
 				get_transl_field('tsl_tickets', 'kunde', 'Kunde'),
 				get_transl_field('tsl_tickets', 'status', 'Status'),
+				get_transl_field('tsl_tickets', 'Priorität', 'Priorität'),
+				get_transl_field('tsl_tickets', 'Letzte Antwort', 'Letzte Antwort'),
+				get_transl_field('tsl_tickets', 'Erstelldatum', 'Erstelldatum'),
 
 			);
 

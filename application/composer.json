@@ -15,7 +15,10 @@
 	"cocur/slugify": "^3.0",
 	"paypal/rest-api-sdk-php": "*",
 	"neitanod/forceutf8": "~2.0",
-	"yidas/codeigniter-psr4-autoload": "^2.0"
+	"yidas/codeigniter-psr4-autoload": "^2.0",
+    "pusher/pusher-php-server": "^4.1",
+    "studio-42/elfinder": "^2.1",
+    "phpoffice/phpspreadsheet": "^1.15"
   },
   "suggest": {
 	"paragonie/random_compat": "Provides better randomness in PHP 5.x"

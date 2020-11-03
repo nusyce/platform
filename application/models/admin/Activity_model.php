@@ -22,12 +22,18 @@ class Activity_model extends CI_Model{
 			'admin_id' => ($this->session->userdata('admin_id') != '') ? $this->session->userdata('admin_id') : 0,
 			'date' => date('Y-m-d H:i:s')
 		);
+		$data['company_id']=get_user_company_id();
 		$this->db->insert('mar_activity_log',$data);
 		return true;
 	}
-	
+	public function clear_log(){
+		$this->db->where('company_id', get_user_company_id());
+		$this->db->delete('mar_activity_log');
+		return true;
+	}
 
-	
+
+
 }
 
 ?>

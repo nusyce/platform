@@ -383,7 +383,7 @@ function get_announcements_for_user($staff = true)
     $CI->db->select();
 
     if ($staff == true) {
-        $CI->db->where('announcementid NOT IN (SELECT announcementid FROM ' . db_prefix() . 'dismissed_announcements WHERE staff=1 AND userid = ' . get_staff_user_id() . ') AND showtostaff = 1');
+        $CI->db->where('announcementid NOT IN (SELECT announcementid FROM ' . db_prefix() . 'dismissed_announcements WHERE staff=1 AND userid = ' . get_user_id() . ') AND showtostaff = 1');
     } else {
         $contact_id = get_contact_user_id();
         if (!is_client_logged_in()) {

@@ -32,7 +32,7 @@ function get_relation_data($type, $rel_id = '')
             $where_contacts = db_prefix() . 'contacts.active=1';
             if ($CI->input->post('tickets_contacts')) {
                 if (!has_permission('customers', '', 'view') && get_option('staff_members_open_tickets_to_all_contacts') == 0) {
-                    $where_contacts .= ' AND ' . db_prefix() . 'contacts.userid IN (SELECT customer_id FROM ' . db_prefix() . 'customer_admins WHERE staff_id=' . get_staff_user_id() . ')';
+                    $where_contacts .= ' AND ' . db_prefix() . 'contacts.userid IN (SELECT customer_id FROM ' . db_prefix() . 'customer_admins WHERE staff_id=' . get_user_id() . ')';
                 }
             }
             if ($CI->input->post('contact_userid')) {
@@ -364,7 +364,7 @@ function init_relation_options($data, $type, $rel_id = '')
             }
         } elseif ($type == 'lead') {
             if (!has_permission('leads', '', 'view')) {
-                if ($relation['assigned'] != get_staff_user_id() && $relation['addedfrom'] != get_staff_user_id() && $relation['is_public'] != 1 && $rel_id != $relation_values['id']) {
+                if ($relation['assigned'] != get_user_id() && $relation['addedfrom'] != get_user_id() && $relation['is_public'] != 1 && $rel_id != $relation_values['id']) {
                     continue;
                 }
             }
@@ -377,23 +377,23 @@ function init_relation_options($data, $type, $rel_id = '')
                 }
             }
         } elseif ($type == 'contract') {
-            if (!$has_permission_contracts_view && $rel_id != $relation_values['id'] && $relation_values['addedfrom'] != get_staff_user_id()) {
+            if (!$has_permission_contracts_view && $rel_id != $relation_values['id'] && $relation_values['addedfrom'] != get_user_id()) {
                 continue;
             }
         } elseif ($type == 'invoice') {
-            if (!$has_permission_invoices_view && $rel_id != $relation_values['id'] && $relation_values['addedfrom'] != get_staff_user_id()) {
+            if (!$has_permission_invoices_view && $rel_id != $relation_values['id'] && $relation_values['addedfrom'] != get_user_id()) {
                 continue;
             }
         } elseif ($type == 'estimate') {
-            if (!$has_permission_estimates_view && $rel_id != $relation_values['id'] && $relation_values['addedfrom'] != get_staff_user_id()) {
+            if (!$has_permission_estimates_view && $rel_id != $relation_values['id'] && $relation_values['addedfrom'] != get_user_id()) {
                 continue;
             }
         } elseif ($type == 'expense') {
-            if (!$has_permission_expenses_view && $rel_id != $relation_values['id'] && $relation_values['addedfrom'] != get_staff_user_id()) {
+            if (!$has_permission_expenses_view && $rel_id != $relation_values['id'] && $relation_values['addedfrom'] != get_user_id()) {
                 continue;
             }
         } elseif ($type == 'proposal') {
-            if (!$has_permission_proposals_view && $rel_id != $relation_values['id'] && $relation_values['addedfrom'] != get_staff_user_id()) {
+            if (!$has_permission_proposals_view && $rel_id != $relation_values['id'] && $relation_values['addedfrom'] != get_user_id()) {
                 continue;
             }
         }

@@ -122,7 +122,7 @@ class Tasks_merge_fields extends App_merge_fields
         if (is_client_logged_in()) {
             $fields['{task_user_take_action}'] = get_contact_full_name(get_contact_user_id());
         } else {
-            $fields['{task_user_take_action}'] = get_staff_full_name(get_staff_user_id());
+            $fields['{task_user_take_action}'] = get_user_full_name(get_user_id());
         }
 
         $fields['{task_comment}'] = '';

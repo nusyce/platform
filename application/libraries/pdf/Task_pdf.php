@@ -14,7 +14,7 @@ class Task_pdf
     protected $task;
     protected $tags;
 
-    public function __construct($task, $tag = '')
+    public function __construct($task, $tag = '',$signature)
     {
 
         if (!class_exists('Tasks_model', false)) {
@@ -24,21 +24,23 @@ class Task_pdf
         $this->task = $task;
 
         $GLOBALS['task_pdf'] = $task;
-            $this->shpww($task,$tag);
+		$this->shpww($task,$tag,$signature);
     }
 
 
-    protected function shpww($task,$task_tag)
+    protected function shpww($task,$task_tag,$signature)
     {
+
         try {
             ob_start();
+
             if ($this->tags == 'checklist') {
                 include $this->file_path_check_list();
+
             }else{
                 include $this->file_path();
             }
             $content = ob_get_clean();
-
             $html2pdf = new Html2Pdf('P', 'A4', 'de',
                 $unicode = true,
                 $encoding = 'UTF-8',
@@ -46,7 +48,9 @@ class Task_pdf
             $html2pdf->setDefaultFont('Arial');
             // $html2pdf->setModeDebug();
             $html2pdf->writeHTML($content);
+
             $html2pdf->output('Checklist.pdf');
+
         } catch (Html2PdfException $e) {
             $html2pdf->clean();
 

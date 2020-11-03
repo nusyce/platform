@@ -30,7 +30,8 @@ $aColumns = [
 
 $sIndexColumn =  'id';
 $sTable = db_prefix() . 'mieters';
-$where = [];
+$where=[];
+array_push($where, 'AND company_id='.get_user_company_id());
 $join = [];
 $join[] = 'LEFT JOIN ' . db_prefix() . 'projects ON ' . db_prefix() . 'projects.id = ' . db_prefix() . 'mieters.project';
 $join[] = 'LEFT JOIN ' . db_prefix() . 'occupations ON ' . db_prefix() . 'occupations.mieter = ' . db_prefix() . 'mieters.id';
@@ -85,11 +86,11 @@ $result = data_tables_init($aColumns, $sIndexColumn, $sTable, $join, $where, [db
 $output = $result['output'];
 $rResult = $result['rResult'];
 $rResult = unique_multidim_array($rResult, 'id');
-
+$i=1;
 foreach ($rResult as $aRow) {
     $row = [];
     $row[] = '<div class="multiple_action checkbox"><input type="checkbox" value="' . $aRow['id'] . '"><label></label></div>';
-    $row[] = $aRow['id'];
+    $row[] = $i;
     $subjectOutput = '<a href="' . admin_url('mieter/mieter/' . $aRow['id']) . '">' . $aRow['fullname'] . '</a>';
     $subjectOutput .= '<div class="row-options">';
     $subjectOutput .= '  <a href="' . admin_url('mieter/mieter/' . $aRow['id']) . '">' . _l('Bearbeiten') . '</a>';
@@ -155,4 +156,5 @@ foreach ($rResult as $aRow) {
 
 
     $output['aaData'][] = $row;
+	$i++;
 }

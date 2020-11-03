@@ -69,7 +69,7 @@ foreach ($rResult as $aRow) {
 			$_data .= '<a href="' . admin_url('admin/edit/' . $aRow['id']) . '">' . _l('view') . '</a>';
 
 			/*  if (($has_permission_delete && ($has_permission_delete && !is_admin($aRow['id']))) || is_admin()) {
-				  if ($has_permission_delete && $output['iTotalRecords'] > 1 && $aRow['id'] != get_staff_user_id()) {
+				  if ($has_permission_delete && $output['iTotalRecords'] > 1 && $aRow['id'] != get_user_id()) {
 					  $_data .= ' | <a href="#" onclick="delete_staff_member(' . $aRow['id'] . '); return false;" class="text-danger">' . _l('delete') . '</a>';
 				  }
 			  }*/

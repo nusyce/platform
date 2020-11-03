@@ -129,7 +129,7 @@ function handle_project_file_uploads($project_id)
                         $contact_id = get_contact_user_id();
                         $staffid = 0;
                     } else {
-                        $staffid = get_staff_user_id();
+                        $staffid = get_user_id();
                         $contact_id = 0;
                     }
                     $data = [
@@ -529,7 +529,7 @@ function handle_ticket_attachments($ticketid, $index_name = 'attachments')
         _file_attachments_index_fix($index_name);
 
         for ($i = 0; $i < count($_FILES[$index_name]['name']); $i++) {
-            hooks()->do_action('before_upload_ticket_attachment', $ticketid);
+            //hooks()->do_action('before_upload_ticket_attachment', $ticketid);
             if ($i <= get_option('maximum_allowed_ticket_attachments')) {
                 // Get the temp file path
                 $tmpFilePath = $_FILES[$index_name]['tmp_name'][$i];
@@ -713,7 +713,7 @@ function handle_favicon_upload()
 function handle_staff_profile_image_upload($staff_id = '')
 {
     if (!is_numeric($staff_id)) {
-        $staff_id = get_staff_user_id();
+        $staff_id = get_user_id();
     }
     if (isset($_FILES['profile_image']['name']) && $_FILES['profile_image']['name'] != '') {
         hooks()->do_action('before_upload_staff_profile_image');
@@ -1080,5 +1080,5 @@ function get_upload_path_by_type($type)
             break;
     }
 
-    return hooks()->apply_filters('get_upload_path_by_type', $path, $type);
+    return $path;
 }

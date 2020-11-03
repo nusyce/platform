@@ -1,10 +1,12 @@
 <?php $this->load->view('admin/includes/menu-edite') ?>
 <!-- BEGIN: Vendor JS-->
 
+<script src="<?= base_url() ?>/assets/app/js/scripts/scripts.js"></script>
 <script src="<?= base_url() ?>/assets/app/vendors/js/vendors.min.js"></script>
 <script src="<?= base_url() ?>/assets/app/fonts/LivIconsEvo/js/LivIconsEvo.tools.js"></script>
 <script src="<?= base_url() ?>/assets/app/fonts/LivIconsEvo/js/LivIconsEvo.defaults.js"></script>
 <script src="<?= base_url() ?>/assets/app/fonts/LivIconsEvo/js/LivIconsEvo.min.js"></script>
+<script src="<?= base_url() ?>/assets/app/js/scripts/select2.min.js"></script>
 <!-- BEGIN Vendor JS-->
 <script src="<?= base_url() ?>/assets/plugins/jquery-validation/jquery.validate.js"></script>
 <!-- BEGIN: Page Vendor JS-->
@@ -44,9 +46,24 @@
 <!-- BEGIN: Page JS-->
 <!--<script src="<? /*= base_url()*/ ?>/assets/app/js/scripts/pages/dashboard-ecommerce.js"></script>
 -->
-<script <script type="text/javascript" id="tinymce-js" src="<?= base_url() ?>/assets/plugin/tinymce.min.js" ></script>
+
 <script src="<?= base_url() ?>/assets/plugins/validation/app-form-validation.js"></script>
 <!-- END: Page JS-->
+<script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+<script>
+
+    // Enable pusher logging - don't include this in production
+    Pusher.logToConsole = true;
+
+    var pusher = new Pusher('30fc7858781856990d1c', {
+        cluster: 'eu'
+    });
+
+    var channel = pusher.subscribe('my-channel');
+    channel.bind('my-event', function(data) {
+        alert(JSON.stringify(data));
+    });
+</script>
 <script>
 	console.log(jQuery().jquery);
 

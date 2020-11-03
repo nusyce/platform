@@ -52,7 +52,7 @@ class Import_mieter extends App_import
             $insert['nachname'] = $row['nachname'] ? $row['nachname'] : '';
             // $insert['betreuer'] = $row['betreuer'];
             $insert['email'] = $row['email'] ? $row['email'] : '';
-            $insert['userid'] = get_staff_user_id();
+            $insert['userid'] = get_user_id();
             $insert['strabe_m'] = $row['strabe'] ? $row['strabe'] : '';
             $insert['etage'] = $row['etage'] ? $row['etage'] : '';
             $insert['plz'] = $row['plz'] ? $row['plz'] : '';

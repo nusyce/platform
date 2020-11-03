@@ -29,13 +29,13 @@
 					<h3 class="card-title nomb" ><span>Activity Log</span>
 
 					</h3>
-					<a style="margin-left: 10px" href="<?php echo base_url('admin/client/translation'); ?>"
+					<a style="margin-left: 10px" href="<?php echo base_url('admin/activity/clear'); ?>"
 					   class="btn btn-danger btntrans pull-left display-block"><?php echo 'LOG LEEREN'; ?></a>
 				</div>
 			</div>
 
 <div style="width: 25%">
-	<?php echo render_input('activity_log_date', 'utility_activity_log_filter_by_date', $value,'date'); ?>
+	<?php echo render_input('activity_log_date', 'Filter by date', "",'date'); ?>
 
 </div>
 
@@ -70,12 +70,9 @@
 			<?php
 
 			$table_data = array(
-
 				get_transl_field('tsl_activity', 'bescheribung', 'Bescheribung'),
 				get_transl_field('tsl_activity', 'datum', 'Datum'),
 				get_transl_field('tsl_activity', 'mitarbeiter', 'Mitarbeiter'),
-
-
 			);
 
 

@@ -148,7 +148,7 @@ function get_proposals_percent_by_status($status, $total_proposals = '')
     $has_permission_view                 = has_permission('proposals', '', 'view');
     $has_permission_view_own             = has_permission('proposals', '', 'view_own');
     $allow_staff_view_proposals_assigned = get_option('allow_staff_view_proposals_assigned');
-    $staffId                             = get_staff_user_id();
+    $staffId                             = get_user_id();
 
     $whereUser = '';
     if (!$has_permission_view) {
@@ -210,7 +210,7 @@ function user_can_view_proposal($id, $staff_id = false)
 {
     $CI = &get_instance();
 
-    $staff_id = $staff_id ? $staff_id : get_staff_user_id();
+    $staff_id = $staff_id ? $staff_id : get_user_id();
 
     if (has_permission('proposals', $staff_id, 'view')) {
         return true;
@@ -268,7 +268,7 @@ function parse_proposal_content_merge_fields($proposal)
 function staff_has_assigned_proposals($staff_id = '')
 {
     $CI       = &get_instance();
-    $staff_id = is_numeric($staff_id) ? $staff_id : get_staff_user_id();
+    $staff_id = is_numeric($staff_id) ? $staff_id : get_user_id();
     $cache    = $CI->app_object_cache->get('staff-total-assigned-proposals-' . $staff_id);
     if (is_numeric($cache)) {
         $result = $cache;

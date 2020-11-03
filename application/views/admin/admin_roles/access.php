@@ -26,7 +26,7 @@
 								<div class="row">
 									<div class="col-md-3">
 										<h5 class="m-0">
-											<strong class="f-16"><?= $module['module_name']?></strong>
+											<strong class="f-16" style="text-transform:uppercase;font-size: 16px;"><?= get_menu_option($module['controller_name'], $module['module_name']) ?></strong>
 										</h5>
 									</div>
 									<div class="col-md-9">
@@ -34,14 +34,14 @@
 											<?php foreach(explode("|",$module['operation']) as $k => $operation):?>
 												<div class="col-md-3 pb-3">
 	                                        <span class="pull-left">
-	                                            <input type='checkbox'
-													   class='tgl tgl-ios tgl_checkbox'
-													   data-module='<?= $module['controller_name'] ?>'
-													   data-operation='<?= $operation; ?>'
-													   id='cb_<?=$kk.$k?>'
-	                                            <?php if (in_array($module['controller_name'].'/'.$operation, $access)) echo 'checked="checked"';?>
-	                                            />
-	                                            <label class='tgl-btn' for='cb_<?=$kk.$k?>'></label>
+												<div class="onoffswitch">
+                <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" data-module='<?= $module['controller_name'] ?>'
+					   data-operation='<?= $operation; ?>'
+					   id='cb_<?=$kk.$k?>'
+	                                            <?php if (in_array($module['controller_name'].'/'.$operation, $access)) echo 'checked="checked"';?>>
+                <label class="onoffswitch-label" for='cb_<?=$kk.$k?>'></label>
+            </div>
+
 	                                        </span>
 
 													<?=ucwords($operation)?>
@@ -64,7 +64,7 @@
 <?php init_tail(); ?>
 
 <script>
-	$("body").on("change",".tgl_checkbox",function(){
+	$("body").on("change",".onoffswitch-checkbox",function(){
 		$.post('<?=base_url("admin/admin_roles/set_access")?>',
 				{
 					'<?php echo $this->security->get_csrf_token_name(); ?>' : '<?php echo $this->security->get_csrf_hash(); ?>',

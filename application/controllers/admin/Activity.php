@@ -18,6 +18,18 @@ class Activity extends MY_Controller {
 		$this->load->view('admin/activity/activity-list', $data);
 
 	}
+	public function clear()
+	{
+		// $records = $this->activity_model->get_activity_log();
+		// var_dump($records);exit();
+		$result=$this->activity_model->clear_log();
+		if($result){
+			set_alert('error','Successfully Emptied.');
+			redirect('admin/activity/');
+
+		}
+
+	}
 	public function render($activity = '')
 	{
 		$this->app->get_renderable_data('activity/table', ['activity' => $activity]);

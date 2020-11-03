@@ -1,5 +1,6 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed'); ?>
 <?php init_head(); ?>
+<script>tinymce.init({selector:'textarea'});</script>
 <div class="app-content content">
 	<div class="content-overlay"></div>
 	<div class="content-wrapper">
@@ -13,13 +14,13 @@
 					<div class="col-md-6">
 						<?php if(!isset($project_id) && !isset($contact)){ ?>
 							<a href="#" id="ticket_no_contact"><span class="label label-default">
-										<i class="fa fa-envelope"></i> <?php echo _l('ticket_create_no_contact'); ?>
+										<i class="fa fa-envelope"></i> Ticket ohne Kontakt
 									</span>
 							</a>
-							<a href="#" class="hide" id="ticket_to_contact"><span class="label label-default">
-									<i class="fa fa-user-o"></i> <?php echo _l('ticket_create_to_contact'); ?>
+							<!--<a href="#" class="hide" id="ticket_to_contact"><span class="label label-default">
+									<i class="fa fa-user-o"></i> Ticket ohne Kontakt
 								</span>
-							</a>
+							</a>-->
 							<div class="mbot15"></div>
 						<?php } ?>
 						<?php echo render_input('subject','ticket_settings_subject','','text',array('required'=>'true')); ?>
@@ -47,6 +48,29 @@
 			</div>
 			<div class="card">
 				<?php echo render_textarea('message','','',array(),array(),'','tinymce'); ?>
+			</div>
+
+				<div class="row">
+					<div class="col-md-4">
+
+							<div class="form-group">
+								<label for="attachment" class="control-label"><?php echo _l('ticket_add_attachments'); ?></label>
+								<div class="input-group">
+									<input type="file" extension="<?php echo str_replace(['.', ' '], '', get_option('ticket_attachments_file_extensions')); ?>" filesize="<?php echo file_upload_max_size(); ?>" class="form-control" name="attachments[0]" accept="<?php echo get_ticket_form_accepted_mimes(); ?>">
+									<span class="input-group-btn">
+												<button class="btn btn-success add_more_attachments p8-half" data-max="<?php echo get_option('maximum_allowed_ticket_attachments'); ?>" type="button"><i class="fa fa-plus"></i></button>
+											</span>
+								</div>
+							</div>
+
+					</div>
+
+			</div>
+
+			<div class="form-group">
+				<div class="col-md-12">
+					<input style="width: 150px;" type="submit"  value="Speichern" class="btn btn-primary pull-right">
+				</div>
 			</div>
 			<?php echo form_close(); ?>
 		</div>

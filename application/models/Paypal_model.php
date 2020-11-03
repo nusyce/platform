@@ -18,13 +18,18 @@ class Paypal_model extends CI_Model {
 		$this->db->set('type',$codeIgniter->session->userdata('pack_data')['type']);
 		$this->db->set('total',$Total);
 		$this->db->set('created_at',$CreateTime);
+		$this->db->set('created_at',$CreateTime);
+		$this->db->set('user_id',get_user_id());
+		$this->db->set('company_id',get_user_company_id());
 		$this->db->insert('mar_subscriptions');
+		$insertId = $this->db->insert_id();
         $this->db->set('txn_id',$saleId);
         $this->db->set('PaymentMethod',$PaymentMethod);
         $this->db->set('PayerStatus',$PayerStatus);
         $this->db->set('PayerMail',$PayerMail);
         $this->db->set('Total',$Total);
         $this->db->set('SubTotal',$SubTotal);
+		$this->db->set('souscription_id',$insertId);
         $this->db->set('Tax',$Tax);
         $this->db->set('Payment_state',$State);
 		$this->db->set('CreateTime',$CreateTime);

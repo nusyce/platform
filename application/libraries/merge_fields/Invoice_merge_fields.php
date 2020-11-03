@@ -146,7 +146,7 @@ class Invoice_merge_fields extends App_merge_fields
         }
 
         $fields['{invoice_amount_due}'] = app_format_money(get_invoice_total_left_to_pay($invoice_id, $invoice->total), $currency);
-        $fields['{invoice_sale_agent}'] = get_staff_full_name($invoice->sale_agent);
+        $fields['{invoice_sale_agent}'] = get_user_full_name($invoice->sale_agent);
         $fields['{invoice_total}']      = app_format_money($invoice->total, $currency);
         $fields['{invoice_subtotal}']   = app_format_money($invoice->subtotal, $currency);
 

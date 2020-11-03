@@ -92,7 +92,7 @@ function data_tables_init($aColumns, $sIndexColumn, $sTable, $join = [], $where 
 
 			$meta_name = $CI->input->post('last_order_identifier') . '-table-last-order';
 
-			update_staff_meta(get_staff_user_id(), $meta_name, json_encode($indexedOnly, JSON_NUMERIC_CHECK));
+			update_staff_meta(get_user_id(), $meta_name, json_encode($indexedOnly, JSON_NUMERIC_CHECK));
 		}
 	}
 	/*
@@ -391,5 +391,5 @@ function prepare_dt_filter($filter)
  */
 function get_table_last_order($tableID)
 {
-	return htmlentities(get_staff_meta(get_staff_user_id(), $tableID . '-table-last-order'));
+	return htmlentities(get_staff_meta(get_user_id(), $tableID . '-table-last-order'));
 }

@@ -9,7 +9,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
  */
 function AdminTicketsTableStructure($name = '', $bulk_action = false)
 {
-    $table = '<table class="table customizable-table dt-table-loading ' . ($name == '' ? 'tickets-table' : $name) . ' table-tickets" id="table-tickets" data-last-order-identifier="tickets" data-default-order="' . get_table_last_order('tickets') . '">';
+    $table = '<table class="table customizable-table dt-table-loading ' . ($name == '' ? 'tickets-table' : $name) . ' table-tickets" id="table-tickets" data-last-order-identifier="tickets" data-default-order="1">';
     $table .= '<thead>';
     $table .= '<tr>';
 
@@ -32,7 +32,7 @@ function AdminTicketsTableStructure($name = '', $bulk_action = false)
     $table .= '<th class="toggleable" id="th-last-reply">' . _l('ticket_dt_last_reply') . '</th>';
     $table .= '<th class="toggleable ticket_created_column" id="th-created">' . _l('ticket_date_created') . '</th>';
 
-    $custom_fields = get_table_custom_fields('tickets');
+    $custom_fields = [];
 
     foreach ($custom_fields as $field) {
         $table .= '<th>' . $field['name'] . '</th>';
@@ -44,7 +44,7 @@ function AdminTicketsTableStructure($name = '', $bulk_action = false)
     $table .= '</table>';
 
     $table .= '<script id="hidden-columns-table-tickets" type="text/json">';
-    $table .= get_staff_meta(get_staff_user_id(), 'hidden-columns-table-tickets');
+    $table .= 'hidden-columns-table-tickets';
     $table .= '</script>';
 
     return $table;
@@ -73,6 +73,24 @@ function ticket_status_translate($id)
     }
 
     return $line;
+}
+function ticket_status_color($id)
+{
+	if ($id == '' || is_null($id)) {
+		return '';
+	}
+
+	$line = _l('ticket_status_db_' . $id, '', false);
+
+	if ($line == 'db_translate_not_found') {
+		$CI = & get_instance();
+		$CI->db->where('ticketstatusid', $id);
+		$status = $CI->db->get(db_prefix() . 'tickets_status')->row();
+
+		return !$status ? '' : $status->statuscolor;
+	}
+
+	return $line;
 }
 
 /**

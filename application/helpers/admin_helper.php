@@ -62,10 +62,10 @@ function widget_status_stats($table, $title = '')
         $where = db_prefix() . $tt . '.project IN  ("' . $stf_project . ' ")  AND ';
         $wherett = db_prefix() . $tt . '.project IN  ("' . $stf_project . ' ")';
     }*/
-    $total = total_rows(db_prefix() . $table, $wherett);
+    $total = total_rows(db_prefix() . $table, $wherett.'company_id='.get_user_company_id());
 
-		$active = total_rows(db_prefix() . $table, $where.'active=1');
-		$not_active = total_rows(db_prefix() . $table, $where.' active=0');
+		$active = total_rows(db_prefix() . $table, $where.'active=1 and company_id='.get_user_company_id());
+		$not_active = total_rows(db_prefix() . $table, $where.' active=0 and company_id='.get_user_company_id());
 
 
     $percentData = percentVal($active, $total);
@@ -302,7 +302,7 @@ function admin_url($url = '')
  */
 function staff_can($capability, $feature = null, $staff_id = '')
 {
-    $staff_id = $staff_id == '' ? get_staff_user_id() : $staff_id;
+    $staff_id = $staff_id == '' ? get_user_id() : $staff_id;
 
     /**
      * Maybe permission is function?
@@ -334,7 +334,7 @@ function staff_can($capability, $feature = null, $staff_id = '')
      * Stop making query if we are doing checking for current user
      * Current user is stored in $GLOBALS including the permissions
      */
-    if ((string)$staff_id === (string)get_staff_user_id() && isset($GLOBALS['current_user'])) {
+    if ((string)$staff_id === (string)get_user_id() && isset($GLOBALS['current_user'])) {
         $permissions = $GLOBALS['current_user']->permissions;
     }
 
@@ -456,6 +456,68 @@ function get_admin_uri()
  * @since  1.0.0
  * Check if current user is admin
  */
+function get_user_profile_image($id, $classes = ['staff-profile-image'], $type = 'small', $img_attrs = [])
+{
+	$url = base_url('assets/images/user-placeholder.jpg');
+
+	$id = trim($id);
+
+	$_attributes = '';
+	foreach ($img_attrs as $key => $val) {
+		$_attributes .= $key . '=' . '"' . html_escape($val) . '" ';
+	}
+
+	$blankImageFormatted = '<img src="' . $url . '" ' . $_attributes . ' class="' . implode(' ', $classes) . '" />';
+return $blankImageFormatted;
+	if ((string)$id === (string)get_user_id() && isset($GLOBALS['current_user'])) {
+		$result = $GLOBALS['current_user'];
+	} else {
+		$CI = &get_instance();
+		$result = $CI->app_object_cache->get('staff-profile-image-data-' . $id);
+
+		if (!$result) {
+			$CI->db->select('profile_image,firstname,lastname');
+			$CI->db->where('admin_id', $id);
+			$result = $CI->db->get(db_prefix() . 'staff')->row();
+			$CI->app_object_cache->add('staff-profile-image-data-' . $id, $result);
+		}
+	}
+
+	if (!$result) {
+		return $blankImageFormatted;
+	}
+
+	if ($result && $result->profile_image !== null) {
+		$profileImagePath = 'uploads/staff_profile_images/' . $id . '/' . $type . '_' . $result->profile_image;
+		if (file_exists($profileImagePath)) {
+			$profile_image = '<img ' . $_attributes . ' src="' . base_url($profileImagePath) . '" class="' . implode(' ', $classes) . '" />';
+		} else {
+			return $blankImageFormatted;
+		}
+	} else {
+		$profile_image = '<img src="' . $url . '" ' . $_attributes . ' class="' . implode(' ', $classes) . '" />';
+	}
+
+	return $profile_image;
+}
+function get_user_full_name($userid = '')
+{
+
+	if ($userid == '') {
+
+		$userid =  get_user_id();
+	}
+
+	$CI = &get_instance();
+
+
+	$CI->db->select('firstname,lastname');
+	$CI->db->from('mar_admin');
+
+	$CI->db->where('admin_id',$userid );
+	$query=$CI->db->get()->row_array();
+	return $query['firstname'].' '.$query['lastname'];
+}
 function is_admin($staffid = '')
 {
     /**
@@ -465,15 +527,14 @@ function is_admin($staffid = '')
         if (isset($GLOBALS['current_user'])) {
             return $GLOBALS['current_user']->admin === '1';
         }
-        $staffid = get_staff_user_id();
+        $staffid = get_user_id();
     }
 
     $CI = &get_instance();
     $CI->db->select('1')
-        ->where('admin', 1)
-        ->where('staffid', $staffid);
+        ->where('admin_id', $staffid);
 
-    return $CI->db->count_all_results(db_prefix() . 'staff') > 0 ? true : false;
+    return $CI->db->count_all_results(db_prefix() . 'admin') > 0 ? true : false;
 }
 
 function admin_body_class($class = '')
@@ -507,7 +568,7 @@ function get_admin_body_class($class = '')
     }
 
     if (is_staff_logged_in()) {
-        $classes[] = 'user-id-' . get_staff_user_id();
+        $classes[] = 'user-id-' . get_user_id();
     }
 
     $classes[] = strtolower($ci->agent->browser());

@@ -15,11 +15,11 @@ class ActivityLogger
         ];
         if (!DEFINED('CRON')) {
             if ($staffid != null && is_numeric($staffid)) {
-                $log['staffid'] = get_staff_full_name($staffid);
+                $log['staffid'] = get_user_full_name($staffid);
             } else {
                 if (!is_client_logged_in()) {
                     if (is_staff_logged_in()) {
-                        $log['staffid'] = get_staff_full_name(get_staff_user_id());
+                        $log['staffid'] = get_user_full_name(get_user_id());
                     } else {
                         $log['staffid'] = null;
                     }
@@ -30,7 +30,7 @@ class ActivityLogger
         } else {
             // manually invoked cron
             if (is_staff_logged_in()) {
-                $log['staffid'] = get_staff_full_name(get_staff_user_id());
+                $log['staffid'] = get_user_full_name(get_user_id());
             } else {
                 $log['staffid'] = '[CRON]';
             }

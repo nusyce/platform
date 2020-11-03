@@ -94,7 +94,7 @@ class Import_customers extends App_import
 
                         if (!has_permission('customers', '', 'view')) {
                             $assign['customer_admins']   = [];
-                            $assign['customer_admins'][] = get_staff_user_id();
+                            $assign['customer_admins'][] = get_user_id();
                             $this->ci->clients_model->assign_admins($assign, $id);
                         }
                     }

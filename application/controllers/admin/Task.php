@@ -14,6 +14,35 @@ class Task extends MY_Controller
 		$this->load->model('admin/admin_model', 'admin');
 		$this->load->model('/admin/tasks_model');
 	}
+	public function copy_task($id)
+	{
+
+			$data['copy_from'] = $id;
+			$data['copy_task_assignees'] = true;
+			$data['copy_task_followers'] = true;
+			$data['copy_task_checklist_items'] = true;
+			$data['copy_task_attachments'] = true;
+			$data['copy_task_status'] = true;
+			$data['copy_task_comments'] = true;
+
+			$new_task_id = $this->tasks_model->copy($data);
+			$response = [
+				'new_task_id' => '',
+				'alert_type' => 'warning',
+				'message' => 'Failed to copy task',
+				'success' => false,
+			];
+			if ($new_task_id) {
+				$response['message'] = _l('Task copied successfully');
+				$response['new_task_id'] = $new_task_id;
+				$response['success'] = true;
+				$response['alert_type'] = 'success';
+				set_alert('success', _l($response['message']));
+			}
+
+			$this->task($new_task_id);
+
+	}
 	public function mark_as($status, $id)
 	{
 		if ($this->tasks_model->is_task_assignee(get_user_id(), $id)

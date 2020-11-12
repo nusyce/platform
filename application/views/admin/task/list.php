@@ -177,7 +177,14 @@
             });
     });
 
-
+    function similar_task(task_id) {
+        requestGet('task/copy_task/' + task_id).done(function (response) {
+            $('#_task').html(response);
+            $('#task-modal').modal('hide');
+            $("body").find('#_task_modal').modal({show: true, backdrop: 'static'});
+            reload_tasks_tables();
+        });
+    }
 
 </script>
 

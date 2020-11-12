@@ -1,4 +1,7 @@
-<?php defined('BASEPATH') or exit('No direct script access allowed'); ?>
+
+<style>
+
+</style><?php defined('BASEPATH') or exit('No direct script access allowed'); ?>
 <div class="clearfix"></div>
 <?php if (count($checklists) > 0) { ?>
     <h4 class="bold chk-heading th font-medium"><?php echo _l('Aufgaben Einträge'); ?></h4>
@@ -10,14 +13,15 @@
 </div>
 <?php foreach ($checklists as $list) { ?>
 	 <div style="">
+
         <div class="checklist relative" data-checklist-id="<?php echo $list['id']; ?>">
-            <div class="checkbox-success checklist-checkbox" data-toggle="tooltip" title="">
+            <div class="round">
                 <input type="checkbox" <?php if ($list['finished'] == 1 && $list['finished_from'] != get_user_id() && !is_admin()) {
                     echo 'disabled';
                 } ?> name="checklist-box" class="checklist-box-checkbox" <?php if ($list['finished'] == 1) {
                     echo 'checked';
                 }; ?>>
-
+				<label for="checkbox"></label>
                 <textarea data-taskid="<?php echo $task_id; ?>" name="checklist-description"
                           rows="1"<?php if ($list['addedfrom'] != get_user_id() && !has_permission('tasks', '', 'edit')) {
                     echo ' disabled';
@@ -37,6 +41,7 @@
             <?php if ($list['finished'] == 1 || $list['addedfrom'] != get_user_id()) { ?>
                 <p class="font-medium-xs mtop15 text-muted checklist-item-info">
                     <?php
+					echo _l('task_created_by');
                     if ($list['addedfrom'] != get_user_id()) {
                         echo _l('task_created_by', get_user_full_name($list['addedfrom']));
                     }

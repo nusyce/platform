@@ -492,7 +492,7 @@ function get_weekdays_original()
 function _l($line, $label = '', $log_errors = true)
 {
 	$CI = &get_instance();
-
+	$CI->lang->load('german_lang', 'german');
 	$hook_data = ['line' => $line, 'label' => $label];
 	//$hook_data = hooks()->apply_filters('before_get_language_text', ['line' => $line, 'label' => $label]);
 

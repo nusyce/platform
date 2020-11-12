@@ -1387,7 +1387,7 @@
 
             if (this.checked)
             {
-                checklist=checklist+'<div class="" data-toggle="tooltip" title="" data-original-title=""><input type="checkbox"  class="" checked=""> <label for=""></label><textarea data-taskid="19" name="checklist-description" rows="1">'+$(this).parent().find("textarea").val()+'</textarea></div>';
+                checklist=checklist+'<div class="round"><input type="checkbox"  class="round" checked=""> <label for="checkbox"></label><textarea data-taskid="19" name="checklist-description" rows="1">'+$(this).parent().find("textarea").val()+'</textarea></div>';
 
             }
         });

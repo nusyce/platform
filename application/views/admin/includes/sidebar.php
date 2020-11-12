@@ -121,8 +121,8 @@
 		</ul>
 		<ul class="nav navbar-nav flex-row">
 			<li class="nav-item mr-auto">
-				<div class="brand-logo"><img style="width: 150px;
-    margin-left: 10px;margin-top: 10px" class="logo" src="<?= base_url($this->general_settings['favicon']); ?>"/></div>
+				<!--<div class="brand-logo"><img style="width: 150px;
+    margin-left: 10px;margin-top: 10px" class="logo" src="<?= base_url($this->general_settings['favicon']); ?>"/></div>-->
 				<!--<h2 class="brand-text mb-0">Frest</h2>-->
 			</li>
 

@@ -276,7 +276,7 @@ class Tasks_model extends CI_Model
         }
         unset($_new_task_data['datefinished']);
 
-        $_new_task_data = hooks()->apply_filters('before_add_task', $_new_task_data);
+        $_new_task_data = $_new_task_data;
 
         $this->db->insert(db_prefix() . 'tasks', $_new_task_data);
         $insert_id = $this->db->insert_id();
@@ -317,7 +317,7 @@ class Tasks_model extends CI_Model
             }
             $this->copy_task_custom_fields($data['copy_from'], $insert_id);
 
-            hooks()->do_action('after_add_task', $insert_id);
+            //hooks()->do_action('after_add_task', $insert_id);
 
             return $insert_id;
         }

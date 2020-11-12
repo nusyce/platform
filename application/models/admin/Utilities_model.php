@@ -17,7 +17,7 @@ class Utilities_model extends CI_Model
     {
         $users = $data['user'];
         unset($data['user']);
-        $data['userid'] = get_staff_user_id();
+        $data['userid'] = get_user_id();
         array_push($users, get_staff_user_id());
         $data['start'] = to_sql_date($data['start'], true);
         if ($data['end'] == '') {
@@ -359,7 +359,7 @@ class Utilities_model extends CI_Model
                 }
 
                 if ((!$has_permission_tasks_view || get_option('calendar_only_assigned_tasks') == '1') && !$client_data) {
-                    $this->db->where('(id IN (SELECT taskid FROM ' . db_prefix() . 'task_assigned WHERE staffid = ' . get_staff_user_id() . '))');
+                    $this->db->where('(id IN (SELECT taskid FROM ' . db_prefix() . 'task_assigned WHERE staffid = ' . get_user_id() . '))');
                 }
 
                 $tasks = $this->db->get()->result_array();
@@ -405,10 +405,10 @@ class Utilities_model extends CI_Model
                     }
                     $reminders = $this->db->get()->result_array();
                     foreach ($reminders as $reminder) {
-                        if ((get_staff_user_id() == $reminder['creator'] || get_staff_user_id() == $reminder['staff']) || $is_admin) {
+                        if ((get_user_id() == $reminder['creator'] || get_user_id() == $reminder['staff']) || $is_admin) {
                             $_reminder['title'] = '';
 
-                            if (get_staff_user_id() != $reminder['staff']) {
+                            if (get_user_id() != $reminder['staff']) {
                                 $_reminder['title'] .= '(' . $reminder['firstname'] . ' ' . $reminder['lastname'] . ') ';
                             }
 
@@ -512,7 +512,7 @@ class Utilities_model extends CI_Model
             $this->db->join(db_prefix() . 'clients', db_prefix() . 'clients.userid=' . db_prefix() . 'projects.clientid');
 
             if (!$client_data && !$has_permission_projects_view) {
-                $this->db->where('id IN (SELECT project_id FROM ' . db_prefix() . 'project_members WHERE staff_id=' . get_staff_user_id() . ')');
+                $this->db->where('id IN (SELECT project_id FROM ' . db_prefix() . 'project_members WHERE staff_id=' . get_user_id() . ')');
             } elseif ($client_data) {
                 $this->db->where('clientid', $client_id);
             }
@@ -550,7 +550,7 @@ class Utilities_model extends CI_Model
             $events = $this->get_all_events($start, $end); // This query is creatin issue
             //return array('hg calander data');
             foreach ($events as $event) {
-                if ($event['userid'] != get_staff_user_id() && !$is_admin) {
+                if ($event['userid'] != get_user_id() && !$is_admin) {
                     $event['is_not_creator'] = true;
                     $event['onclick'] = true;
                 }

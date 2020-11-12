@@ -5,6 +5,7 @@
 
 $.fn.dataTableExt.sErrMode = 'throw';
 
+
 function new_task(url) {
 	url = typeof (url) != 'undefined' ? url : admin_url + 'task/task';
 

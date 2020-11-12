@@ -152,7 +152,7 @@ foreach ($rResult as $aRow) {
 //    }
 
 
-	$outputName .= '<a href="#" onclick="edit_task(' . $aRow['id'] . '); return false">' . _l('edit') . '</a>';
+	$outputName .= '<a href="#" onclick="edit_task(' . $aRow['id'] . '); return false">' . _l('Bearbeiten') . '</a>';
 
 
 	$outputName .= '<span class="text-dark"> | </span><a href="#" onclick="similar_task(' . $aRow['id'] . '); return false" class="text-success   task-copy">' . _l('Create similar') . '</a>';
@@ -160,7 +160,7 @@ foreach ($rResult as $aRow) {
 
 
 
-	$outputName .= '<span class="text-dark"> | </span><a href="' . admin_url('task/delete_task/' . $aRow['id']) . '" class="text-danger _delete task-delete">' . _l('delete') . '</a>';
+	$outputName .= '<span class="text-dark"> | </span><a href="' . admin_url('task/delete_task/' . $aRow['id']) . '" class="text-danger _delete task-delete">' . _l('löschen') . '</a>';
 
 	$outputName .= '</div>';
 

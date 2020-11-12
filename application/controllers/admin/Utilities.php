@@ -131,7 +131,7 @@ class Utilities extends MY_Controller
     {
         if ($this->input->is_ajax_request()) {
             $event = $this->utilities_model->get_event_by_id($id);
-            if ($event->userid != get_staff_user_id() && !is_admin()) {
+            if ($event->userid != get_user_id() && !is_admin()) {
                 echo json_encode([
                     'success' => false,
                 ]);

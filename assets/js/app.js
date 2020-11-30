@@ -117,7 +117,7 @@ function add_task_comment(task_id) {
 		tinymce.remove('#task_comment');
 	});
 }
-
+admin_url
 function fetch_notifications(callback) {
 	requestGetJSON('misc/notifications_check').done(function (response) {
 		$('#notif-zone').html('');

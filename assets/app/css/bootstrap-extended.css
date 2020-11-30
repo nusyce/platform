@@ -40,7 +40,73 @@
 -------------------------------------------------------------------*/
 /* Reboot css */
 /*------------*/
-
+.navbar-nav > li > .dropdown-menu.notifications li .media-body {
+	font-size: 13px;
+}
+.media-body {
+	-ms-flex: 1;
+	flex: 1;
+}
+.dropdown-menu > li > a {
+	width: 100%;
+	word-wrap: break-word;
+	white-space: normal;
+}
+.media-body {
+	color: #595e5f;
+	overflow: visible;
+	margin-left: 15px;
+}
+.media-body {
+	word-break: break-all;
+}
+.media-body, .media-left, .media-right {
+	display: table-cell;
+	vertical-align: top;
+}
+.media-body {
+	width: 10000px;
+}
+.media, .media-body {
+	overflow: hidden;
+	zoom: 1;
+}
+.text-has-action {
+	border-bottom: 1px dashed #bbb;
+	padding-bottom: 2px;
+}
+.dropdown-menu>li>a {
+	display: block;
+	padding: 3px 20px;
+	clear: both;
+	font-weight: 400;
+	line-height: 1.42857143;
+	color: #333;
+	white-space: nowrap;
+}
+a.notification-top {
+	cursor: pointer;
+}
+.dropdown-menu > li > a {
+	padding: 8px 16px;
+	color: #333;
+}
+.not_mark_all_as_read {
+	padding: 5px;
+	text-align: right;
+	border-bottom: 1px solid #f0f0f0;
+}
+.navbar-nav > li > .dropdown-menu.notifications li {
+	z-index: 100;
+}
+.notification-box-all.unread, .notification-box.unread {
+	background: #f0f4fd;
+	border-bottom: 1px solid #f7f9fa;
+}
+.notification-box {
+	padding: 10px 10px;
+	border-bottom: 1px solid #f0f0f0;
+}
 a:focus {
 	outline: none;
 }

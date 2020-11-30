@@ -147,6 +147,12 @@ class Auth extends MY_Controller {
 						'created_at' => date('Y-m-d : h:m:s'),
 						'updated_at' => date('Y-m-d : h:m:s'),
 					);
+				$res = (preg_match('/[A-Z]+/', $_POST['password']) && preg_match('/[a-z]+/', $_POST['password']) && preg_match('/[\d!$%^&]+/', $_POST['password']) && strlen($_POST['password'])>11);
+				if(!$res)
+				{
+					set_alert("error","Das eingegebene Passwort ist nicht sicher.");
+					redirect(admin_url('auth/register'));
+				}
 					$data = $this->security->xss_clean($data);
 					$result = $this->auth_model->register($data);
 					if($result){

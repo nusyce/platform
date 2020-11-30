@@ -11,8 +11,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | of this setting
 |
 */
+define('PR_CHAT_MODULE_NAME', 'prchat');
+
+define('chat_prefix', 'mar_');
+define('TABLE_STAFF', chat_prefix . 'admin');
+define('TABLE_CHATMESSAGES', chat_prefix. 'chatmessages');
+define('TABLE_CHATSETTINGS', chat_prefix . 'chatsettings');
+define('TABLE_CHATSHAREDFILES', chat_prefix . 'chatsharedfiles');
+define('TABLE_CHATGROUPS', chat_prefix . 'chatgroups');
+define('TABLE_CHATGROUPMEMBERS', chat_prefix. 'chatgroupmembers');
+define('TABLE_CHATGROUPMESSAGES', chat_prefix. 'chatgroupmessages');
+define('TABLE_CHATGROUPSHAREDFILES', chat_prefix . 'chatgroupsharedfiles');
+define('TABLE_CHATCLIENTMESSAGES', chat_prefix . 'chatclientmessages');
+define('APP_MODULES_PATH', FCPATH . 'modules/');
 defined('SHOW_DEBUG_BACKTRACE') OR define('SHOW_DEBUG_BACKTRACE', TRUE);
 define('TICKET_ATTACHMENTS_FOLDER', FCPATH . 'uploads/ticket_attachments' . '/');
+define('PR_CHAT_MODULE_UPLOAD_FOLDER',APP_MODULES_PATH. PR_CHAT_MODULE_NAME.'/uploads');
+define('PR_CHAT_MODULE_GROUPS_UPLOAD_FOLDER', APP_MODULES_PATH. PR_CHAT_MODULE_NAME.'/uploads/groups');
 /*
 |--------------------------------------------------------------------------
 | File and Directory Modes

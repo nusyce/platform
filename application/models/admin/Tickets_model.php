@@ -184,7 +184,7 @@ class Tickets_model extends CI_Model{
 		my_pusher()->trigger('my-channel', 'my-event', $notification);
 
 		if ($ticketid) {
-			/*handle_tags_save($tags, $ticketid, 'ticket');
+			handle_tags_save($tags, $ticketid, 'ticket');
 
 			if (isset($custom_fields)) {
 				handle_custom_fields_post($ticketid, $custom_fields);
@@ -221,70 +221,70 @@ class Tickets_model extends CI_Model{
 
 			$_attachments = $this->get_ticket_attachments($ticketid);
 
-
-			$isContact = false;
-			if (isset($data['userid']) && $data['userid'] != false) {
-				$email     = $this->clients_model->get_contact($data['contactid'])->email;
-				$isContact = true;
-			} else {
-				$email = $data['email'];
-			}
-
-			$template = 'ticket_created_to_customer';
-			if ($admin == null) {
-				$template = 'ticket_autoresponse';
-
-				$this->load->model('departments_model');
-				$this->load->model('staff_model');
-				$staff = $this->staff_model->get('', ['active' => 1]);
-
-				$notifiedUsers                              = [];
-				$notificationForStaffMemberOnTicketCreation = get_option('receive_notification_on_new_ticket') == 1;
-
-				foreach ($staff as $member) {
-					if (get_option('access_tickets_to_none_staff_members') == 0
-						&& !is_staff_member($member['staffid'])) {
-						continue;
-					}
-					$staff_departments = $this->departments_model->get_staff_departments($member['staffid'], true);
-
-					if (in_array($data['department'], $staff_departments)) {
-						send_mail_template('ticket_created_to_staff', $ticketid, $data['userid'], $data['contactid'], $member, $_attachments);
-
-						if ($notificationForStaffMemberOnTicketCreation) {
-							$notified = add_notification([
-								'description'     => 'not_new_ticket_created',
-								'touserid'        => $member['staffid'],
-								'fromcompany'     => 1,
-								'fromuserid'      => null,
-								'link'            => 'tickets/ticket/' . $ticketid,
-								'additional_data' => serialize([
-									$data['subject'],
-								]),
-							]);
-							if ($notified) {
-								array_push($notifiedUsers, $member['staffid']);
-							}
+			/*
+						$isContact = false;
+						if (isset($data['userid']) && $data['userid'] != false) {
+							$email     = $this->clients_model->get_contact($data['contactid'])->email;
+							$isContact = true;
+						} else {
+							$email = $data['email'];
 						}
-					}
-				}
-				pusher_trigger_notification($notifiedUsers);
-			}
 
-			$sendEmail = true;
+						$template = 'ticket_created_to_customer';
+						if ($admin == null) {
+							$template = 'ticket_autoresponse';
 
-			if ($isContact && total_rows(db_prefix() . 'contacts', ['ticket_emails' => 1, 'id' => $data['contactid']]) == 0) {
-				$sendEmail = false;
-			}
+							$this->load->model('departments_model');
+							$this->load->model('staff_model');
+							$staff = $this->staff_model->get('', ['active' => 1]);
 
-			if ($sendEmail) {
-				$ticket = $this->get_ticket_by_id($ticketid);
-				// $admin == null ? [] : $_attachments - Admin opened ticket from admin area add the attachments to the email
-				send_mail_template($template, $ticket, $email, $admin == null ? [] : $_attachments, $cc);
-			}
+							$notifiedUsers                              = [];
+							$notificationForStaffMemberOnTicketCreation = get_option('receive_notification_on_new_ticket') == 1;
 
-			hooks()->do_action('ticket_created', $ticketid);
-			log_activity('New Ticket Created [ID: ' . $ticketid . ']');*/
+							foreach ($staff as $member) {
+								if (get_option('access_tickets_to_none_staff_members') == 0
+									&& !is_staff_member($member['staffid'])) {
+									continue;
+								}
+								$staff_departments = $this->departments_model->get_staff_departments($member['staffid'], true);
+
+								if (in_array($data['department'], $staff_departments)) {
+									send_mail_template('ticket_created_to_staff', $ticketid, $data['userid'], $data['contactid'], $member, $_attachments);
+
+									if ($notificationForStaffMemberOnTicketCreation) {
+										$notified = add_notification([
+											'description'     => 'not_new_ticket_created',
+											'touserid'        => $member['staffid'],
+											'fromcompany'     => 1,
+											'fromuserid'      => null,
+											'link'            => 'tickets/ticket/' . $ticketid,
+											'additional_data' => serialize([
+												$data['subject'],
+											]),
+										]);
+										if ($notified) {
+											array_push($notifiedUsers, $member['staffid']);
+										}
+									}
+								}
+							}
+							pusher_trigger_notification($notifiedUsers);
+						}
+
+						$sendEmail = true;
+
+						if ($isContact && total_rows(db_prefix() . 'contacts', ['ticket_emails' => 1, 'id' => $data['contactid']]) == 0) {
+							$sendEmail = false;
+						}
+
+						if ($sendEmail) {
+							$ticket = $this->get_ticket_by_id($ticketid);
+							// $admin == null ? [] : $_attachments - Admin opened ticket from admin area add the attachments to the email
+							send_mail_template($template, $ticket, $email, $admin == null ? [] : $_attachments, $cc);
+						}
+
+						hooks()->do_action('ticket_created', $ticketid);
+						log_activity('New Ticket Created [ID: ' . $ticketid . ']');*/
 
 			return $ticketid;
 		}

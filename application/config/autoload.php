@@ -92,7 +92,7 @@ $autoload['drivers'] = array();
 $autoload['helper'] = array('url', 'file', 'security',
 	'data','database','settings', 'functions', 'common',
 	'fields_helper','countries_helper','projects_helper',
-	'files_helper','datatables','datatables','func','general','template','misc','tickets','tags','upload','custom_fields','tasks','pdf','func','themes');
+	'files_helper','datatables','datatables','func','general','template','misc','tickets','tags','upload','custom_fields','tasks','pdf','func','mailbox','modules','themes','chat');
 
 /*
 | -------------------------------------------------------------------

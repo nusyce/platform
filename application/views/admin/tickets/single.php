@@ -222,7 +222,7 @@
 													<div class="col-md-5">
 
 
-														<?php echo render_select('status', $statuses, array('ticketstatusid','name'), 'ticket_single_change_status', $ticket->status, array('data-none-selected-text' => 'dropdown_non_selected_tex')); ?>
+														<?php echo render_select('status', $statuses, array('ticketstatusid','name'), _l('ticket_single_change_status'), $ticket->status, array('data-none-selected-text' => 'dropdown_non_selected_tex')); ?>
 														<?php echo render_input('cc','CC'); ?>
 														<?php if($ticket->assigned !== get_user_id()){ ?>
 															<div>
@@ -459,13 +459,32 @@
 </div>
 
 <!-- Edit Ticket Messsage Modal -->
-
+<div class="modal fade" id="ticket-message" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog modal-lg" role="document">
+		<?php echo form_open(admin_url('ticket/edit_message')); ?>
+		<div class="modal-content">
+			<div id="edit-ticket-message-additional"></div>
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel"><?php echo _l('ticket_message_edit'); ?></h4>
+			</div>
+			<div class="modal-body">
+				<?php echo render_textarea('data','','',array(),array(),'','tinymce-ticket-edit'); ?>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal"><?php echo _l('close'); ?></button>
+				<button type="submit" class="btn btn-info"><?php echo _l('submit'); ?></button>
+			</div>
+		</div>
+		<?php echo form_close(); ?>
+	</div>
+</div>
 <script>
     var _ticket_message;
 </script>
 <?php $this->load->view('admin/tickets/services/service'); ?>
 <?php init_tail(); ?>
-<?php hooks()->do_action('ticket_admin_single_page_loaded', $ticket); ?>
+
 <script>
     $('.nav-tabs a').on('shown.bs.tab', function(event){
         var x = $(event.target).text();         // active tab
@@ -473,12 +492,7 @@
     });
     $(function(){
         $('#single-ticket-form').appFormValidator();
-        init_ajax_search('contact','#contactid.ajax-search',{tickets_contacts:true});
-        init_ajax_search('project', 'select[name="project_id"]', {
-            customer_id: function() {
-                return $('input[name="userid"]').val();
-            }
-        });
+
         $('body').on('shown.bs.modal', '#_task_modal', function() {
             if(typeof(_ticket_message) != 'undefined') {
                 // Init the task description editor

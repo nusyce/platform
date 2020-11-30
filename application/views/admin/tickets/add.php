@@ -23,7 +23,7 @@
 							</a>-->
 							<div class="mbot15"></div>
 						<?php } ?>
-						<?php echo render_input('subject','ticket_settings_subject','','text',array('required'=>'true')); ?>
+						<?php echo render_input('subject',_l('ticket_settings_subject'),'','text',array('required'=>'true')); ?>
 						<!--<div class="form-group select-placeholder" id="ticket_contact_w">
 							<label for="contactid"><?php echo _l('contact'); ?></label>
 							<select name="contactid" required="true" id="contactid" class="ajax-search" data-width="100%" data-live-search="true" data-none-selected-text="<?php echo _l('dropdown_non_selected_tex'); ?>">
@@ -36,10 +36,10 @@
 						</div>-->
 						<div class="row">
 							<div class="col-md-6">
-								<?php echo render_input('name','ticket_settings_to','','text',array('disabled'=>true)); ?>
+								<?php echo render_input('name',_l('ticket_settings_to'),'','text',array('disabled'=>true)); ?>
 							</div>
 							<div class="col-md-6">
-								<?php echo render_input('email','ticket_settings_email','','email',array('disabled'=>true)); ?>
+								<?php echo render_input('email',_l('ticket_settings_email'),'','email',array('disabled'=>true)); ?>
 							</div>
 						</div>
 

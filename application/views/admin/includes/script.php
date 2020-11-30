@@ -3,6 +3,7 @@
 
 <script src="<?= base_url() ?>/assets/app/js/scripts/scripts.js"></script>
 <script src="<?= base_url() ?>/assets/app/vendors/js/vendors.min.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.0.min.js"></script>
 <script src="<?= base_url() ?>/assets/app/fonts/LivIconsEvo/js/LivIconsEvo.tools.js"></script>
 <script src="<?= base_url() ?>/assets/app/fonts/LivIconsEvo/js/LivIconsEvo.defaults.js"></script>
 <script src="<?= base_url() ?>/assets/app/fonts/LivIconsEvo/js/LivIconsEvo.min.js"></script>
@@ -20,6 +21,7 @@
 <script src="<?= base_url() ?>/assets/app/js/core/app.js"></script>
 <script src="<?= base_url() ?>/assets/app/js/scripts/components.js"></script>
 <script src="<?= base_url() ?>/assets/app/js/scripts/footer.js"></script>
+y.min.js"></script>
 
 
 <!-- BEGIN Vendor JS-->
@@ -38,22 +40,48 @@
 <script src="<?= base_url() ?>/assets/app/vendors/js/tables/datatable/vfs_fonts.js"></script>
 <!-- END: Page Vendor JS-->
 <script src="<?= base_url() ?>/assets/js/app.js"></script>
+<script src="<?= base_url() ?>/assets/js/mailbox_js.js"></script>
+
 <script src="<?= base_url() ?>/assets/js/app-form-validation.js"></script>
 
 <!-- BEGIN: Page JS-->
 <script src="<?= base_url() ?>/assets/app/js/scripts/datatables/datatable.js"></script>
 
 <!-- BEGIN: Page JS-->
+<script src="<?= base_url() ?>/assets/js/chat/pr-chat.js"></script>
+<script src="<?= base_url() ?>/assets/js/chat/jscolor.js"></script>
+<script src="<?= base_url() ?>/assets/js/chat/lity.min.js"></script>
+<script src="<?= base_url() ?>/assets/js/chat/emoparser.js"></script>
+<script src="<?= base_url() ?>/assets/js/chat/tooltipster.bundle.min.js"></script>
+<script src="<?= base_url() ?>/assets/plugins/moment/moment-with-locales.js"></script>
+
 <!--<script src="<? /*= base_url()*/ ?>/assets/app/js/scripts/pages/dashboard-ecommerce.js"></script>
 -->
 
 <script src="<?= base_url() ?>/assets/plugins/validation/app-form-validation.js"></script>
 <!-- END: Page JS-->
 <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+<script type="text/javascript">
+    $(function(){
+        // Enable pusher logging - don't include this in production
+        // Pusher.logToConsole = true;
+		<?php
+		if(!isset($pusher_options['cluster']) && get_option('pusher_cluster') != ''){
+			$pusher_options['cluster'] = get_option('pusher_cluster');
+		}
+		?>
+        var pusher_options = <?php echo json_encode($pusher_options); ?>;
+        var pusher = new Pusher("<?php echo get_option('pusher_app_key'); ?>", pusher_options);
+        var channel = pusher.subscribe('notifications-channel-<?php echo get_user_company_id()."-".get_user_id(); ?>');
+        channel.bind('notification', function(data) {
+            fetch_notifications();
+        });
+    });
+</script>
 <script>
-
-    // Enable pusher logging - don't include this in production
     Pusher.logToConsole = true;
+    // Enable pusher logging - don't include this in production
+   /* Pusher.logToConsole = true;
 
     var pusher = new Pusher('30fc7858781856990d1c', {
         cluster: 'eu'
@@ -62,10 +90,10 @@
     var channel = pusher.subscribe('my-channel');
     channel.bind('my-event', function(data) {
         alert(JSON.stringify(data));
-    });
+    });*/
 </script>
 <script>
-	console.log(jQuery().jquery);
+
 
 
 	$("body").on("change", ".tgl_checkbox", function () {
@@ -83,11 +111,13 @@
 				});
 	});
 	$(document).ready(function () {
+
 		$('.dataTables_length').parent('div').addClass('div-datatable');
 		$('.dataTables_filter').parent('div').addClass('div-datatable');
 		$('#tgl_checkbox').button('toggle');
 		clockUpdate();
 		setInterval(clockUpdate, 1000);
+        fetch_notifications();
 	})
 
 	function clockUpdate() {

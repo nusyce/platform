@@ -663,12 +663,26 @@ class Tasks_model extends CI_Model
                     $new_task_auto_assign_creator = false;
                 }
                 if ($new_task_auto_assign_creator == true || 1==1) {
+					$description = 'not_task_assigned_to_you';
+					$not_data = [
+						$data->name,
+					];
                     foreach ($taskFor as $tF)
-                        $this->db->insert(db_prefix() . 'task_assigned', [
-                            'taskid' => $insert_id,
-                            'user_id' => $tF,
-                            'assigned_from' => get_user_id(),
-                        ]);
+					{
+						$this->db->insert(db_prefix() . 'task_assigned', [
+							'taskid' => $insert_id,
+							'user_id' => $tF,
+							'assigned_from' => get_user_id(),
+						]);
+						add_notification([
+							'description' => $description,
+							'touserid' =>  $tF,
+							'link' => '',
+							'additional_data' => serialize($not_data)
+						]);
+					}
+					pusher_trigger_notification($taskFor);
+
                 }
                 if (get_option('new_task_auto_follower_current_member') == '1') {
                     $this->db->insert(db_prefix() . 'task_followers', [
@@ -979,15 +993,35 @@ class Tasks_model extends CI_Model
         }
 
         if (isset($taskFor)) {
-			$this->db->where('taskid', $id);
-			$this->db->delete(db_prefix() . 'task_assigned');
+			$description = 'not_task_assigned_to_you';
+			$not_data = [
+				$data->name,
+			];
             //$this->db->truncate(db_prefix() . 'task_assigned');
+			$add_user_notif=[];
             foreach ($taskFor as $tF)
-                $this->db->insert(db_prefix() . 'task_assigned', [
-                    'taskid' => $id,
-                    'user_id' => $tF,
-                    'assigned_from' => get_user_id(),
-                ]);
+			{
+				$this->db->where('taskid', $id);
+				$this->db->where('user_id', $tF);
+				$find=$this->db->get(db_prefix() . 'task_assigned')->row();
+				if(!$find)
+				{
+					$this->db->insert(db_prefix() . 'task_assigned', [
+						'taskid' => $id,
+						'user_id' => $tF,
+						'assigned_from' => get_user_id(),
+					]);
+					add_notification([
+						'description' => $description,
+						'touserid' =>  $tF,
+						'link' => '',
+						'additional_data' => serialize($not_data)
+					]);
+					array_push($add_user_notif,$tF);
+				}
+
+			}
+			pusher_trigger_notification($taskFor);
         }
 
 
@@ -1155,7 +1189,24 @@ class Tasks_model extends CI_Model
      * @param mixed $data $_POST data with taxid
      */
     public function add_checklist_item($data)
+
     {
+		if(is_array($data['description']))
+		{
+
+			foreach($data['description'] as $value) {
+
+				$this->db->insert(db_prefix() . 'task_checklist_items', [
+					'taskid' => $data['taskid'],
+					'description' => $value["description"],
+					'bereich' => $value["bereich"],
+					'dateadded' => date('Y-m-d H:i:s'),
+					'addedfrom' => get_user_id(),
+					'list_order' => 0,
+				]);
+			}
+			return true;
+		}
         $this->db->insert(db_prefix() . 'task_checklist_items', [
             'taskid' => $data['taskid'],
             'description' => $data['description'],

@@ -76,39 +76,26 @@ function add_notification($values)
     foreach ($values as $key => $value) {
         $data[$key] = $value;
     }
-    if (is_client_logged_in()) {
-        $data['fromuserid'] = 0;
-        $data['fromclientid'] = get_contact_user_id();
-        $data['from_fullname'] = get_contact_full_name(get_contact_user_id());
-    } else {
-        $data['fromuserid'] = get_user_id();
-        $data['fromclientid'] = 0;
-        $data['from_fullname'] = get_user_full_name(get_user_id());
-    }
 
-    if (isset($data['fromcompany'])) {
-        unset($data['fromuserid']);
-        unset($data['from_fullname']);
-    }
+        $data['fromuserid'] = get_user_id();
+        $data['from_fullname'] = get_user_full_name(get_user_id());
+
+
+
 
     $data['date'] = date('Y-m-d H:i:s');
-    $data = hooks()->apply_filters('notification_data', $data);
+    $data = $data;
 
     // Prevent sending notification to non active users.
     if (isset($data['touserid']) && $data['touserid'] != 0) {
-        $CI->db->where('staffid', $data['touserid']);
-        $user = $CI->db->get(db_prefix() . 'staff')->row();
+        $CI->db->where('admin_id', $data['touserid']);
+        $user = $CI->db->get(db_prefix() . 'admin')->row();
         if (!$user || $user && $user->active == 0) {
             return false;
         }
     }
 
     $CI->db->insert(db_prefix() . 'notifications', $data);
-
-    if ($notification_id = $CI->db->insert_id()) {
-        hooks()->do_action('notification_created', $notification_id);
-    }
-
     return true;
 }
 

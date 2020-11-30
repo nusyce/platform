@@ -72,6 +72,7 @@ class Mailbox_model extends CI_Model
     			$array_send_to[$value] = $value;
     		}
     	}
+
     	$array_cc = explode(";", $data['cc']);
     	if(isset($array_cc) && count($array_cc) > 0){
     		foreach ($array_cc as $value) {
@@ -82,7 +83,9 @@ class Mailbox_model extends CI_Model
         $array_inbox_id = array();        
     	foreach ($array_send_to as $value) {
     		$to = get_staff_id_by_email(trim($value));
+
     		if($to > 0){
+
     			$d_inbox = $inbox;
     			$d_inbox['to_staff_id'] = $to; 
     			$this->db->insert(db_prefix() . 'mail_inbox', $d_inbox);
@@ -90,6 +93,7 @@ class Mailbox_model extends CI_Model
         		$array_inbox_id[] = $inbox_id;
     		}            
     	}
+
         $attachments = array();
     	if($outbox_id > 0){
     		if(count($array_inbox_id) > 0){
@@ -227,8 +231,8 @@ class Mailbox_model extends CI_Model
      */
     public function update_config($data, $staff_id){
         unset($data['email']);
-        $this->db->where('staffid', $staff_id);
-        $this->db->update(db_prefix() . 'staff', $data);
+        $this->db->where('admin_id', $staff_id);
+        $this->db->update(db_prefix() . 'admin', $data);
         return true;
     }    
 }

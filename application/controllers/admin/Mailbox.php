@@ -13,6 +13,7 @@ class Mailbox extends MY_Controller {
 		auth_check(); // check login auth
 		$this->rbac->check_module_access();
         $this->load->model('mailbox_model');
+
     }
 
     /**
@@ -25,11 +26,12 @@ class Mailbox extends MY_Controller {
         $group         = !$this->input->get('group') ? 'inbox' : $this->input->get('group');
         $data['group'] = $group;
         if($group == 'config'){
-            $this->load->model('staff_model');
-            $member = $this->staff_model->get(get_staff_user_id());
+			$this->load->model('admin/admin_model', 'admin');
+            $member = $this->admin->get_admin_by_id(get_user_id());
             $data['member'] = $member;
+
         }
-        $this->load->view('mailbox/mailbox', $data);
+        $this->load->view('admin/mailbox/mailbox', $data);
     }
 
     /**
@@ -45,6 +47,7 @@ class Mailbox extends MY_Controller {
         if ($this->input->post()) {
             $data            = $this->input->post();                        
             $id              = $this->mailbox_model->add($data, get_user_id(),$outbox_id);
+
             if ($id) {
                 if($this->input->post('sendmail')=='draft'){
                     set_alert('success', _l('mailbox_email_draft_successfully', $id));
@@ -60,7 +63,7 @@ class Mailbox extends MY_Controller {
             $mail = $this->mailbox_model->get($outbox_id,'outbox');
             $data['mail'] = $mail;
         }
-        $this->load->view('mailbox', $data);
+        $this->load->view('admin/mailbox/mailbox', $data);
     }
 
     /**
@@ -68,18 +71,14 @@ class Mailbox extends MY_Controller {
      * @param  string $group
      * @return 
      */
-    public function table($group = 'inbox'){
-        if ($this->input->is_ajax_request()) {
+    public function render($group = 'inbox'){
+
             if($group == 'sent' || $group == 'draft'){
-                $this->app->get_table_data(module_views_path('mailbox', 'table_outbox'),[
-                    'group' => $group,
-                ]);
+				$this->app->get_renderable_data('mailbox/table_outbox', ['group' => $group]);
             } else {
-                $this->app->get_table_data(module_views_path('mailbox', 'table'),[
-                    'group' => $group,
-                ]);
+				$this->app->get_renderable_data('mailbox/table', ['group' => $group]);
             }
-        }
+
     }
 
     /**
@@ -96,7 +95,7 @@ class Mailbox extends MY_Controller {
         $data['inbox'] = $inbox;
         $data['type'] = 'inbox';
         $data['attachments'] = $this->mailbox_model->get_mail_attachment($id,'inbox');
-        $this->load->view('mailbox', $data);    
+        $this->load->view('admin/mailbox/mailbox', $data);
     }
 
     /**
@@ -112,7 +111,7 @@ class Mailbox extends MY_Controller {
         $data['inbox'] = $inbox;
         $data['type'] = 'outbox';
         $data['attachments'] = $this->mailbox_model->get_mail_attachment($id,'outbox');
-        $this->load->view('mailbox', $data);    
+        $this->load->view('admin/mailbox/mailbox', $data);
     }
 
     /**
@@ -163,7 +162,7 @@ class Mailbox extends MY_Controller {
             $data            = $this->input->post();   
             $data['reply_from_id'] = $id;
             $data['reply_type'] = $type;
-            $id              = $this->mailbox_model->add($data, get_staff_user_id());
+            $id              = $this->mailbox_model->add($data, get_user_id());
             if ($id) {
                 set_alert('success', _l('mailbox_email_sent_successfully', $id));
                 redirect(admin_url('mailbox?group=sent'));
@@ -175,7 +174,7 @@ class Mailbox extends MY_Controller {
         $data['action_type'] = $type;
         $data['method'] = $method;
         $data['mail'] = $mail;
-        $this->load->view('mailbox', $data); 
+        $this->load->view('admin/mailbox/mailbox', $data);
     }
 
     /**
@@ -184,7 +183,7 @@ class Mailbox extends MY_Controller {
      */
     public function config(){
         if ($this->input->post()) {
-            $res  = $this->mailbox_model->update_config($this->input->post(),get_staff_user_id());
+            $res  = $this->mailbox_model->update_config($this->input->post(),get_user_id());
             if ($res) {
                 set_alert('success', _l('mailbox_email_config_successfully'));
                 redirect(admin_url('mailbox'));

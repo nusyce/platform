@@ -855,7 +855,7 @@ input[type=number]::-webkit-outer-spin-button {
 .btn i {
 	/* Button with icons - make it in center */
 	position: relative;
-	top: 3px;
+	/* top: 3px; */
 }
 
 .btn.btn-white, .btn.btn-white:active, .btn.btn-white:hover, .btn.btn-white:focus {
@@ -2924,11 +2924,25 @@ _:-ms-lang(x),
 .disabled a, :disabled a {
 	color: #828D99 !important;
 }
-
+ul{
+	list-style-type: none;
+}
 .disabled:hover, :disabled:hover {
 	cursor: auto !important;
 }
-
+.tab-separator {
+	border-right: 1px solid #f0f0f0 !important;
+}
+.nav-tabs {
+	padding-bottom: 0;
+	margin-bottom: 25px;
+	background: 0 0;
+	border-radius: 1px;
+	padding-left: 0;
+	padding-right: 0;
+	border-top: 1px solid #f0f0f0;
+	border-bottom: 1px solid #f0f0f0;
+}
 .round {
 	border-radius: 1.5rem;
 }

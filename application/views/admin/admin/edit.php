@@ -94,7 +94,7 @@
                 </div>
                 <div class="form-group">
                   <div class="col-md-12">
-                    <input type="submit" name="submit" value="Speichern" class="btn btn-primary pull-right">
+                    <p style="text-align: right"><input type="submit" name="submit" value="Speichern" class="btn btn-primary"></p>
                   </div>
                 </div>
                 <?php echo form_close(); ?>

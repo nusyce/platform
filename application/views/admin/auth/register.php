@@ -61,8 +61,8 @@
               </div>
             <?php endif; ?>
             <!-- /.col -->
-			  <div class="col-5" >
-              <input type="submit" name="submit" id="submit" class="btn btn-primary btn-block btn-flat" value="register">
+			  <div class="col-5"  >
+              <input type="submit" name="submit" id="submit" class="btn btn-primary btn-block btn-flat" value="register" style="width: 120px;">
             </div>
             <!-- /.col -->
           </div>

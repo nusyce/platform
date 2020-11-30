@@ -163,7 +163,7 @@ function format_members_by_ids_and_names($ids, $names, $hidden_export_table = tr
     $assignees = explode(',', $names);
     $assigneeIds = explode(',', $ids);
     foreach ($assignees as $key => $assigned) {
-		$outputAssignees .='<div class="task-user" data-toggle="tooltip" data-title="jorge bush">';
+		$outputAssignees .='<div class="task-user" >';
         $assignee_id = $assigneeIds[$key];
         $assignee_id = trim($assignee_id);
         if ($assigned != '') {
@@ -172,7 +172,7 @@ function format_members_by_ids_and_names($ids, $names, $hidden_export_table = tr
                     $image_class . ' mright5',
                 ], 'small', [
                     'data-toggle' => 'tooltip',
-                    'title' => $assigned,
+                    'data-original-title' => $assigned,
                 ]);
 			$outputAssignees .='<span class="hide" style="display: none">' . mb_substr($exportAssignees, 0, -2) . '</span><br>';
             $exportAssignees .= $assigned . ', ';

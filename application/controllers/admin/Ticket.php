@@ -118,7 +118,29 @@ class Ticket extends MY_Controller
 
         $this->load->view('admin/tickets/add', $data);
     }
+	public function edit_message()
+	{
+		if ($this->input->post()) {
+			$data         = $this->input->post();
+			$data['data'] = $this->input->post('data');
 
+			if ($data['type'] == 'reply') {
+				$this->db->where('id', $data['id']);
+				$this->db->update(db_prefix().'ticket_replies', [
+					'message' => $data['data'],
+				]);
+			} elseif ($data['type'] == 'ticket') {
+				$this->db->where('ticketid', $data['id']);
+				$this->db->update(db_prefix().'tickets', [
+					'message' => $data['data'],
+				]);
+			}
+			if ($this->db->affected_rows() > 0) {
+				set_alert('success', _l('ticket_message_updated_successfully'));
+			}
+			redirect(admin_url('ticket/ticket/' . $data['main_ticket']));
+		}
+	}
     public function delete($ticketid)
     {
         if (!$ticketid) {
@@ -235,29 +257,7 @@ class Ticket extends MY_Controller
         $this->load->view('admin/tickets/single', $data);
     }
 
-    public function edit_message()
-    {
-        if ($this->input->post()) {
-            $data         = $this->input->post();
-            $data['data'] = html_purify($this->input->post('data', false));
 
-            if ($data['type'] == 'reply') {
-                $this->db->where('id', $data['id']);
-                $this->db->update(db_prefix().'ticket_replies', [
-                    'message' => $data['data'],
-                ]);
-            } elseif ($data['type'] == 'ticket') {
-                $this->db->where('ticketid', $data['id']);
-                $this->db->update(db_prefix().'tickets', [
-                    'message' => $data['data'],
-                ]);
-            }
-            if ($this->db->affected_rows() > 0) {
-                set_alert('success', _l('ticket_message_updated_successfully'));
-            }
-            redirect(admin_url('tickets/ticket/' . $data['main_ticket']));
-        }
-    }
 
     public function delete_ticket_reply($ticket_id, $reply_id)
     {

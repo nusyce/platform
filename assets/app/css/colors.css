@@ -1672,9 +1672,9 @@ input:focus ~ .bg-primary {
 /* Basic buttons */
 /* ------------- */
 .btn-primary {
-	border-color: #2c6de9 !important;
-	background-color: #5A8DEE !important;
 	color: #fff;
+	background-color: #28b8da;
+	border: 0;
 }
 
 .btn-primary:hover, .btn-primary.hover {
@@ -6152,8 +6152,8 @@ input:focus ~ .bg-warning {
 /* Basic buttons */
 /* ------------- */
 .btn-warning {
-	border-color: #fc960f !important;
-	background-color: #FDAC41 !important;
+	border-color: #ff6f00 !important;
+	background-color: #ff6f00 !important;
 	color: #fff;
 }
 

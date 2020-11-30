@@ -26,7 +26,7 @@ class App_pusher
     private function initialize()
     {
         if ($this->app_key !== '' && $this->app_secret !== '' && $this->app_id !== '') {
-            $pusher_options = hooks()->apply_filters('pusher_options', []);
+            $pusher_options =[];
 
             if (!isset($pusher_options['cluster']) && get_option('pusher_cluster') != '') {
                 $pusher_options['cluster'] = get_option('pusher_cluster');

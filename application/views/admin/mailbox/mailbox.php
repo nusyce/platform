@@ -1,371 +1,220 @@
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1>Inbox</h1>
-          </div>
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Inbox</li>
-            </ol>
-          </div>
-        </div>
-      </div><!-- /.container-fluid -->
-    </section>
+<?php defined('BASEPATH') or exit('No direct script access allowed'); ?>
+<?php init_head(); ?>
+<div class="app-content content">
+	<div class="content-overlay"></div>
+	<div class="content-wrapper">
+		<div class="content-header row">
+		</div>
+		<div class="content-body">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="panel_s mbot5">
+                    <div class="">
+                        <a href="<?php echo admin_url().'mailbox/compose'?>" class="btn btn-info display-block">
+                            <i class="fa fa-edit"></i>
+                            <?php echo _l('mailbox_compose');?>
+                        </a>
 
-    <!-- Main content -->
-    <section class="content">
-      <div class="row">
-        <div class="col-md-3">
-          <a href="compose.html" class="btn btn-primary btn-block mb-3">Compose</a>
-
-          <div class="card">
-            <div class="card-header">
-              <h3 class="card-title">Folders</h3>
-
-              <div class="card-tools">
-                <button type="button" class="btn btn-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                </button>
-              </div>
-            </div>
-            <div class="card-body p-0">
-              <ul class="nav nav-pills flex-column">
-                <li class="nav-item active">
-                  <a href="#" class="nav-link">
-                    <i class="fa fa-inbox"></i> Inbox
-                    <span class="badge bg-primary float-right">12</span>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="#" class="nav-link">
-                    <i class="fa fa-envelope-o"></i> Sent
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="#" class="nav-link">
-                    <i class="fa fa-file-text-o"></i> Drafts
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="#" class="nav-link">
-                    <i class="fa fa-filter"></i> Junk
-                    <span class="badge bg-warning float-right">65</span>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="#" class="nav-link">
-                    <i class="fa fa-trash-o"></i> Trash
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <!-- /.card-body -->
-          </div>
-          <!-- /. box -->
-          <div class="card">
-            <div class="card-header">
-              <h3 class="card-title">Labels</h3>
-
-              <div class="card-tools">
-                <button type="button" class="btn btn-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                </button>
-              </div>
-            </div>
-            <div class="card-body p-0">
-              <ul class="nav nav-pills flex-column">
-                <li class="nav-item">
-                  <a href="#" class="nav-link">
-                    <i class="fa fa-circle-o text-danger"></i>
-                    Important
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="#" class="nav-link">
-                    <i class="fa fa-circle-o text-warning"></i> Promotions
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="#" class="nav-link">
-                    <i class="fa fa-circle-o text-primary"></i>
-                    Social
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <!-- /.card-body -->
-          </div>
-          <!-- /.card -->
-        </div>
-        <!-- /.col -->
-        <div class="col-md-9">
-          <div class="card card-primary card-outline">
-            <div class="card-header">
-              <h3 class="card-title">Inbox</h3>
-
-              <div class="card-tools">
-                <div class="input-group input-group-sm">
-                  <input type="text" class="form-control" placeholder="Search Mail">
-                  <div class="input-group-append">
-                    <div class="btn btn-primary">
-                      <i class="fa fa-search"></i>
                     </div>
-                  </div>
                 </div>
-              </div>
-              <!-- /.card-tools -->
+
+                <ul class="navbar-pills navbar-pills-flat nav-tabs nav-stacked customer-tabs" role="tablist" style="list-style-type: none;padding-left: 0px">
+                    <li class="<?php if($group == 'inbox'){echo 'active ';} ?>mail_tab_<?php echo $group; ?>">
+                        <a data-group="inbox" href="<?php echo admin_url('mailbox?group=inbox'); ?>">
+                            <i class="fa fa-inbox menu-icon" aria-hidden="true"></i>
+                            <?php echo _l('mailbox_inbox'); ?>
+                            <?php
+                                $num_unread = total_rows(db_prefix() . 'mail_inbox', ['read' => '0','to_staff_id' => get_user_id()]);
+                                if($num_unread > 0){
+                            ?>
+                            <span class="badge menu-badge bg-warning"><?php echo $num_unread; ?></span>
+                            <?php }  ?>
+                        </a>
+                    </li>
+                    <li class="<?php if($group == 'starred'){echo 'active ';} ?>mail_tab_<?php echo $group; ?>">
+                        <a data-group="starred" href="<?php echo admin_url('mailbox?group=starred'); ?>">
+                            <i class="fa fa-star menu-icon orange" aria-hidden="true"></i>
+                            <?php echo _l('mailbox_starred'); ?>
+                        </a>
+                    </li>
+                    <li class="<?php if($group == 'sent'){echo 'active ';} ?>mail_tab_<?php echo $group; ?>">
+                        <a data-group="sent" href="<?php echo admin_url('mailbox?group=sent'); ?>">
+                            <i class="fa fa-envelope-o menu-icon" aria-hidden="true"></i>
+                            <?php echo _l('mailbox_sent'); ?>
+                        </a>
+                    </li>
+                    <li class="<?php if($group == 'important'){echo 'active ';} ?>mail_tab_<?php echo $group; ?>">
+                        <a data-group="important" href="<?php echo admin_url('mailbox?group=important'); ?>">
+                            <i class="fa fa-bookmark menu-icon red" aria-hidden="true"></i>
+                            <?php echo _l('mailbox_important'); ?>
+                        </a>
+                    </li>
+                    <li class="<?php if($group == 'draft'){echo 'active ';} ?>mail_tab_<?php echo $group; ?>">
+                        <a data-group="draft" href="<?php echo admin_url('mailbox?group=draft'); ?>">
+                            <i class="fa fa-file-o menu-icon" aria-hidden="true"></i>
+                            <?php echo _l('mailbox_draft'); ?>
+                        </a>
+                    </li>
+                    <li class="<?php if($group == 'trash'){echo 'active ';} ?>mail_tab_<?php echo $group; ?>">
+                        <a data-group="trash" href="<?php echo admin_url('mailbox?group=trash'); ?>">
+                            <i class="fa fa-trash-o menu-icon" aria-hidden="true"></i>
+                            <?php echo _l('mailbox_trash'); ?>
+                        </a>
+                    </li>
+                    <li class="<?php if($group == 'config'){echo 'active ';} ?>mail_tab_<?php echo $group; ?>">
+                        <a data-group="trash" href="<?php echo admin_url('mailbox?group=config'); ?>">
+                            <i class="fa fa-cogs menu-icon" aria-hidden="true"></i>
+                            <?php echo _l('mailbox_config'); ?>
+                        </a>
+                    </li>
+
+                </ul>
             </div>
-            <!-- /.card-header -->
-            <div class="card-body p-0">
-              <div class="mailbox-controls">
-                <!-- Check all button -->
-                <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i>
-                </button>
-                <div class="btn-group">
-                  <button type="button" class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i></button>
-                  <button type="button" class="btn btn-default btn-sm"><i class="fa fa-reply"></i></button>
-                  <button type="button" class="btn btn-default btn-sm"><i class="fa fa-share"></i></button>
+            <div class="col-md-9">
+                <div class="panel_s">
+                    <div class="panel-body">
+                        <div class="tab-content">
+                            <h4 class="customer-profile-group-heading">
+                                <?php if($group== "detail"){
+                                    echo $title;
+                                } else {
+                                    echo _l('mailbox_'.$group);
+                                }
+                                ?>
+                            </h4>
+                            <?php if($group != 'compose' && $group != 'config'){?>
+                            <div class="horizontal-scrollable-tabs preview-tabs-top">
+
+                                <div class="horizontal-tabs">
+                                    <ul class="nav-tabs nav-tabs-horizontal mbot15" role="tablist" style="display: flex;    padding: 0px;">
+                                        <?php if($group=='inbox' || $group =='starred' || $group=='important' || ($group == 'detail' && isset($type) && $type!='outbox')){?>
+                                        <li role="presentation" data-toggle="tooltip" title="" class="tab-separator" data-original-title="<?php echo _l("mailbox_add_star");?>">
+                                            <a href="Javascript:void(0)" aria-controls="tab_emails_tracking" role="tab" data-toggle="tab" onclick="update_mass('<?php echo $group;?>','starred',0);window.history.go(-1); return false;">
+                                                <i class="fa fa-star orange" aria-hidden="true"></i>
+                                            </a>
+                                        </li>
+                                        <li role="presentation" data-toggle="tooltip" title="" class="tab-separator" data-original-title="<?php echo _l("mailbox_remove_star");?>">
+                                            <a href="Javascript:void(0)" aria-controls="tab_emails_tracking" role="tab" data-toggle="tab" onclick="update_mass('<?php echo $group;?>','starred',1);window.history.go(-1); return false;">
+                                                <i class="fa fa-star-o" aria-hidden="true"></i>
+                                            </a>
+                                        </li>
+                                        <li role="presentation" data-toggle="tooltip" title="" class="tab-separator" data-original-title="<?php echo _l("mailbox_mark_as_important");?>">
+                                            <a href="Javascript:void(0)" aria-controls="tab_emails_tracking" role="tab" data-toggle="tab" onclick="update_mass('<?php echo $group;?>','important',0);window.history.go(-1); return false;">
+                                                <i class="fa fa-bookmark red" aria-hidden="true"></i>
+                                            </a>
+                                        </li>
+                                        <li role="presentation" data-toggle="tooltip" title="" class="tab-separator" data-original-title="<?php echo _l("mailbox_mark_as_not_important");?>">
+                                            <a href="Javascript:void(0)" aria-controls="tab_emails_tracking" role="tab" data-toggle="tab" onclick="update_mass('<?php echo $group;?>','important',1);window.history.go(-1); return false;">
+                                                <i class="fa fa-bookmark-o" aria-hidden="true"></i>
+                                            </a>
+                                        </li>
+                                        <li role="presentation" data-toggle="tooltip" title="" class="tab-separator" data-original-title="<?php echo _l("mailbox_mark_as_unread");?>">
+                                            <a href="Javascript:void(0)" aria-controls="tab_emails_tracking" role="tab" data-toggle="tab" onclick="update_mass('<?php echo $group;?>','read',1);window.history.go(-1); return false;">
+                                                <i class="fa fa-envelope" aria-hidden="true"></i>
+                                            </a>
+                                        </li>
+                                        <li role="presentation" data-toggle="tooltip" title="" class="tab-separator" data-original-title="<?php echo _l("mailbox_mark_as_read");?>">
+                                            <a href="Javascript:void(0)" aria-controls="tab_emails_tracking" role="tab" data-toggle="tab" onclick="update_mass('<?php echo $group;?>','read',0);window.history.go(-1); return false;">
+                                                <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                                            </a>
+                                        </li>
+                                        <?php } ?>
+                                        <li role="presentation" data-toggle="tooltip" title="" class="tab-separator" data-original-title="<?php echo _l("mailbox_delete");?>">
+                                            <a href="Javascript:void(0)" aria-controls="tab_emails_tracking" role="tab" data-toggle="tab" onclick="update_mass('<?php echo $group;?>','trash',1);window.history.go(-1); return false;">
+                                                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                            </a>
+                                        </li>
+                                        <?php if($group == "detail"){?>
+                                        <li role="presentation" data-toggle="tooltip" title="" class="tab-separator" data-original-title="<?php echo _l("mailbox_reply");?>">
+                                            <a href="<?php echo admin_url().'mailbox/reply/'.$inbox->id.'/reply/'.$type;?>">
+                                                <i class="fa fa-mail-reply" aria-hidden="true"></i>
+                                            </a>
+                                        </li>
+                                        <li role="presentation" data-toggle="tooltip" title="" class="tab-separator" data-original-title="<?php echo _l("mailbox_reply_all");?>">
+                                            <a href="<?php echo admin_url().'mailbox/reply/'.$inbox->id.'/replyall/'.$type;?>">
+                                                <i class="fa fa-mail-reply-all" aria-hidden="true"></i>
+                                            </a>
+                                        </li>
+                                        <li role="presentation" data-toggle="tooltip" title="" class="tab-separator" data-original-title="<?php echo _l("mailbox_forward");?>">
+                                            <a href="<?php echo admin_url().'mailbox/reply/'.$inbox->id.'/forward/'.$type;?>">
+                                                <i class="fa fa-mail-forward" aria-hidden="true"></i>
+                                            </a>
+                                        </li>
+                                        <?php }?>
+                                    </ul>
+                                </div>
+                            </div>
+                            <?php }?>
+                            <div class="tab-content">
+                                <?php if($group == 'compose' && !isset($type)){
+                                    $this->load->view('admin/mailbox/mailbox_compose');
+                                } else if($group == 'compose' && $type=='reply'){
+                                    $this->load->view('admin/mailbox/mailbox_reply');
+                                } else if($group == 'detail' && $type=='inbox'){
+                                    $this->load->view('admin/mailbox/mailbox_detail');
+                                } else if($group == 'detail' && $type=='outbox'){
+                                    $this->load->view('admin/mailbox/mailbox_detail_outbox');
+                                } else if($group == 'config'){
+                                    $this->load->view('admin/mailbox/mailbox_config');
+                                } else {?>
+                                    <?php
+									$table_data = array(
+										_l('mailbox_from'),
+										_l('mailbox_to'),
+										_l('mailbox_subject'),
+										_l('mailbox_date')
+
+									);
+
+
+									render_datatable($table_data, (isset($class) ? $class : 'mailbox'), [], [
+										'data-last-order-identifier' => 'mailbox',
+										'data-default-order' => '',
+									]);
+
+
+
+                                     ?>
+                                <?php } ?>
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <!-- /.btn-group -->
-                <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i></button>
-                <div class="float-right">
-                  1-50/200
-                  <div class="btn-group">
-                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-chevron-left"></i></button>
-                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-chevron-right"></i></button>
-                  </div>
-                  <!-- /.btn-group -->
-                </div>
-                <!-- /.float-right -->
-              </div>
-              <div class="table-responsive mailbox-messages">
-                <table class="table table-hover table-striped">
-                  <tbody>
-                  <tr>
-                    <td><input type="checkbox"></td>
-                    <td class="mailbox-star"><a href="#"><i class="fa fa-star text-warning"></i></a></td>
-                    <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
-                    <td class="mailbox-subject"><b>AdminLTE 3.0 Issue</b> - Trying to find a solution to this problem...
-                    </td>
-                    <td class="mailbox-attachment"></td>
-                    <td class="mailbox-date">5 mins ago</td>
-                  </tr>
-                  <tr>
-                    <td><input type="checkbox"></td>
-                    <td class="mailbox-star"><a href="#"><i class="fa fa-star-o text-warning"></i></a></td>
-                    <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
-                    <td class="mailbox-subject"><b>AdminLTE 3.0 Issue</b> - Trying to find a solution to this problem...
-                    </td>
-                    <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
-                    <td class="mailbox-date">28 mins ago</td>
-                  </tr>
-                  <tr>
-                    <td><input type="checkbox"></td>
-                    <td class="mailbox-star"><a href="#"><i class="fa fa-star-o text-warning"></i></a></td>
-                    <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
-                    <td class="mailbox-subject"><b>AdminLTE 3.0 Issue</b> - Trying to find a solution to this problem...
-                    </td>
-                    <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
-                    <td class="mailbox-date">11 hours ago</td>
-                  </tr>
-                  <tr>
-                    <td><input type="checkbox"></td>
-                    <td class="mailbox-star"><a href="#"><i class="fa fa-star text-warning"></i></a></td>
-                    <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
-                    <td class="mailbox-subject"><b>AdminLTE 3.0 Issue</b> - Trying to find a solution to this problem...
-                    </td>
-                    <td class="mailbox-attachment"></td>
-                    <td class="mailbox-date">15 hours ago</td>
-                  </tr>
-                  <tr>
-                    <td><input type="checkbox"></td>
-                    <td class="mailbox-star"><a href="#"><i class="fa fa-star text-warning"></i></a></td>
-                    <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
-                    <td class="mailbox-subject"><b>AdminLTE 3.0 Issue</b> - Trying to find a solution to this problem...
-                    </td>
-                    <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
-                    <td class="mailbox-date">Yesterday</td>
-                  </tr>
-                  <tr>
-                    <td><input type="checkbox"></td>
-                    <td class="mailbox-star"><a href="#"><i class="fa fa-star-o text-warning"></i></a></td>
-                    <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
-                    <td class="mailbox-subject"><b>AdminLTE 3.0 Issue</b> - Trying to find a solution to this problem...
-                    </td>
-                    <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
-                    <td class="mailbox-date">2 days ago</td>
-                  </tr>
-                  <tr>
-                    <td><input type="checkbox"></td>
-                    <td class="mailbox-star"><a href="#"><i class="fa fa-star-o text-warning"></i></a></td>
-                    <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
-                    <td class="mailbox-subject"><b>AdminLTE 3.0 Issue</b> - Trying to find a solution to this problem...
-                    </td>
-                    <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
-                    <td class="mailbox-date">2 days ago</td>
-                  </tr>
-                  <tr>
-                    <td><input type="checkbox"></td>
-                    <td class="mailbox-star"><a href="#"><i class="fa fa-star text-warning"></i></a></td>
-                    <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
-                    <td class="mailbox-subject"><b>AdminLTE 3.0 Issue</b> - Trying to find a solution to this problem...
-                    </td>
-                    <td class="mailbox-attachment"></td>
-                    <td class="mailbox-date">2 days ago</td>
-                  </tr>
-                  <tr>
-                    <td><input type="checkbox"></td>
-                    <td class="mailbox-star"><a href="#"><i class="fa fa-star text-warning"></i></a></td>
-                    <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
-                    <td class="mailbox-subject"><b>AdminLTE 3.0 Issue</b> - Trying to find a solution to this problem...
-                    </td>
-                    <td class="mailbox-attachment"></td>
-                    <td class="mailbox-date">2 days ago</td>
-                  </tr>
-                  <tr>
-                    <td><input type="checkbox"></td>
-                    <td class="mailbox-star"><a href="#"><i class="fa fa-star-o text-warning"></i></a></td>
-                    <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
-                    <td class="mailbox-subject"><b>AdminLTE 3.0 Issue</b> - Trying to find a solution to this problem...
-                    </td>
-                    <td class="mailbox-attachment"></td>
-                    <td class="mailbox-date">2 days ago</td>
-                  </tr>
-                  <tr>
-                    <td><input type="checkbox"></td>
-                    <td class="mailbox-star"><a href="#"><i class="fa fa-star-o text-warning"></i></a></td>
-                    <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
-                    <td class="mailbox-subject"><b>AdminLTE 3.0 Issue</b> - Trying to find a solution to this problem...
-                    </td>
-                    <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
-                    <td class="mailbox-date">4 days ago</td>
-                  </tr>
-                  <tr>
-                    <td><input type="checkbox"></td>
-                    <td class="mailbox-star"><a href="#"><i class="fa fa-star text-warning"></i></a></td>
-                    <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
-                    <td class="mailbox-subject"><b>AdminLTE 3.0 Issue</b> - Trying to find a solution to this problem...
-                    </td>
-                    <td class="mailbox-attachment"></td>
-                    <td class="mailbox-date">12 days ago</td>
-                  </tr>
-                  <tr>
-                    <td><input type="checkbox"></td>
-                    <td class="mailbox-star"><a href="#"><i class="fa fa-star-o text-warning"></i></a></td>
-                    <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
-                    <td class="mailbox-subject"><b>AdminLTE 3.0 Issue</b> - Trying to find a solution to this problem...
-                    </td>
-                    <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
-                    <td class="mailbox-date">12 days ago</td>
-                  </tr>
-                  <tr>
-                    <td><input type="checkbox"></td>
-                    <td class="mailbox-star"><a href="#"><i class="fa fa-star text-warning"></i></a></td>
-                    <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
-                    <td class="mailbox-subject"><b>AdminLTE 3.0 Issue</b> - Trying to find a solution to this problem...
-                    </td>
-                    <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
-                    <td class="mailbox-date">14 days ago</td>
-                  </tr>
-                  <tr>
-                    <td><input type="checkbox"></td>
-                    <td class="mailbox-star"><a href="#"><i class="fa fa-star text-warning"></i></a></td>
-                    <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
-                    <td class="mailbox-subject"><b>AdminLTE 3.0 Issue</b> - Trying to find a solution to this problem...
-                    </td>
-                    <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
-                    <td class="mailbox-date">15 days ago</td>
-                  </tr>
-                  </tbody>
-                </table>
-                <!-- /.table -->
-              </div>
-              <!-- /.mail-box-messages -->
             </div>
-            <!-- /.card-body -->
-            <div class="card-footer p-0">
-              <div class="mailbox-controls">
-                <!-- Check all button -->
-                <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i>
-                </button>
-                <div class="btn-group">
-                  <button type="button" class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i></button>
-                  <button type="button" class="btn btn-default btn-sm"><i class="fa fa-reply"></i></button>
-                  <button type="button" class="btn btn-default btn-sm"><i class="fa fa-share"></i></button>
-                </div>
-                <!-- /.btn-group -->
-                <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i></button>
-                <div class="float-right">
-                  1-50/200
-                  <div class="btn-group">
-                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-chevron-left"></i></button>
-                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-chevron-right"></i></button>
-                  </div>
-                  <!-- /.btn-group -->
-                </div>
-                <!-- /.float-right -->
-              </div>
-            </div>
-          </div>
-          <!-- /. box -->
+
         </div>
-        <!-- /.col -->
-      </div>
-      <!-- /.row -->
-    </section>
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
+    </div>
+</div>
+</div>
+<?php init_tail(); ?>
+<script type="text/javascript">
+    var table_mailbox = $('.table-mailbox');
+    if (table_mailbox.length) {
+        // Add additional server params $_POST
+        var LeadsServerParams = {};
+        var filterArray = [];
+        var _table_api = renderDataTable(table_mailbox, admin_url + 'mailbox/render/'+"<?php echo $group ?>", [0], [0], LeadsServerParams, [1, 'desc'], filterArray);
 
+        $.each(LeadsServerParams, function (i, obj) {
+            $('#' + i).on('change', function () {
+                table_mailbox.DataTable().ajax.reload()
+                    .columns.adjust()
+                    .responsive.recalc();
+            });
+        });
+    }
+	"use strict";
 
-  <!-- iCheck -->
-<script src="../../plugins/iCheck/icheck.min.js"></script>
-<!-- Page Script -->
-<script>
-  $(function () {
-    //Enable iCheck plugin for checkboxes
-    //iCheck for checkbox and radio inputs
-    $('.mailbox-messages input[type="checkbox"]').iCheck({
-      checkboxClass: 'icheckbox_flat-blue',
-      radioClass   : 'iradio_flat-blue'
-    })
-
-    //Enable check and uncheck all functionality
-    $('.checkbox-toggle').click(function () {
-      var clicks = $(this).data('clicks')
-      if (clicks) {
-        //Uncheck all checkboxes
-        $('.mailbox-messages input[type=\'checkbox\']').iCheck('uncheck')
-        $('.fa', this).removeClass('fa-check-square-o').addClass('fa-square-o')
-      } else {
-        //Check all checkboxes
-        $('.mailbox-messages input[type=\'checkbox\']').iCheck('check')
-        $('.fa', this).removeClass('fa-square-o').addClass('fa-check-square-o')
-      }
-      $(this).data('clicks', !clicks)
-    })
-
-    //Handle starring for glyphicon and font awesome
-    $('.mailbox-star').click(function (e) {
-      e.preventDefault()
-      //detect type
-      var $this = $(this).find('a > i')
-      var glyph = $this.hasClass('glyphicon')
-      var fa    = $this.hasClass('fa')
-
-      //Switch states
-      if (glyph) {
-        $this.toggleClass('glyphicon-star')
-        $this.toggleClass('glyphicon-star-empty')
-      }
-
-      if (fa) {
-        $this.toggleClass('fa-star')
-        $this.toggleClass('fa-star-o')
-      }
-    })
-  })
+    $(function(){
+       // init_btn_with_tooltips();
+      //  init_tabs_scrollable();
+        var webmailTableNotSortable = [0];
+        initDataTable('.table-mailbox', admin_url + 'mailbox/table/<?php echo $group;?>', 'undefined', webmailTableNotSortable, 'undefined', [2, 'desc']);
+        appValidateForm($('#mailbox_config_form'), {
+           email: 'required',
+           mail_password: 'required',
+        });
+    });
 </script>
+

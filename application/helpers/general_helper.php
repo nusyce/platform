@@ -9,6 +9,7 @@ header('Content-Type: text/html; charset=utf-8');
  * @param boolean $client_area
  * @return boolean
  */
+
 function is_rtl($client_area = false)
 {
 	$CI = &get_instance();
@@ -278,6 +279,70 @@ function my_pusher(){
  * Return logged staff User ID from session
  * @return mixed
  */
+function user_profile_image($id, $classes = ['staff-profile-image'], $type = 'small', $img_attrs = [])
+{
+	$url = base_url('assets/images/user-placeholder.jpg');
+
+	$id = trim($id);
+
+	$_attributes = '';
+	foreach ($img_attrs as $key => $val) {
+		$_attributes .= $key . '=' . '"' . html_escape($val) . '" ';
+	}
+
+	$blankImageFormatted = '<img src="' . $url . '" ' . $_attributes . ' class="' . implode(' ', $classes) . '" />';
+
+	if ((string)$id === (string)get_user_id() && isset($GLOBALS['current_user'])) {
+		$result = $GLOBALS['current_user'];
+	} else {
+		$CI = &get_instance();
+
+
+
+			$CI->db->select('image,firstname,lastname');
+			$CI->db->where('admin_id', $id);
+			$result = $CI->db->get(db_prefix() . 'admin')->row();
+
+
+	}
+
+	if (!$result) {
+		return $blankImageFormatted;
+	}
+
+	if ($result && $result->image !== null) {
+		$profileImagePath = 'uploads/staff_profile_images/' . $id . '/' . $type . '_' . $result->profile_image;
+		if (file_exists($profileImagePath)) {
+			$profile_image = '<img ' . $_attributes . ' src="' . base_url($profileImagePath) . '" class="' . implode(' ', $classes) . '" />';
+		} else {
+			return $blankImageFormatted;
+		}
+	} else {
+		$profile_image = '<img src="' . $url . '" ' . $_attributes . ' class="' . implode(' ', $classes) . '" />';
+	}
+
+	return $profile_image;
+}
+function get_staff_full_name($userid = '')
+{
+	$tmpStaffUserId = get_user_id();
+	if ($userid == '' || $userid == $tmpStaffUserId) {
+		if (isset($GLOBALS['current_user'])) {
+			return $GLOBALS['current_user']->firstname . ' ' . $GLOBALS['current_user']->lastname;
+		}
+		$userid = $tmpStaffUserId;
+	}
+
+	$CI = &get_instance();
+
+
+		$CI->db->where('admin_id', $userid);
+		$staff = $CI->db->select('firstname,lastname')->from(db_prefix() . 'admin')->get()->row();
+
+
+
+	return html_escape($staff ? $staff->firstname . ' ' . $staff->lastname : '');
+}
 function get_user_id()
 {
 	$CI = &get_instance();
@@ -555,30 +620,17 @@ function _d($date)
  * @param datetime $date datetime date
  * @return datetime/string
  */
-function _dt($date, $is_timesheet = false)
+function _dt($date, $is_timesheet = false,$format="d.m.Y h:m:s")
 {
+
 	$original = $date;
 
 	if ($date == '' || is_null($date) || $date == '0000-00-00 00:00:00') {
 		return '';
 	}
 
-	$format = get_current_date_format();
-	$hour12 = (get_option('time_format') == 24 ? false : true);
 
-	if ($is_timesheet == false) {
-		$date = strtotime($date);
-	}
-
-	if ($hour12 == false) {
-		$tf = '%H:%M:%S';
-		if ($is_timesheet == true) {
-			$tf = '%H:%M';
-		}
-		$date = strftime($format . ' ' . $tf, $date);
-	} else {
-		$date = date(get_current_date_format(true) . ' g:i A', $date);
-	}
+		$date =date($format, strtotime($date));
 
 	return $date;
 }
@@ -737,6 +789,7 @@ function current_full_url()
  */
 function pusher_trigger_notification($users = [])
 {
+
 	if (get_option('pusher_realtime_notifications') == 0) {
 		return false;
 	}
@@ -747,7 +800,7 @@ function pusher_trigger_notification($users = [])
 
 	$channels = [];
 	foreach ($users as $id) {
-		array_push($channels, 'notifications-channel-' . $id);
+		array_push($channels, 'notifications-channel-' .get_user_company_id()."-". $id);
 	}
 
 	$channels = array_unique($channels);

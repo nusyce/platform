@@ -92,6 +92,12 @@ class Admin extends MY_Controller
 					redirect(base_url('admin/admin/add'),'refresh');
 				}
 				*/
+			$result = (preg_match('/[A-Z]+/', $_POST['password']) && preg_match('/[a-z]+/', $_POST['password']) && preg_match('/[\d!$%^&]+/', $_POST['password']) && strlen($_POST['password'])>11);
+			if(!$result)
+			{
+				set_alert("danger","Das eingegebene Passwort ist nicht sicher.");
+				redirect(admin_url('admin/add'));
+			}
 					$data = array(
 						'admin_role_id' => $this->input->post('role'),
 						'username' => $this->input->post('username'),
@@ -159,7 +165,17 @@ class Admin extends MY_Controller
 				);
 
 				if($this->input->post('password') != '')
-				$data['password'] = password_hash($this->input->post('password'), PASSWORD_BCRYPT);
+				{
+					$data['password'] = password_hash($this->input->post('password'), PASSWORD_BCRYPT);
+					$result = (preg_match('/[A-Z]+/', $_POST['password']) && preg_match('/[a-z]+/', $_POST['password']) && preg_match('/[\d!$%^&]+/', $_POST['password']) && strlen($_POST['password'])>11);
+					if(!$result)
+					{
+						set_alert("error","Das eingegebene Passwort ist nicht sicher.");
+						redirect(admin_url('admin/edit/'.$id));
+					}
+
+				}
+
 
 				$data = $this->security->xss_clean($data);
 

@@ -250,21 +250,7 @@ select {
 	text-transform: none;
 }
 
-select {
-	display: block;
-	width: 100%;
-	height: calc(1.4em + 0.94rem + 3.7px);
-	padding: 0.47rem 0.8rem;
-	font-size: 1rem;
-	font-weight: 400;
-	line-height: 1.4;
-	color: #475F7B;
-	background-color: #FFFFFF;
-	background-clip: padding-box;
-	border: 1px solid #DFE3E7;
-	border-radius: 0.267rem;
-	transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-}
+
 button,
 [type="button"],
 [type="reset"],
@@ -390,7 +376,7 @@ h4, .h4 {
 }
 
 h5, .h5 {
-	font-size: 1.3rem;
+	font-size: 13px;
 }
 
 h6, .h6 {
@@ -5546,7 +5532,7 @@ a.close.disabled {
 .modal-body {
 	position: relative;
 	flex: 1 1 auto;
-	padding: 1.3rem 2.3rem;
+	padding: 1rem 1rem;
 }
 
 .modal-footer {
@@ -5600,7 +5586,7 @@ a.close.disabled {
 @media (min-width: 992px) {
 	.modal-lg,
 	.modal-xl {
-		max-width: 800px;
+		max-width: 900px;
 	}
 }
 

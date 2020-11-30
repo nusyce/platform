@@ -118,7 +118,7 @@ foreach ($rResult as $aRow) {
 
 		$link = task_rel_link($aRow['rel_id'], $aRow['rel_type']);
 
-		$outputName .= '<span class="hide"> - </span><a class="text-muted task-table-related" data-toggle="tooltip" title="' . _l('task_related_to') . '" href="' . $link . '">' . $relName . '</a>';
+		$outputName .= '<span class="hide"> - </span><a class="text-muted task-table-related" data-toggle="tooltip" data-original-title="' . _l('task_related_to') . '" href="' . $link . '">' . $relName . '</a>';
 	}
 
 	if ($aRow['recurring'] == 1) {

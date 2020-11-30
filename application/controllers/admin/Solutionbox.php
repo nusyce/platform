@@ -22,7 +22,7 @@ class Solutionbox extends MY_Controller
         $data['title']     = _l('media_files');
         $data['connector'] = admin_url() . 'solutionbox/media_connector';
 
-        $data['staff_members'] = $this->admin_model->get('', ['active' => 1]);
+        $data['staff_members'] = $this->admin_model->get('', ['active' => 1,'company_id' => get_user_company_id()]);
 
         $mediaLocale = get_media_locale();
 
@@ -81,9 +81,9 @@ class Solutionbox extends MY_Controller
 
 			'host' => 'localhost',
 
-			'user' => 'root',
+			'user' => 'root1',
 
-			'pass' => '',
+			'pass' => '1234',
 
 			'db' => 'adminlite',
 
@@ -329,7 +329,7 @@ class Solutionbox extends MY_Controller
 
 
 
-		$publicRootPath      = $media_folder . '/public';
+		$publicRootPath      = $media_folder . '/public_'.get_user_company_id();
 
 		$public_root         = $root_options_public;
 
@@ -337,7 +337,7 @@ class Solutionbox extends MY_Controller
 
 
 
-		$public_root['URL'] = site_url($media_folder) . '/public';
+		$public_root['URL'] = site_url($media_folder) . '/public_'.get_user_company_id();
 
 		unset($public_root['attributes'][3]);
 

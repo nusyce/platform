@@ -408,6 +408,12 @@
          <span class="new-checklist-item"><i class="fa fa-plus-circle"></i>
          <?php echo 'Aufaben Eintrag'; ?>
          </span>
+			</a>
+			OR
+			<a href="#" id="link_modal_leistung_verz" class="mbot10 inline-block" onclick="open_modal_select_leistung(event,<?php echo $task->id; ?>); return false;">
+         <span class="new-checklist-item">
+         <?php echo 'Import from Leistungverzeichnis'; ?>
+         </span>
             </a>
             <div style="display: none" class="form-group no-mbot checklist-templates-wrapper simple-bootstrap-select task-single-checklist-templates<?php if (count($checklistTemplates) == 0) {
                 echo ' hide';
@@ -584,7 +590,7 @@
             } ?>-->
                 <?php echo form_open_multipart(admin_url('tasks/add_task_comment'), array('id' => 'task-comment-form', 'class' => 'dropzone dropzone-manual', 'style' => 'min-height:auto;background-color:#fff;')); ?>
                 <textarea name="comment" placeholder="<?php echo _l('Kommentar hinzufügen'); ?>"
-                          id="task_comment" rows="3" class="form-control ays-ignore"></textarea>
+                          id="task_comment" rows="3" class="form-control ays-ignore tinymce"></textarea>
 
                 <input type="hidden" name="moment" value="0" id="moment-1">
                 <div id="dropzoneTaskComment" class="dropzoneDragArea dz-default dz-message hide task-comment-dropzone">
@@ -1321,6 +1327,57 @@
 	</div>
 	</div>
 </div>
+<!--bereich modal -->
+<div class="modal fade task-modal-single in" tabindex="-1" data-focus-on="input:first" style="z-index: 10021;"
+	 id="modal-select-leistung_verz">
+	<div class="modal-dialog modal-lx" role="document" style="max-width: 500px;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" data-dismiss="modal" class="close"><span aria-hidden="true">&times;</span>
+				</button>
+
+			</div>
+			<div class="modal-body" style="background: white;">
+				<br>
+				<label>Leistung Select</label>
+				<select class="form-control" style="" name="select_leistung_verz"  id="select_leistung_verz">
+					<input type="hidden" id="id_task_import_leistung">
+				</select><br>
+				<!--import_leistung()-->
+				<button onclick="select_bereich()" style="text-align: center;">Aufgabe auswählen
+				</button>
+
+			</div>
+
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div>
+<div class="modal fade" id="select_bereich" data-focus-on="input:first" tabindex="-1" role="dialog" style="z-index: 10022;">
+	<div class="modal-dialog modal-md" role="document" style="    width: 500px;
+   ">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close"><span
+						aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">
+					Aufgabe auswählen
+				</h4>
+			</div>
+			<div class="modal-body">
+
+				<!--<select class="form-control" style="" name="select_bereich_input"  id="select_bereich_input">
+
+				</select>--><br>
+				<div id="zone_to_select_bereich"></div>
+				<div class="text-right">
+					<button onclick="import_leistung()" type="submit" class="btn btn-info">Import</button>
+				</div>
+				<?php echo form_close(); ?>
+			</div>
+		</div>
+	</div>
+</div>
 <style>
     .report-action a {
         display: block;
@@ -1459,7 +1516,143 @@
         $('#imageData-input').val('');
 
     }
+    function open_modal_select_leistung(e,id)
+    {
+        e.preventDefault()
+        $('#id_task_import_leistung').val(id);
+        $('#modal-select-leistung_verz').modal('toggle');
+    }
+    $( document ).ready(function() {
+        charge_select_leistung_verz()
+    });
+    function select_bereich() {
 
+
+        if($('#select_leistung_verz').val()==null || $('#select_leistung_verz').val()=="")
+        {
+            alert_float("danger","null not allowed");
+            return false;
+        }
+
+
+        $.get('<?php echo admin_url('leistung_verz/get_item_leist/'); ?>'+$('#select_leistung_verz').val()).done(function (responses) {
+            respons = JSON.parse(responses);
+            $('#select_bereich_input').empty();
+            bereichs= respons.response.item;
+
+            html="";
+            for (var i = 0; i < bereichs.length; i++) {
+                html=html+'<div class="checklist relative"> <div class="round"><input name="bereich[]"  class="beich" type="checkbox" > <label for="checkbox"></label><textarea data-taskid="45" name="checklist-description" rows="1">'+bereichs[i]['bereich']+'</textarea></div></div>';
+
+
+            }
+            $('#zone_to_select_bereich').html(html);
+            $('#select_bereich').modal('show');
+        }).fail(function (data) {
+
+        });
+
+    }
+    function import_leistung() {
+
+        trouver=false;
+        $('.beich').each( function () {
+            var checkbox_this = $(this);
+            if( checkbox_this.is(":checked") == true ) {
+                trouver=true;
+
+
+            }
+
+        })
+
+
+        if(trouver==false)
+        {
+            alert_float("danger","null not allowed");
+            return false;
+        }
+        $('.beich').each(function () {
+            var checkbox_this = $(this);;
+            if( checkbox_this.is(":checked") == true ) {
+                checkbox_this.attr('value','on');
+
+            } else {
+                checkbox_this.attr('value','off');
+            }
+        })
+        var input= $('input[name$="bereich[]"]');
+        beich=[];
+        for (var j = 0; j < input.length; j++) {
+            var a = input[j];
+            beich.push(a.value);
+        }
+
+
+
+        $.get('<?php echo admin_url('leistung_verz/get_item_leist/'); ?>'+$('#select_leistung_verz').val()).done(function (responses) {
+
+            respons = JSON.parse(responses);
+
+            res=respons.response;
+            console.log(res);
+            console.log(res.item);
+            bereichs= respons.response.item;
+            var description=[];
+            for (var i = 0; i < bereichs.length; i++) {
+                console.log(bereichs[i]);
+                var item=bereichs[i]['item'];
+                if(beich[i]=="on")
+                {
+                    if(item != null && item != undefined)
+                    {
+                        for (var j = 0; j < item.length; j++) {
+                            var my_item = {"description" : item[j]['name'], "bereich" : bereichs[i]['bereich']};
+
+                            description.push(my_item);
+                        }
+                    }
+                }
+
+
+            }
+            console.log(description);
+            $.post(admin_url + 'task/add_checklist_item', {
+                taskid: $('#id_task_import_leistung').val(),
+                description: description
+            }).done(function () {
+
+            }).always(function () {
+
+            })
+            init_tasks_checklist_items(true, $('#id_task_import_leistung').val());
+            $('#select_bereich').modal('hide');
+            $('#modal-select-leistung_verz').modal('hide');
+            alert_float("success", "successfully imported");
+
+        }).fail(function (data) {
+
+        });
+
+    }
+    function charge_select_leistung_verz() {
+        $.get('<?php echo admin_url('leistung_verz/get'); ?>').done(function (response) {
+
+            response = JSON.parse(response);
+
+            $('#select_leistung_verz').empty();
+            jQuery.each(response.response, function(i, val) {
+                var option = $('<option></option>').attr("value", val.id).text(val.name);
+                $('#select_leistung_verz').append(option);
+            });
+
+
+        }).fail(function (data) {
+
+        });
+
+
+    }
     function init_Sign_Canvas() {
         isSign = false;
         leftMButtonDown = false;
@@ -1497,6 +1690,7 @@
                         canvasContext.fillText("x", 40, 155);*/
         }
         // Bind Mouse events
+
         $(canvas).on('mousedown', function (e) {
             if (e.which === 1) {
                 leftMButtonDown = true;

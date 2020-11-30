@@ -1254,7 +1254,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .header-navbar .navbar-container ul.nav li.dropdown .dropdown-menu {
-	top: 53px;
+	/* top: 42px; */
 	animation: 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) 0s normal forwards 1 fadein;
 }
 
@@ -1829,8 +1829,8 @@ input[type=number]::-webkit-outer-spin-button {
 
 	.digital-clock {
 		margin-left: 10px;
-		font-size: 14px !important;
-		margin-top: 10px;
+		font-size: 12px !important;
+		margin-top: 20px;
 	}
 	.header-navbar.navbar-static-top .navbar-wrapper {
 		margin-left: 0;

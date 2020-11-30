@@ -1,13 +1,9 @@
 
 
 <?php defined('BASEPATH') or exit('No direct script access allowed'); ?>
-<a href="#" class="dropdown-toggle notifications-icon" data-toggle="dropdown" aria-expanded="false">
-	<i class="fa fa-bell-o fa-fw fa-lg"></i>
-	<?php if($current_user->total_unread_notifications > 0){ ?>
-		<span class="label icon-total-indicator bg-warning icon-notifications"><?php echo $current_user->total_unread_notifications; ?></span>
-	<?php } ?>
-</a>
-<ul class="dropdown-menu notifications animated fadeIn width400" data-total-unread="<?php echo $current_user->total_unread_notifications; ?>">
+<li class="dropdown dropdown-notification nav-item"><a class="nav-link nav-link-label" href="#" data-toggle="dropdown"><i class="ficon bx bx-bell bx-tada bx-flip-horizontal"></i><span class="badge badge-pill badge-danger badge-up">5</span></a>
+
+<ul class="dropdown-menu dropdown-menu-media dropdown-menu-right" data-total-unread="<?php echo $current_user->total_unread_notifications; ?>">
 	<li class="not_mark_all_as_read">
 		<a href="#" onclick="mark_all_notifications_as_read_inline(); return false;"><?php echo _l('mark_all_as_read'); ?></a>
 	</li>

@@ -110,7 +110,7 @@
         $tblhtml .= '<tr><td colspan="3"><strong>Checklistpoints</strong></td></tr>';
         foreach ($task->checklist_items as $k => $ac):
             $check = $ac['finished'] ? 'check-cp.png' : 'no-check-cp.png';
-            $tblhtml .= '<tr><td colspan="3"><br><span><img width="21px" src="assets/images/' . $check . '"/> </span> ' . $ac['description'] . '</td></tr>';
+            $tblhtml .= '<tr><td colspan="3"><br><span><img style="width: 21px" src="assets/images/' . $check . '"/> </span> ' . $ac['description'] . '</td></tr>';
         endforeach;
     } else {
 

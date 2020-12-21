@@ -29,7 +29,7 @@ class chat extends MY_Controller
 		$this->pusher_options['app_key']    = get_option('pusher_app_key');
 		$this->pusher_options['app_secret'] = get_option('pusher_app_secret');
 		$this->pusher_options['app_id']     = get_option('pusher_app_id');
-		$this->pusher_options['cluster']=get_optiion('pusher_cluster');
+		$this->pusher_options['cluster']=get_option('pusher_cluster');
 
 		if ($this->pusher_options['app_key'] == '' || $this->pusher_options['app_secret'] == '' || $this->pusher_options['app_id'] == '') {
 			echo '<h1>Seems that your Pusher account it is not setup correctly.</h1>';

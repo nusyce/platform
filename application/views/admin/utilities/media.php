@@ -201,16 +201,9 @@
             });
             //alert("My favourite sports are: " + favorite.join(", "));
             $.post(admin_url + 'utilities/user_permission', {users_id: favorite.join(", "),elfinderdir:elfinderdir,elfindername:elfindername}, function(result){
-                //alert(result)
-                if(result == "1"){
-                    alert_float('success', "Permission provided user successfully");
-                    setTimeout(function() {
-                        location.reload(true)
 
-                    }, 3000);
-                }else{
-                    alert_float('warning', 'Permission not provided user')
-                }
+                    alert_float('success', "Permission provided user successfully");
+
             });
 
 

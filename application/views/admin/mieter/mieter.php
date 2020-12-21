@@ -18,7 +18,7 @@
 
 
 			<div class="panel-body">
-		<form action="<?php echo base_url('admin/mieter/save')?>" class="client-form" autocomplete="off" method="post" accept-charset="utf-8">
+		<form id="mieter-form" action="<?php echo base_url('admin/mieter/save')?>" class="client-form dropzone" autocomplete="off" method="post" accept-charset="utf-8">
 						<div class="row">
 						<input type="hidden" name="<?php echo $this->security->get_csrf_token_name();?>" value="<?php echo $this->security->get_csrf_hash();?>">
 							<div class="col-md-6">
@@ -114,23 +114,258 @@
 									<p>Besonderheit</p>
 									<div class="row">
 									<div class="col-md-6">
-									<div class="col-md-12">
+
 										<?php $selected = isset($mieter) && $mieter->haustiere == '1' ? 1 : 0;
 										$datas = array(array('id' => 0, 'value' => 'Nein'), array('id' => 1, 'value' => 'Ja'));
 										echo render_select('haustiere', $datas, array('id', 'value'), get_transl_field('tsl_mieter', 'haustiere','Haustiere'), $selected); ?>
 
-									</div>
+
 									</div>
 									<div class="col-md-6">
-									<div class="col-md-12">
+
 										<?php $selected = isset($mieter) && $mieter->raucher == '1' ? 1 : 0;
 										$datas = array(array('id' => 0, 'value' => 'Nein'), array('id' => 1, 'value' => 'Ja'));
 										echo render_select('raucher', $datas, array('id', 'value'), get_transl_field('tsl_mieter', 'raucher','Raucher'), $selected); ?>
 
-									</div>
+
 									</div>
 
 									</div>
+										<div class="row" style="margin-top: 20px">
+											<div class="col-md-12">
+												<h3>Datien/Anh&auml;nge hochladen <?php if(isset($mieter)) { ?><span><a href="<?php echo site_url('admin/mieter/makePdf/'.$mieter->id); ?>" class="btn btn-default">Generate Pdf</a></span><?php } ?></h3>
+												<div class="row">
+													<div class="col-md-12">
+														<a href="#" class="btn btn-default add-post-attachments">
+															<i data-toggle="tooltip" title="<?php echo _l('newsfeed_upload_tooltip'); ?>"
+															   class="fa fa-files-o"></i></a>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-md-12" id="mieter-form-drop-zone">
+														<div class="dz-message" data-dz-message><span></span></div>
+														<div class="dropzone-previews mtop25"></div>
+													</div>
+												</div>
+
+
+												<div class="row">
+													<?php
+													foreach ($mieter->attachments as $k => $attachment) {
+
+														if (get_mime_class($attachment['filetype']) == 'mime mime-pdf')
+															continue;
+														?>
+														<?php ob_start(); ?>
+														<div data-num="<?php echo $k; ?>"
+															 data-mieter-attachment-id="<?php echo $attachment['id']; ?>"
+															 class="task-attachment-col col-md-4">
+															<ul class="list-unstyled task-attachment-wrapper" data-placement="right"
+																data-toggle="tooltip" data-title="<?php echo $attachment['file_name']; ?>">
+																<li class="mbot10 task-attachment<?php if (strtotime($attachment['dateadded']) >= strtotime('-16 hours')) {
+																	echo ' highlight-bg';
+																} ?>">
+																	<div class="mbot10 pull-right task-attachment-user">
+																		<a href="#" class="pull-right"
+																		   onclick="remove_mieter_attachment(this,<?php echo $attachment['id']; ?>); return false;">
+																			<i class="fa fa fa-times"></i>
+																		</a>
+																		<?php
+																		$externalPreview = false;
+																		$is_image = false;
+																		$path = get_upload_path_by_type('mieter') . $mieter->id . '/' . $attachment['file_name'];
+																		$href_url = site_url('download/file/mieterattachment/' . $attachment['attachment_key']);
+																		$isHtml5Video = is_html5_video($path);
+																		if (empty($attachment['external'])) {
+																			$is_image = is_image($path);
+																			$img_url = site_url('download/preview_image?path=' . protected_file_url_by_path($path, true) . '&type=' . $attachment['filetype']);
+																		} else if ((!empty($attachment['thumbnail_link']) || !empty($attachment['external']))
+																			&& !empty($attachment['thumbnail_link'])) {
+																			$is_image = true;
+																			$img_url = optimize_dropbox_thumbnail($attachment['thumbnail_link']);
+																			$externalPreview = $img_url;
+																			$href_url = $attachment['external_link'];
+																		} else if (!empty($attachment['external']) && empty($attachment['thumbnail_link'])) {
+																			$href_url = $attachment['external_link'];
+																		}
+																		if (!empty($attachment['external']) && $attachment['external'] == 'dropbox' && $is_image) { ?>
+																			<a href="<?php echo $href_url; ?>" target="_blank" class=""
+																			   data-toggle="tooltip"
+																			   data-title="<?php echo _l('open_in_dropbox'); ?>"><i
+																					class="fa fa-dropbox" aria-hidden="true"></i></a>
+																		<?php } else if (!empty($attachment['external']) && $attachment['external'] == 'gdrive') { ?>
+																			<a href="<?php echo $href_url; ?>" target="_blank" class=""
+																			   data-toggle="tooltip"
+																			   data-title="<?php echo _l('open_in_google'); ?>"><i
+																					class="fa fa-google" aria-hidden="true"></i></a>
+																		<?php }
+																		echo $attachment['file_name'];
+																		?>
+																	</div>
+																	<div class="clearfix"></div>
+																	<div class="<?php if ($is_image) {
+																		echo 'preview-image';
+																	} else if (!$isHtml5Video) {
+																		echo 'mieter-attachment-no-preview';
+																	} ?>">
+																		<?php
+																		// Not link on video previews because on click on the video is opening new tab
+																		if (!$isHtml5Video){ ?>
+																		<a href="<?php
+																		if($is_image){
+																			echo base_url(protected_file_url_by_path($path, true) );
+																		}elseif (!$externalPreview){
+                                                                                 echo $href_url;
+																		}else{
+																			echo $externalPreview;
+																		}  ?>"
+																		   target="_blank"<?php if ($is_image) { ?> data-lightbox="mieter-attachment" data-lity<?php } ?>
+																		   class="<?php if ($isHtml5Video) {
+																			   echo 'video-preview';
+																		   } ?>">
+																			<?php } ?>
+																			<?php if ($is_image) { ?>
+																				<img src="<?php echo $img_url; ?>" class="img img-responsive">
+																			<?php } else if ($isHtml5Video) { ?>
+																				<video width="100%" height="100%"
+																					   src="<?php echo site_url('download/preview_video?path=' . protected_file_url_by_path($path) . '&type=' . $attachment['filetype']); ?>"
+																					   controls>
+																					Your browser does not support the video tag.
+																				</video>
+																			<?php } else { ?>
+																				<i class="<?php echo get_mime_class($attachment['filetype']); ?>"></i>
+																				<?php echo $attachment['file_name']; ?>
+																			<?php } ?>
+																			<?php if (!$isHtml5Video){ ?>
+																		</a>
+																	<?php } ?>
+																	</div>
+																	<div class="clearfix"></div>
+																</li>
+															</ul>
+														</div>
+														<?php
+
+														$attachments_data[$attachment['id']] = ob_get_contents();
+														ob_end_clean();
+														echo $attachments_data[$attachment['id']];
+													} ?>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-12">
+												<h3>Attachments</h3>
+												<!--<div class="row">
+                    <div class="col-md-12">
+                        <a href="#" class="btn btn-default add-post-attachments">
+                            <i data-toggle="tooltip" title="<?php echo _l('newsfeed_upload_tooltip'); ?>"
+                               class="fa fa-files-o"></i></a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12" id="mieter-form-drop-zone">
+                        <div class="dz-message" data-dz-message><span></span></div>
+                        <div class="dropzone-previews mtop25"></div>
+                    </div>
+                </div>-->
+
+												<div class="row">
+													 <?php
+                    foreach ($mieter->attachments as $k => $attachment) {
+
+                        if (get_mime_class($attachment['filetype']) != 'mime mime-pdf')
+                            continue;
+                        ?>
+                        <?php ob_start(); ?>
+                        <div data-num="<?php echo $k; ?>"
+                             data-mieter-attachment-id="<?php echo $attachment['id']; ?>"
+                             class="task-attachment-col col-md-4">
+                            <ul class="list-unstyled task-attachment-wrapper" data-placement="right"
+                                data-toggle="tooltip" data-title="<?php echo $attachment['file_name']; ?>">
+                                <li class="mbot10 task-attachment<?php if (strtotime($attachment['dateadded']) >= strtotime('-16 hours')) {
+                                    echo ' highlight-bg';
+                                } ?>">
+                                    <div class="mbot10 pull-right task-attachment-user hide">
+
+                                        <?php
+                                        $externalPreview = false;
+                                        $is_image = false;
+                                        $path = get_upload_path_by_type('mieter') . $mieter->id . '/' . $attachment['file_name'];
+                                        $href_url = site_url('download/file/mieterattachment/' . $attachment['attachment_key']);
+                                        $isHtml5Video = is_html5_video($path);
+                                        if (empty($attachment['external'])) {
+                                            $is_image = is_image($path);
+                                            $img_url = site_url('download/preview_image?path=' . protected_file_url_by_path($path, true) . '&type=' . $attachment['filetype']);
+                                        } else if ((!empty($attachment['thumbnail_link']) || !empty($attachment['external']))
+                                            && !empty($attachment['thumbnail_link'])) {
+                                            $is_image = true;
+                                            $img_url = optimize_dropbox_thumbnail($attachment['thumbnail_link']);
+                                            $externalPreview = $img_url;
+                                            $href_url = $attachment['external_link'];
+                                        } else if (!empty($attachment['external']) && empty($attachment['thumbnail_link'])) {
+                                            $href_url = $attachment['external_link'];
+                                        }
+                                        if (!empty($attachment['external']) && $attachment['external'] == 'dropbox' && $is_image) { ?>
+                                            <a href="<?php echo $href_url; ?>" target="_blank" class=""
+                                               data-toggle="tooltip"
+                                               data-title="<?php echo _l('open_in_dropbox'); ?>"><i
+                                                        class="fa fa-dropbox" aria-hidden="true"></i></a>
+                                        <?php } else if (!empty($attachment['external']) && $attachment['external'] == 'gdrive') { ?>
+                                            <a href="<?php echo $href_url; ?>" target="_blank" class=""
+                                               data-toggle="tooltip"
+                                               data-title="<?php echo _l('open_in_google'); ?>"><i
+                                                        class="fa fa-google" aria-hidden="true"></i></a>
+                                        <?php }
+
+                                        ?>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div class="<?php if ($is_image) {
+                                        echo 'preview-image';
+                                    } else if (!$isHtml5Video) {
+                                        echo 'mieter-attachment-no-preview';
+                                    } ?>">
+                                        <?php
+                                        // Not link on video previews because on click on the video is opening new tab
+                                        if (!$isHtml5Video){ ?>
+                                        <a href="<?php echo(!$externalPreview ? $href_url : $externalPreview); ?>"
+                                           target="_blank"<?php if ($is_image) { ?> data-lightbox="mieter-attachment" data-lity<?php } ?>
+                                           class="<?php if ($isHtml5Video) {
+                                               echo 'video-preview';
+                                           } ?>">
+                                            <?php } ?>
+                                            <?php if ($is_image) { ?>
+                                                <img src="<?php echo $img_url; ?>" class="img img-responsive">
+                                            <?php } else if ($isHtml5Video) { ?>
+                                                <video width="100%" height="100%"
+                                                       src="<?php echo site_url('download/preview_video?path=' . protected_file_url_by_path($path) . '&type=' . $attachment['filetype']); ?>"
+                                                       controls>
+                                                    Your browser does not support the video tag.
+                                                </video>
+                                            <?php } else { ?>
+                                                <i class="<?php echo get_mime_class($attachment['filetype']); ?>"></i>
+                                                <?php echo $attachment['file_name']; ?>
+                                            <?php } ?>
+                                            <?php if (!$isHtml5Video){ ?>
+                                        </a>
+                                    <?php } ?>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </li>
+                            </ul>
+                        </div>
+                        <?php
+
+                        $attachments_data[$attachment['id']] = ob_get_contents();
+                        ob_end_clean();
+                        echo $attachments_data[$attachment['id']];
+                    } ?>
+
+												</div>
+											</div>
+										</div>
+
 									</div>
 								</div>
 							</div>
@@ -265,11 +500,98 @@
 						</div>
 					
 						<div class="form-group">
-				<div class="col-md-12">
-					<input style="width: 150px;" type="submit"  value="Speichern" class="btn btn-primary pull-right">
+
+							<div class="col-md-12">
+					<input style="width: 150px;" type="submit" id="submit"  value="Speichern" class="btn btn-primary pull-right">
 				</div>
 			</div></form></div>
 		</div>
 	</div>
 </div>
+<?php
+if (isset($mieter)): ?>
+	<script>
+        var mieter_id = '<?=$mieter->id; ?>';
+	</script>
+<?php else: ?>
+	<script>
+        var mieter_id = 0;
+	</script>
+<?php
+endif;
+?>
+
 <?php init_tail(); ?>
+<script>
+    mieterDropzone = new Dropzone("#mieter-form-drop-zone", appCreateDropzoneOptions({
+        clickable: '.add-post-attachments',
+        url: admin_url + "mieter/ajax_save", paramName: "files",
+        autoProcessQueue: false,
+        addRemoveLinks: true,
+        uploadMultiple: true,
+        parallelUploads: 50,
+        maxFiles: 50,
+        init: function () {
+            mieterDropzone = this;
+
+            this.on('sending', function (file, xhr, formData) {
+                // Append all form inputs to the formData Dropzone will POST
+                var data = $('#mieter-form').serializeArray();
+                $.each(data, function (key, el) {
+                    formData.append(el.name, el.value);
+                });
+            });
+
+            this.on("success", function (file) {
+            });
+        },
+        removedfile: function (file) {
+
+            x = confirm('Do you want to delete?');
+            if (!x) return false;
+            if (mieter_id != 0) {
+                file.previewElement.remove();
+            }
+        },
+        dragover: function (file) {
+            $('#mieter-form-drop-zone').addClass('dropzone-active');
+        },
+        complete: function (file) {
+            ///  console.log(file);
+            $(this).prop('disabled', false);
+            alert_float('success','success');
+            //    window.location.href = file.xhr.responseText;
+        },
+        drop: function (file) {
+            $('#mieter-form-drop-zone').removeClass('dropzone-active');
+        }
+    }));
+    $('#mieter-form').on("submit", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        $('#mieter-form #submit').prop('disabled', true);
+        if (mieterDropzone.getQueuedFiles().length > 0) {
+
+            mieterDropzone.processQueue();
+        } else {
+
+            $.ajax({
+                url: admin_url + "mieter/ajax_save",
+                data: $("#mieter-form").serialize(),
+                type: "POST",
+                dataType: 'json',
+                success: function (e) {
+                    //window.location.href = e;
+                    $(this).prop('disabled', false);
+                },
+                error: function (e) {
+                    window.location.href = e.responseText;
+                    $(this).prop('disabled', false);
+                }
+            });
+        }
+    });
+
+    // Get file extension
+
+</script>

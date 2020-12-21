@@ -5,11 +5,15 @@ class Admin extends MY_Controller
     function __construct(){
 
         parent::__construct();
-    //    auth_check(); // check login auth
-       // $this->rbac->check_module_access();
+     auth_check(); // check login auth
+       $this->rbac->check_module_access();
 		$this->load->model('admin/admin_roles_model', 'admin_roles');
 		$this->load->model('admin/admin_model', 'admin');
 		$this->load->model('admin/Activity_model', 'activity_model');
+		$this->load->model('misc_model');
+		$this->load->model('lieferanten_model');
+		$this->load->model('admin/cars_model');
+		$this->load->model('admin/utilities_model');
     }
 	function admin_roles(){
 
@@ -20,6 +24,57 @@ class Admin extends MY_Controller
 		$this->load->view('admin/admin_roles/index', $data);
 
 	}
+	public function personalplan()
+
+	{
+
+		if ($this->input->post()) {
+
+			$data    = $this->input->post();
+
+			$success = $this->utilities_model->event($data);
+			$message = '';
+
+			if ($success) {
+
+				if (isset($data['eventid'])) {
+
+					$message = _l('event_updated');
+
+				} else {
+
+					$message = _l('utility_calendar_event_added_successfully');
+
+				}
+
+			}
+
+			set_alert('success', $message);
+
+redirect(admin_url('admin/personalplan'));
+
+		}
+
+		//$data['google_ids_calendars'] = $this->misc_model->get_google_calendar_ids();
+		$data['google_ids_calendars']=[];
+		$data['staffs'] = $this->admin->get('',['active'=>1,'company_id' =>get_user_company_id()]);
+
+		$data['google_calendar_api']  = get_option('google_calendar_api_key');
+
+		$data['title']                = _l('Personalplan');
+
+		$data['cars'] = $this->cars_model->get();
+
+		$data['lieferanten'] = $this->lieferanten_model->get();
+
+
+
+
+
+		$this->load->view('admin/utilities/calendar', $data);
+
+	}
+
 	//-----------------------------------------------------		
 	function index($type=''){
 
@@ -35,7 +90,75 @@ class Admin extends MY_Controller
 		$this->load->view('admin/admin/index', $data);
 
 	}
+	function all_notifications(){
+		$this->db->where('touserid', get_user_id());
+		$notifications= $this->db->get(db_prefix() . 'notifications')->result_array();
+		$data['total_pages']=round(count($notifications)/$this->misc_model->get_notifications_limit());
+		$this->load->view('admin/admin/notifications',$data);
 
+	}
+	public function notifications()
+	{
+
+		if ($this->input->post()) {
+			$page = $this->input->post('page');
+			$offset = ($page * $this->misc_model->get_notifications_limit());
+			$this->db->limit($this->misc_model->get_notifications_limit(), $offset);
+			$this->db->where('touserid', get_user_id());
+			$this->db->order_by('date', 'desc');
+			$notifications = $this->db->get(db_prefix() . 'notifications')->result_array();
+			$i = 0;
+			foreach ($notifications as $notification) {
+				if (($notification['fromcompany'] == null && $notification['fromuserid'] != 0) || ($notification['fromcompany'] == null && $notification['fromclientid'] != 0)) {
+
+					if ($notification['fromuserid'] != 0) {
+						$notifications[$i]['profile_image'] = user_profile_image($notification['fromuserid'], [
+								'staff-profile-image-small',
+								'img-circle',
+								'pull-left',
+							]) ;
+					} else {
+						$notifications[$i]['profile_image'] = '<a href="#">
+                    <img class="client-profile-image-small img-circle pull-left" src="' . contact_profile_image_url($notification['fromclientid']) . '"></a>';
+					}
+				} else {
+					$notifications[$i]['profile_image'] = '';
+					$notifications[$i]['full_name'] = '';
+				}
+				$additional_data = '';
+				if (!empty($notification['additional_data'])) {
+					$additional_data = unserialize($notification['additional_data']);
+					$x = 0;
+					foreach ($additional_data as $data) {
+						if (strpos($data, '<lang>') !== false) {
+							$lang = get_string_between($data, '<lang>', '</lang>');
+							$temp = _l($lang);
+							if (strpos($temp, 'project_status_') !== false) {
+								$status = get_project_status_by_id(strafter($temp, 'project_status_'));
+								$temp = $status['name'];
+							}
+							$additional_data[$x] = $temp;
+						}
+						$x++;
+					}
+				}
+				$notifications[$i]['description']="";
+				if(!empty($notification['link'])) {
+					$notifications[$i]['description']='<a href="'.admin_url($notification["link"]).'" onclick="open_link_notification(event); return false;" class="notification-top notification-link">';
+				}
+
+				$notifications[$i]['description'] = $notifications[$i]['description']._l($notification['description'], $additional_data);
+				if(!empty($notification['link'])) {
+					$notifications[$i]['description'] = $notifications[$i]['description'].'</a>';
+				}
+				$notifications[$i]['date'] = time_ago($notification['date']);
+				$notifications[$i]['full_date'] = $notification['date'];
+				$i++;
+			} //$notifications as $notification
+			echo json_encode($notifications);
+			die;
+		}
+	}
 
 
 	public function render($admins = '')

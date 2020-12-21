@@ -11,7 +11,11 @@ class Mieter extends MY_Controller
 		$this->rbac->check_module_access();
 		$this->load->model('admin/Mieter_model', 'mieter_model');
 	}
-
+	public function delete_attach($id)
+	{
+		$this->mieter_model->delete_attachment($id);
+		echo 1;
+	}
 
 	public function index()
 	{
@@ -35,6 +39,7 @@ class Mieter extends MY_Controller
 		// $records = $this->activity_model->get_activity_log();
 		// var_dump($records);exit();
 		$data['mieter'] = $this->mieter_model->get_by_id($id);
+		$data['mieter']->attachments = $this->mieter_model->get_attachments($id);
 		$data['title'] = 'Mieter';
 
 		$this->load->view('admin/mieter/mieter', $data);
@@ -85,9 +90,63 @@ class Mieter extends MY_Controller
 
 
 	}
+	public function ajax_save()
+	{
+		unset($_POST['ci_csrf_token']);
+		$a_data = $_POST;
+
+		if (empty($a_data['id'])) {
+			unset($a_data['id']);
+
+			$id = $this->mieter_model->add($a_data);
+			if ($id) {
+				set_alert('success', _l('added_successfully', get_menu_option('mieter', 'Mieter')));
+			}
+		} else {
+			$id = $a_data['id'];
+			$success = $this->mieter_model->update($id,$a_data);
+			if ($success) {
+				set_alert('success', _l('updated_successfully', get_menu_option('mieter', 'Mieter')));
+			}
+		}
+		if (isset($_FILES['files'])){
+			// Count total files
+			$countfiles = count($_FILES['files']['name']);
+			for ($i = 0; $i < $countfiles; $i++) {
+
+				if (!empty($_FILES['files']['name'][$i])) {
+					// Define new $_FILES array - $_FILES['file']
+					$_FILES['file']['name'] = $_FILES['files']['name'][$i];
+					$_FILES['file']['type'] = $_FILES['files']['type'][$i];
+					$_FILES['file']['tmp_name'] = $_FILES['files']['tmp_name'][$i];
+					$_FILES['file']['error'] = $_FILES['files']['error'][$i];
+					$_FILES['file']['size'] = $_FILES['files']['size'][$i];
+					// Set preference
+					if (!file_exists('uploads/mieter/' . $id)) {
+						mkdir('uploads/mieter/' . $id, 0777, true);
+					}
+					$config['upload_path'] = 'uploads/mieter/' . $id;
+					$config['allowed_types'] = '*';
+					$config['max_size'] = '500000'; // max_size in kb
+					$config['file_name'] = $_FILES['files']['name'][$i];
+
+					//Load upload library
+					$this->load->library('upload', $config);
+					// File upload
+					if ($this->upload->do_upload('file')) {
+						// Get data about the file
+						$uploadData = $this->upload->data();
+						$this->mieter_model->add_attachment($id, $uploadData);
+					}
+				}
+			}
+		}
+		echo admin_url('mieter');
+	}
 
 	public function save()
 	{
+
 		if (!empty($_POST)) {
 
 

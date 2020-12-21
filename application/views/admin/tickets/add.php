@@ -17,10 +17,10 @@
 										<i class="fa fa-envelope"></i> Ticket ohne Kontakt
 									</span>
 							</a>
-							<!--<a href="#" class="hide" id="ticket_to_contact"><span class="label label-default">
+							<a href="#" class="hide" id="ticket_to_contact"><span class="label label-default">
 									<i class="fa fa-user-o"></i> Ticket ohne Kontakt
 								</span>
-							</a>-->
+							</a>
 							<div class="mbot15"></div>
 						<?php } ?>
 						<?php echo render_input('subject',_l('ticket_settings_subject'),'','text',array('required'=>'true')); ?>
@@ -50,8 +50,10 @@
 				<?php echo render_textarea('message','','',array(),array(),'','tinymce'); ?>
 			</div>
 
+				<div class="attachments" style="background-color: white">
+					<div class="attachment">
 				<div class="row">
-					<div class="col-md-4">
+					<div class="col-md-4 col-md-offset-4 mbot15">
 
 							<div class="form-group">
 								<label for="attachment" class="control-label"><?php echo _l('ticket_add_attachments'); ?></label>
@@ -67,6 +69,9 @@
 
 			</div>
 
+					</div>
+
+				</div>
 			<div class="form-group">
 				<div class="col-md-12">
 					<input style="width: 150px;" type="submit"  value="Speichern" class="btn btn-primary pull-right">
@@ -78,7 +83,36 @@
 </div>
 <?php init_tail(); ?>
 <script>
+
     $(function(){
+        $('#ticket_no_contact').on('click', function(e) {
+            e.preventDefault();
+            //validate_new_ticket_form();
+            $('#name, #email').prop('disabled', false);
+            $('#name, #email').attr('required',true);
+           /* $('#name').val('').rules('add', { required: true });
+            $('#email').val('').rules('add', { required: true });*/
+
+            $(this).addClass('hide');
+
+            $('#contactid').removeAttr('required');
+            $('#contactid').selectpicker('val', '');
+            $('input[name="userid"]').val('');
+
+            $('#ticket_to_contact').removeClass('hide');
+            $('#ticket_contact_w').addClass('hide');
+        });
+        $('#ticket_to_contact').on('click', function(e) {
+            e.preventDefault();
+            $('#name, #email').prop('disabled', true);
+            $('#ticket_no_contact').removeClass('hide');
+            $('#contactid').attr('required', true);
+            /*$('#name').rules('remove', 'required');
+            $('#email').rules('remove', 'required');*/
+            $('#name, #email').attr('required',false);
+            $('#ticket_no_contact, #ticket_contact_w').removeClass('hide');
+            $(this).addClass('hide');
+        });
         var editorMessage = tinymce.get('message');
         if(typeof(editorMessage) != 'undefined') {
             editorMessage.on('change',function(){

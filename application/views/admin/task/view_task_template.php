@@ -1,5 +1,5 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed'); ?>
-
+<script>tinymce.init({selector:'.tinymce'});</script>
 <div class="modal" id="choose" role="dialog" style="margin: 25% 0 0 30%;">
     <div class="modal-content modal-sm">
 
@@ -588,16 +588,17 @@
             <div class="tasks-comments inline-block full-width simple-editor" style="display:none"><!--<?php if (count($task->comments) == 0) {
                 echo ' style="display:none"';
             } ?>-->
-                <?php echo form_open_multipart(admin_url('tasks/add_task_comment'), array('id' => 'task-comment-form', 'class' => 'dropzone dropzone-manual', 'style' => 'min-height:auto;background-color:#fff;')); ?>
+                <?php echo form_open_multipart(admin_url('task/add_task_comment'), array('id' => 'task-comment-form', 'class' => 'dropzone dropzone-manual', 'style' => 'min-height:auto;background-color:#fff;')); ?>
                 <textarea name="comment" placeholder="<?php echo _l('Kommentar hinzufügen'); ?>"
                           id="task_comment" rows="3" class="form-control ays-ignore tinymce"></textarea>
 
                 <input type="hidden" name="moment" value="0" id="moment-1">
-                <div id="dropzoneTaskComment" class="dropzoneDragArea dz-default dz-message hide task-comment-dropzone">
+                <div style="margin-top: 10px" id="dropzoneTaskComment" class="dropzoneDragArea dz-default dz-message  task-comment-dropzone">
                     <span><?php echo _l('Dateien zum Hochladen hier ablegen'); ?></span>
                 </div>
                 <div class="dropzone-task-comment-previews dropzone-previews"></div>
-                <button style="text-transform: uppercase;font-size: 13px" type="button" class="btn btn-info mtop10 pull-right hide" id="addTaskCommentBtn"
+                <button style="text-transform: uppercase;font-size: 13px;margin-top: 20px;
+    float: right;" type="button" class="btn btn-info mtop10 pull-right " id="addTaskCommentBtn"
                         autocomplete="off" data-loading-text="<?php echo _l('wait_text'); ?>"
                         onclick="add_task_comment('<?php echo $task->id; ?>');"
                         data-comment-task-id="<?php echo $task->id; ?>">
@@ -685,16 +686,17 @@
                 echo ' style="display:none"';
             } ?>-->
 
-                <?php echo form_open_multipart(admin_url('tasks/add_task_comment'), array('id' => 'task-comment-form-2', 'class' => 'dropzone dropzone-manual', 'style' => 'min-height:auto;background-color:#fff;')); ?>
+                <?php echo form_open_multipart(admin_url('task/add_task_comment'), array('id' => 'task-comment-form-2', 'class' => 'dropzone dropzone-manual', 'style' => 'min-height:auto;background-color:#fff;')); ?>
                 <textarea name="comment" placeholder="<?php echo _l('Kommentar hinzufügen'); ?>"
                           id="task_comment-2" rows="3" class="form-control ays-ignore"></textarea>
                 <input type="hidden" name="moment" id="moment-2" value="1">
-                <div id="dropzoneTaskComment-2"
-                     class="dropzoneDragArea dz-default dz-message hide task-comment-dropzone">
+                <div style="margin-top: 10px" id="dropzoneTaskComment-2"
+                     class="dropzoneDragArea dz-default dz-message  task-comment-dropzone">
                     <span><?php echo _l('Dateien zum Hochladen hier ablegen'); ?></span>
                 </div>
                 <div class="dropzone-task-comment-previews-2 dropzone-previews"></div>
-                <button style="text-transform: uppercase;font-size: 13px" type="button" class="btn btn-info mtop10 pull-right hide" id="addTaskCommentBtn-2"
+                <button style="text-transform: uppercase;font-size: 13px;margin-top: 20px;
+    float: right;" type="button" class="btn btn-info mtop10 pull-right " id="addTaskCommentBtn-2"
                         autocomplete="off" data-loading-text="<?php echo _l('wait_text'); ?>"
                         onclick="add_task_comment_2('<?php echo $task->id; ?>');"
                         data-comment-task-id="<?php echo $task->id; ?>">
@@ -1389,6 +1391,145 @@
 </style>
 
 <script>
+    taskCommentAttachmentDropzone = new Dropzone("#task-comment-form", appCreateDropzoneOptions({
+        uploadMultiple: true,
+        clickable: '#dropzoneTaskComment',
+        previewsContainer: '.dropzone-task-comment-previews',
+        autoProcessQueue: false,
+        addRemoveLinks: true,
+        parallelUploads: 20,
+        maxFiles: 20,
+        paramName: 'file',
+        sending: function (file, xhr, formData) {
+            formData.append("taskid", $('#addTaskCommentBtn').attr('data-comment-task-id'));
+            if (tinyMCE.activeEditor && 1==2) {
+                formData.append("content", tinyMCE.activeEditor.getContent());
+            } else {
+                formData.append("content", $('#task_comment').val());
+            }
+            formData.append("moment", '0');
+        },
+        success: function (files, response) {
+            response = JSON.parse(response);
+            if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) {
+                _task_append_html(response.taskHtml);
+
+            }
+            requestGet('task/get_task_data/' + $('#addTaskCommentBtn').attr('data-comment-task-id') ).done(function (response) {
+
+                var res = document.createElement('div');
+                res.innerHTML = response;
+                console.log(res.querySelector('#task-comments').innerHTML);
+                $('#task-comments').html(res.querySelector('#task-comments').innerHTML);
+
+            }).fail(function (data) {
+
+            });
+        }
+    }));
+    taskCommentAttachmentDropzone_2 = new Dropzone("#task-comment-form-2", appCreateDropzoneOptions({
+        uploadMultiple: true,
+        clickable: '#dropzoneTaskComment-2',
+        previewsContainer: '.dropzone-task-comment-previews-2',
+        autoProcessQueue: false,
+        addRemoveLinks: true,
+        parallelUploads: 20,
+        maxFiles: 20,
+        paramName: 'file',
+        sending: function (file, xhr, formData) {
+            formData.append("taskid", $('#addTaskCommentBtn-2').data('comment-task-id'));
+            if (tinyMCE.activeEditor) {
+                formData.append("content", tinyMCE.activeEditor.getContent());
+            } else {
+                formData.append("content", $('#task_comment-2').val());
+            }
+            formData.append("moment", '1');
+        },
+        success: function (files, response) {
+            response = JSON.parse(response);
+            if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) {
+                _task_append_html(response.taskHtml);
+            }
+            requestGet('task/get_task_data/' + $('#addTaskCommentBtn-2').data('comment-task-id') ).done(function (response) {
+
+                var res = document.createElement('div');
+                res.innerHTML = response;
+                console.log(res.querySelector('#task-comments-2').innerHTML);
+                $('#task-comments-2').html(res.querySelector('#task-comments-2').innerHTML);
+
+            }).fail(function (data) {
+
+            });
+        }
+    }));
+    function add_task_comment(task_id) {
+        var data = {};
+
+        if (taskCommentAttachmentDropzone.files.length > 0) {
+            taskCommentAttachmentDropzone.processQueue(task_id);
+            return;
+        }
+        if (tinymce.activeEditor) {
+            data.content = tinyMCE.activeEditor.getContent();
+        } else {
+            data.content = $('#task_comment').val();
+            data.no_editor = true;
+        }
+        data.taskid = task_id;
+        data.moment = 0;
+        $.post(admin_url + 'task/add_task_comment', data).done(function (response) {
+            /*response = JSON.parse(response);
+            _task_append_html(response.taskHtml);
+            // Remove task comment editor instance
+            // Causing error because of are you sure you want to leave this page, the plugin still sees as active and dirty.
+            tinymce.remove('#task_comment');*/
+            requestGet('task/get_task_data/' + task_id ).done(function (response) {
+
+               var res = document.createElement('div');
+              res.innerHTML = response;
+                console.log(res.querySelector('#task-comments').innerHTML);
+                $('#task-comments').html(res.querySelector('#task-comments').innerHTML);
+
+            }).fail(function (data) {
+
+            });
+
+        });
+    }
+
+    // Add new task comment from the modal
+    function add_task_comment_2(task_id) {
+        var data = {};
+
+        if (taskCommentAttachmentDropzone_2.files.length > 0) {
+            taskCommentAttachmentDropzone_2.processQueue(task_id);
+            return;
+        }
+        if (tinymce.activeEditor) {
+            data.content = tinyMCE.activeEditor.getContent();
+        } else {
+            data.content = $('#task_comment-2').val();
+            data.no_editor = true;
+        }
+        data.taskid = task_id;
+        data.moment = 1;
+        console.log(data);
+
+        $.post(admin_url + 'task/add_task_comment', data).done(function (response) {
+            response = JSON.parse(response);
+            requestGet('task/get_task_data/' + task_id ).done(function (response) {
+
+                var res = document.createElement('div');
+                res.innerHTML = response;
+                console.log(res.querySelector('#task-comments-2').innerHTML);
+                $('#task-comments-2').html(res.querySelector('#task-comments-2').innerHTML);
+
+            }).fail(function (data) {
+
+            });
+        });
+    }
+
     var isSign = false;
     var leftMButtonDown = false;
     if (typeof (commonTaskPopoverMenuOptions) == 'undefined') {
@@ -1825,6 +1966,7 @@
             if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) {
                 _task_append_html(response.taskHtml);
             }
+
         }
     }));
 

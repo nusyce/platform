@@ -58,7 +58,7 @@ $autoload['packages'] = array();
 |
 |	$autoload['libraries'] = array('user_agent' => 'ua');
 */
-$autoload['libraries'] = array('database', 'email', 'session', 'form_validation', 'rbac', 'functions', 'user_agent','datatable', 'mailer','app');
+$autoload['libraries'] = array('database', 'email', 'session', 'form_validation', 'rbac', 'functions', 'user_agent','datatable', 'mailer','app','mails/app_mail_template','merge_fields/app_merge_fields');
 
 /*
 | -------------------------------------------------------------------
@@ -92,7 +92,7 @@ $autoload['drivers'] = array();
 $autoload['helper'] = array('url', 'file', 'security',
 	'data','database','settings', 'functions', 'common',
 	'fields_helper','countries_helper','projects_helper',
-	'files_helper','datatables','datatables','func','general','template','misc','tickets','tags','upload','custom_fields','tasks','pdf','func','mailbox','modules','themes','chat');
+	'files_helper','datatables','datatables','func','general','template','misc','tickets','tags','upload','custom_fields','tasks','pdf','func','mailbox','modules','themes','chat','email_templates');
 
 /*
 | -------------------------------------------------------------------

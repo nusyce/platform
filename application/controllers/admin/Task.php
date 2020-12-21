@@ -13,7 +13,41 @@ class Task extends MY_Controller
 		$this->load->model('admin/admin_roles_model', 'admin_roles');
 		$this->load->model('admin/admin_model', 'admin');
 		$this->load->model('/admin/tasks_model');
+		$this->load->model('misc_model');
 	}
+	public function add_task_comment()
+	{
+		$data = $this->input->post();
+		$data['content'] = $this->input->post('content', false);
+		/*if ($this->input->post('no_editor')) {
+			$data['content'] = nl2br($this->input->post('content'));
+		}*/
+		$data['moment'] = $this->input->post('moment');
+		$comment_id = false;
+		if ($data['content'] != ''
+			|| (isset($_FILES['file']['name']) && is_array($_FILES['file']['name']) && count($_FILES['file']['name']) > 0)) {
+			$comment_id = $this->tasks_model->add_task_comment($data);
+			if ($comment_id) {
+				$commentAttachments = handle_task_attachments_array($data['taskid'], 'file');
+				if ($commentAttachments && is_array($commentAttachments)) {
+					foreach ($commentAttachments as $file) {
+						$file['task_comment_id'] = $comment_id;
+						$this->misc_model->add_attachment_to_database($data['taskid'], 'task', [$file]);
+					}
+
+					if (count($commentAttachments) > 0) {
+						$this->db->query('UPDATE ' . db_prefix() . "task_comments SET content = CONCAT(content, '[task_attachment]')
+                            WHERE id = " . $this->db->escape_str($comment_id));
+					}
+				}
+			}
+		}
+		echo json_encode([
+			'success' => $comment_id ? true : false,
+			'taskHtml' => $this->get_task_data($data['taskid'], true),
+		]);
+	}
+
 	public function copy_task($id)
 	{
 
@@ -386,7 +420,7 @@ class Task extends MY_Controller
 					'id' => $id,
 				]);
 			}
-			//die;
+			die;
 			set_alert('success', $message);
 			redirect('admin/task');
 		}
@@ -417,7 +451,7 @@ class Task extends MY_Controller
 		$data['id'] = $id;
 		$data['title'] = $title;
 		$data['mieters'] = $this->mieter_model->get();
-		$dStaff = $this->admin_model->get('', ['active' => 1], true);
+		$dStaff = $this->admin_model->get('', ['active' => 1,'company_id' => get_user_company_id()], true);
 		//$staffs = array();
 		$staffs=$dStaff;
 		/*foreach ($dStaff as $d) {

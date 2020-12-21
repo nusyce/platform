@@ -11,6 +11,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | of this setting
 |
 */
+define('MIETER_UPLOADS_FOLDER', FCPATH . 'uploads/mieter' . '/');
+define('TASKS_ATTACHMENTS_FOLDER', FCPATH . 'uploads/tasks' . '/');
+define('MAILBOX_UPLOADS_FOLDER', FCPATH . 'uploads/mailbox' . '/');
 define('PR_CHAT_MODULE_NAME', 'prchat');
 
 define('chat_prefix', 'mar_');

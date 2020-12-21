@@ -211,9 +211,12 @@ class Tickets_model extends CI_Model{
 				}
 			}
 			if ($pipe_attachments != false) {
+
 				$this->process_pipe_attachments($pipe_attachments, $ticketid);
 			} else {
+
 				$attachments = handle_ticket_attachments($ticketid);
+
 				if ($attachments) {
 					$this->insert_ticket_attachments_to_database($attachments, $ticketid);
 				}
@@ -291,6 +294,18 @@ class Tickets_model extends CI_Model{
 
 		return false;
 	}
+	public function insert_ticket_attachments_to_database($attachments, $ticketid, $replyid = false)
+	{
+		foreach ($attachments as $attachment) {
+			$attachment['ticketid']  = $ticketid;
+			$attachment['dateadded'] = date('Y-m-d H:i:s');
+			if ($replyid !== false && is_int($replyid)) {
+				$attachment['replyid'] = $replyid;
+			}
+			$this->db->insert(db_prefix() . 'ticket_attachments', $attachment);
+		}
+	}
+
 	public function get_ticket_attachments($id, $replyid = '')
 	{
 		$this->db->where('ticketid', $id);
@@ -449,11 +464,14 @@ class Tickets_model extends CI_Model{
 				]);
 			}
 			if ($pipe_attachments != false) {
+
 				$this->process_pipe_attachments($pipe_attachments, $id, $insert_id);
 			} else {
+
 				$attachments = handle_ticket_attachments($id);
+
 				if ($attachments) {
-					$this->tickets_model->insert_ticket_attachments_to_database($attachments, $id, $insert_id);
+					$this->insert_ticket_attachments_to_database($attachments, $id, $insert_id);
 				}
 			}
 
@@ -556,6 +574,7 @@ class Tickets_model extends CI_Model{
 	{
 		$this->db->select('*,'.db_prefix() . 'admin.username  as submiter ,'.db_prefix() . 'admin.email as submiter_mail  ');
 		$this->db->from(db_prefix() . 'tickets');
+		$this->db->where(db_prefix() . 'tickets.company_id', get_user_company_id());
 		$this->db->join(db_prefix() . 'admin', db_prefix() . 'admin.admin_id = ' . db_prefix() . 'tickets.admin', 'left');
 		/*$this->db->join(db_prefix() . 'departments', db_prefix() . 'departments.departmentid = ' . db_prefix() . 'tickets.department', 'left');
 		$this->db->join(db_prefix() . 'tickets_status', db_prefix() . 'tickets_status.ticketstatusid = ' . db_prefix() . 'tickets.status', 'left');
@@ -574,21 +593,7 @@ class Tickets_model extends CI_Model{
 		}
 		$ticket = $this->db->get()->row();
 		if ($ticket) {
-			/*if ($ticket->admin == null || $ticket->admin == 0) {
-				if ($ticket->contactid != 0) {
-					$ticket->submitter = $ticket->user_firstname . ' ' . $ticket->user_lastname;
-				} else {
-					$ticket->submitter = $ticket->from_name;
-				}
-			} else {
-				if ($ticket->contactid != 0) {
-					$ticket->submitter = $ticket->user_firstname . ' ' . $ticket->user_lastname;
-				} else {
-					$ticket->submitter = $ticket->from_name;
-				}
-				$ticket->opened_by = $ticket->staff_firstname . ' ' . $ticket->staff_lastname;
-			}
-*/
+
 			$ticket->attachments = $this->get_ticket_attachments($id);
 		}
 
@@ -645,6 +650,26 @@ class Tickets_model extends CI_Model{
 		}
 
 		return false;
+	}
+	public function delete_ticket_attachment($id)
+	{
+		$deleted = false;
+		$this->db->where('id', $id);
+		$attachment = $this->db->get(db_prefix() . 'ticket_attachments')->row();
+		if ($attachment) {
+			if (unlink(get_upload_path_by_type('ticket') . $attachment->ticketid . '/' . $attachment->file_name)) {
+				$this->db->where('id', $attachment->id);
+				$this->db->delete(db_prefix() . 'ticket_attachments');
+				$deleted = true;
+			}
+			// Check if no attachments left, so we can delete the folder also
+			$other_attachments = list_files(get_upload_path_by_type('ticket') . $attachment->ticketid);
+			if (count($other_attachments) == 0) {
+				delete_dir(get_upload_path_by_type('ticket') . $attachment->ticketid);
+			}
+		}
+
+		return $deleted;
 	}
 }
 

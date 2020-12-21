@@ -4894,9 +4894,9 @@ input:focus ~ .bg-info {
 /* Alert info */
 /* ---------------- */
 .alert.alert-info {
-	background: #00CFDD !important;
+	/* background: #00CFDD !important; */
 	color: #fff !important;
-	box-shadow: 0 3px 8px 0 rgba(0, 207, 221, 0.4);
+	/* box-shadow: 0 3px 8px 0 rgba(0, 207, 221, 0.4); */
 	border: none;
 }
 

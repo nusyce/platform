@@ -138,7 +138,8 @@
                 $fullPath = $relPath . $attachment['file_name'];
                 $fname = pathinfo($fullPath, PATHINFO_FILENAME);
                 $fext = pathinfo($fullPath, PATHINFO_EXTENSION);
-                $thumbPath = $relPath . $fname . '_thumb.' . $fext;
+                //$thumbPath = $relPath . $fname . '_thumb.' . $fext;
+				$thumbPath = $relPath . $fname .'.'. $fext;
                 $tblhtml .= '<td style="padding: 2px; width: 33.33%"><img style="width: 100%" src="' . $thumbPath . '"/> </td>';
                 $i++;
             }
@@ -185,7 +186,8 @@
                 $fullPath = $relPath . $attachment['file_name'];
                 $fname = pathinfo($fullPath, PATHINFO_FILENAME);
                 $fext = pathinfo($fullPath, PATHINFO_EXTENSION);
-                $thumbPath = $relPath . $fname . '_thumb.' . $fext;
+				//$thumbPath = $relPath . $fname . '_thumb.' . $fext;
+				$thumbPath = $relPath . $fname .'.'. $fext;
                 $tblhtml .= '<td style="padding: 2px; width: 33.33%"><img style="width: 100%" src="' . $thumbPath . '"/> </td>';
                 $i++;
             }

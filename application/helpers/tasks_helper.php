@@ -544,7 +544,7 @@ function get_tasks_where_string($table = true)
 {
     $_tasks_where = '(' . db_prefix() . 'tasks.id IN (SELECT taskid FROM ' . db_prefix() . 'task_assigned WHERE user_id = ' . get_user_id() . ') OR ' . db_prefix() . 'tasks.id IN (SELECT taskid FROM ' . db_prefix() . 'task_followers WHERE user_id = ' . get_user_id() . ') OR (addedfrom=' . get_user_id() . ' AND is_added_from_contact=0)';
     if (get_option('show_all_tasks_for_project_member') == 1) {
-        $_tasks_where .= ' OR (' . db_prefix() . 'tasks.rel_type="project" AND ' . db_prefix() . 'tasks.rel_id IN (SELECT project_id FROM ' . db_prefix() . 'project_members WHERE staff_id=' . get_user_id() . '))';
+        $_tasks_where .= ' OR (' . db_prefix() . 'tasks.rel_type="project" AND ' . db_prefix() . 'tasks.rel_id IN (SELECT project_id FROM ' . db_prefix() . 'project_members WHERE user_id=' . get_user_id() . '))';
     }
     $_tasks_where .= ' OR is_public = 1)';
     if ($table == true) {

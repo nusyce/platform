@@ -139,52 +139,51 @@ function render_color_picker($name, $label = '', $value = '', $input_attrs = [])
  */
 function render_date_input($name, $label = '', $value = '', $input_attrs = [], $form_group_attr = [], $form_group_class = '', $input_class = '')
 {
-    $input = '';
-    $_form_group_attr = '';
-    $_input_attrs = '';
-    foreach ($input_attrs as $key => $val) {
-        // tooltips
-        if ($key == 'title') {
-            $val = _l($val);
-        }
-        $_input_attrs .= $key . '=' . '"' . $val . '" ';
-    }
+	$input = '';
+	$_form_group_attr = '';
+	$_input_attrs = '';
+	foreach ($input_attrs as $key => $val) {
+		// tooltips
+		if ($key == 'title') {
+			$val = _l($val);
+		}
+		$_input_attrs .= $key . '=' . '"' . $val . '" ';
+	}
 
-    $_input_attrs = rtrim($_input_attrs);
+	$_input_attrs = rtrim($_input_attrs);
 
-    $form_group_attr['app-field-wrapper'] = $name;
+	$form_group_attr['app-field-wrapper'] = $name;
 
-    foreach ($form_group_attr as $key => $val) {
-        // tooltips
-        if ($key == 'title') {
-            $val = _l($val);
-        }
-        $_form_group_attr .= $key . '=' . '"' . $val . '" ';
-    }
+	foreach ($form_group_attr as $key => $val) {
+		// tooltips
+		if ($key == 'title') {
+			$val = _l($val);
+		}
+		$_form_group_attr .= $key . '=' . '"' . $val . '" ';
+	}
 
-    $_form_group_attr = rtrim($_form_group_attr);
+	$_form_group_attr = rtrim($_form_group_attr);
 
-    if (!empty($form_group_class)) {
-        $form_group_class = ' ' . $form_group_class;
-    }
-    if (!empty($input_class)) {
-        $input_class = ' ' . $input_class;
-    }
-    $input .= '<div class="form-group' . $form_group_class . '" ' . $_form_group_attr . '>';
-    if ($label != '') {
-        $input .= '<label for="' . $name . '" class="control-label">' . $label . '</label>';
-    }
-    $input .= '<div class="input-group date">';
-    $input .= '<input type="text" id="' . $name . '" name="' . $name . '" class="form-control datepicker' . $input_class . '" ' . $_input_attrs . ' value="' . set_value($name, $value) . '" autocomplete="off">';
-    $input .= '<div class="input-group-addon">
+	if (!empty($form_group_class)) {
+		$form_group_class = ' ' . $form_group_class;
+	}
+	if (!empty($input_class)) {
+		$input_class = ' ' . $input_class;
+	}
+	$input .= '<div class="form-group' . $form_group_class . '" ' . $_form_group_attr . '>';
+	if ($label != '') {
+		$input .= '<label for="' . $name . '" class="control-label">' . _l($label, '', false) . '</label>';
+	}
+	$input .= '<div class="input-group date">';
+	$input .= '<input type="text" id="' . $name . '" name="' . $name . '" class="form-control datepicker' . $input_class . '" ' . $_input_attrs . ' value="' . set_value($name, $value) . '" autocomplete="off">';
+	$input .= '<div class="input-group-addon">
     <i class="fa fa-calendar calendar-icon"></i>
 </div>';
-    $input .= '</div>';
-    $input .= '</div>';
+	$input .= '</div>';
+	$input .= '</div>';
 
-    return $input;
+	return $input;
 }
-
 /**
  * Render date time picker input for admin area
  * @param  [type] $name             input name
@@ -198,10 +197,10 @@ function render_date_input($name, $label = '', $value = '', $input_attrs = [], $
  */
 function render_datetime_input($name, $label = '', $value = '', $input_attrs = [], $form_group_attr = [], $form_group_class = '', $input_class = '')
 {
-    $html = render_date_input($name, $label, $value, $input_attrs, $form_group_attr, $form_group_class, $input_class);
-    $html = str_replace('datepicker', 'datetimepicker', $html);
+	$html = render_date_input($name, $label, $value, $input_attrs, $form_group_attr, $form_group_class, $input_class);
+	$html = str_replace('datepicker', 'datetimepicker', $html);
 
-    return $html;
+	return $html;
 }
 
 /**

@@ -652,7 +652,7 @@ function to_sql_date($date, $datetime = false)
 	$date = $date;
 
 	if ($datetime == false) {
-		return hooks()->apply_filters('to_sql_date_formatted', date_format(date_create_from_format($from_format, $date), $to_date));
+		return $date;
 	}
 
 	if (strpos($date, ' ') === false) {
@@ -790,9 +790,7 @@ function current_full_url()
 function pusher_trigger_notification($users = [])
 {
 
-	if (get_option('pusher_realtime_notifications') == 0) {
-		return false;
-	}
+
 
 	if (!is_array($users) || count($users) == 0) {
 		return false;

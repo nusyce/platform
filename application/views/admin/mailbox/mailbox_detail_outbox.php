@@ -27,7 +27,7 @@
           <div class="emai-img">
             <div class="">
                <?php foreach($attachments as $attachment){
-                $attachment_url = module_dir_url(MAILBOX_MODULE_NAME) .'uploads/'.$type.'/'. $inbox->id . '/'.$attachment['file_name'];
+				   $attachment_url = site_url('/download/file/mailbox-'.$type.'/'. $attachment['id']) ;
                 ?>
                 <div class="mbot15 row" data-attachment-id="<?php echo $attachment['id']; ?>">
                      <div class="col-md-8">

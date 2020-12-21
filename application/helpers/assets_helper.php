@@ -2,8 +2,7 @@
 
 defined('BASEPATH') or exit('No direct script access allowed');
 
-hooks()->add_action('admin_auth_init', 'init_admin_auth_assets');
-hooks()->add_action('app_admin_assets', '_init_admin_assets');
+
 
 function init_admin_assets()
 {

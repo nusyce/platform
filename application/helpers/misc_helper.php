@@ -65,7 +65,7 @@ function get_system_favourite_colors()
         '#fb3b3b',
     ];
 
-    return hooks()->apply_filters('system_favourite_colors', $colors);
+    return $colors;
 }
 
 function process_digital_signature_image($partBase64, $path)

@@ -50,7 +50,7 @@ class App_merge_fields
             $this->set($this->build());
         } else {
             // Run only once when class is autoloaded
-            $this->registered = hooks()->apply_filters('register_merge_fields', []);
+            $this->registered =  [];
         }
     }
 
@@ -207,7 +207,7 @@ class App_merge_fields
 
         $this->all_merge_fields = $available;
 
-        return hooks()->apply_filters('available_merge_fields', $available);
+        return  $available;
     }
 
     public function name()

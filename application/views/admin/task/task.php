@@ -138,7 +138,7 @@
                             }
                         } ?>
                         <div class="row" style="width: 500px;">
-                            <div class="col-md-6">
+                            <div class="col-md-6" style="padding-right: 0;">
                                 <?php
                                 $selected = '';
                                 if (isset($task) && $task->project) {
@@ -147,7 +147,7 @@
                                 echo render_project_select('',$selected, get_transl_field('tsl_tasks', 'projekt', 'Projekt'));
                                 ?>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6" style="padding-right: 0;">
                                 <?php
                                 $selected = '';
                                 if (isset($task) && $task->clients) {
@@ -311,11 +311,13 @@
                                     $date_attrs['disabled'] = true;
                                 }
                                 ?>
-                                <?php echo render_input('startdate', 'Startdatum', date('Y-m-d\TH:i:s',strtotime($value)),'datetime-local' ,$date_attrs); ?>
+								<?php echo render_datetime_input('startdate', _l('Startdatum'),date('d.m.yy H:i',strtotime($value))); ?>
+
                             </div>
                             <div class="col-md-6">
-                                <?php $value = (isset($task) ?$task->duedate : ''); ?>
-                                <?php echo render_input('duedate', 'Enddatum', date('Y-m-d\TH:i:s',strtotime($value)), 'datetime-local',$project_end_date_attrs); ?>
+                                <?php   $value = (isset($task) ?$task->duedate : date('Y-m-d H:i:s')); ?>
+								<?php echo render_datetime_input('duedate', _l('Enddatum'),date('d.m.yy H:i',strtotime($value))); ?>
+
                             </div>
                         </div>
                         <p class="bold"><?php echo _l('Beschreibung'); ?></p>
@@ -542,7 +544,7 @@
             });
 
             init_datepicker();
-            init_color_pickers();
+
             init_selectpicker();
             task_rel_select();
 

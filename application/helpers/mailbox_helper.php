@@ -46,7 +46,12 @@ function get_staff_email_by_id($id)
  */
 function handle_mail_attachments($mail_id, $type = 'inbox', $index_name = 'attachments',$method='move')
 {
-    $path           = MAILBOX_MODULE_UPLOAD_FOLDER .'/'.$type.'/'. $mail_id . '/';
+
+
+	$path = get_upload_path_by_type('mailbox').$type.'/' . $mail_id . '/';
+	if (!file_exists($path)) {
+		mkdir($path, 0777, true);
+	}
 
     $uploaded_files = [];
 
@@ -72,8 +77,9 @@ function handle_mail_attachments($mail_id, $type = 'inbox', $index_name = 'attac
                     $filename    = unique_filename($path, $_FILES[$index_name]['name'][$i]);
 					$filename    = str_replace(' ', '_', $filename);
                     $newFilePath = $path . $filename;
+
                     // Upload the file into the temp dir
-                    if($method == 'copy'){                        
+                    if($method == 'copy'){
                         if (copy($tmpFilePath, $newFilePath)) {
                             array_push($uploaded_files, [
                                     'file_name' => $filename,
@@ -81,12 +87,14 @@ function handle_mail_attachments($mail_id, $type = 'inbox', $index_name = 'attac
                                     ]);
                         } 
                     } else {
+
                        if (move_uploaded_file($tmpFilePath, $newFilePath)) {
                             array_push($uploaded_files, [
                                     'file_name' => $filename,
                                     'file_type'  => $_FILES[$index_name]['type'][$i],
                                     ]);
-                        } 
+                        }
+
                     }                    
                 }
             }

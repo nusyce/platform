@@ -1,7 +1,7 @@
 
 
 <?php defined('BASEPATH') or exit('No direct script access allowed'); ?>
-<li class="dropdown dropdown-notification nav-item"><a class="nav-link nav-link-label" href="#" data-toggle="dropdown"><i class="ficon bx bx-bell bx-tada bx-flip-horizontal"></i><span class="badge badge-pill badge-danger badge-up">5</span></a>
+<li class="dropdown dropdown-notification nav-item"><a class="nav-link nav-link-label" href="#" data-toggle="dropdown"><i class="ficon bx bx-bell bx-tada bx-flip-horizontal"></i><span class="badge badge-pill badge-danger badge-up"><?php if($this->misc_model->count_unread()>0) echo $this->misc_model->count_unread() ?></span></a>
 
 <ul class="dropdown-menu dropdown-menu-media dropdown-menu-right" data-total-unread="<?php echo $current_user->total_unread_notifications; ?>">
 	<li class="not_mark_all_as_read">
@@ -12,7 +12,7 @@
 	foreach($_notifications as $notification){ ?>
 		<li class="relative notification-wrapper" data-notification-id="<?php echo $notification['id']; ?>">
 			<?php if(!empty($notification['link'])){ ?>
-			<a href="<?php echo admin_url($notification['link']); ?>" class="notification-top notification-link">
+			<a href="<?php echo admin_url($notification['link']); ?>" onclick="open_link_notification(event); return false;" class="notification-top notification-link">
 				<?php } ?>
 				<div class="notification-box<?php if($notification['isread_inline'] == 0){echo ' unread';} ?>">
 					<?php
@@ -74,7 +74,7 @@
 	<?php } ?>
 	<li class="text-center">
 		<?php if(count($_notifications) > 0){ ?>
-			<a href="<?php echo admin_url('profile?notifications=true'); ?>"><?php echo _l('nav_view_all_notifications'); ?></a>
+			<a href="<?php echo admin_url('admin/all_notifications'); ?>"><?php echo _l('nav_view_all_notifications'); ?></a>
 		<?php } else { ?>
 			<?php echo _l('nav_no_notifications'); ?>
 		<?php } ?>

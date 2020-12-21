@@ -40,6 +40,42 @@
 -------------------------------------------------------------------*/
 /* Reboot css */
 /*------------*/
+.hide {
+	display: none!important;
+}
+.notification-box-all img {
+	margin-right: 10px;
+}
+.notification-box-all {
+	border: 1px solid #f0f0f0;
+	padding: 7px 10px;
+	border-radius: 4px;
+	margin-bottom: 10px;
+}
+.notification-top{
+	padding: 0 !important;
+}
+.navbar-right .dropdown-menu.notifications li:not(:last-child) > a {
+	padding: 0;
+}
+.width400 {
+	width: 400px;
+}
+.navbar-nav > li > .dropdown-menu.notifications {
+	max-height: 600px;
+	border-top: 0;
+	overflow: auto;
+	z-index: 100;
+}
+.not-mark-as-read-inline {
+	width: auto !important;
+	right: 5px;
+	bottom: 36px;
+	position: relative;
+}
+.notification-image {
+	margin-right: 10px;
+}
 .navbar-nav > li > .dropdown-menu.notifications li .media-body {
 	font-size: 13px;
 }
@@ -74,6 +110,7 @@
 .text-has-action {
 	border-bottom: 1px dashed #bbb;
 	padding-bottom: 2px;
+	font-size: 10px;
 }
 .dropdown-menu>li>a {
 	display: block;
@@ -82,7 +119,7 @@
 	font-weight: 400;
 	line-height: 1.42857143;
 	color: #333;
-	white-space: nowrap;
+	/* white-space: nowrap; */
 }
 a.notification-top {
 	cursor: pointer;

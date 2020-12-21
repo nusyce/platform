@@ -37,6 +37,81 @@
 -------------------------------------------------------------------*/
 /* Template Css */
 /* ----------- */
+.staff-profile-xs-image {
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+}
+.staff-profile-image{
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+}
+.cpicker-small {
+	width: 10px;
+	height: 10px;
+}
+.cpicker {
+	float: left;
+	margin-right: 15px;
+	border-radius: 1px;
+}
+.cpicker {
+	cursor: pointer;
+	border-radius: 2%;
+}
+.cpicker-big {
+	width: 20px;
+	height: 20px;
+}
+.btn-primary.disabled, .btn-primary:disabled {
+	color: #FFFFFF;
+	background-color: #03a9f4;
+	border-color: #03a9f4;
+	opacity: 0.8;
+}
+.fc-day-grid-event{
+	height: 20px;
+	padding-top: 5px !important;
+}
+.fc-calendarFilter-button {
+	display: none !important;
+}
+.fc-day-header{
+	color: black;
+	font-weight: 300;
+	font-size: 12px;
+}
+.no-padding{
+	padding: 0;
+}
+.alert {
+	z-index: 99999999999 !important;
+}
+.alert-info {
+	color: #31708f;
+	background-color: #d9edf7;
+	border-color: #bce8f1;
+}
+#calendar .fc-day-header, #calendar .fc-header-toolbar button, #calendar .fc-toolbar .fc-center {
+	text-transform: capitalize;
+}
+.table-bordered > tbody > tr > td, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > td, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > thead > tr > th {
+	border: 1px solid #f0f0f0;
+}
+.glyphicon {
+	position: relative;
+	top: 1px;
+	display: inline-block;
+	font-family: "Glyphicons Halflings";
+	font-style: normal;
+	font-weight: 400;
+	line-height: 1;
+	-webkit-font-smoothing: antialiased;
+}
+.glyphicon-chevron-right:before {
+	content: "\e080";
+}
 .modal {
 	overflow-y:auto;
 }
@@ -3566,7 +3641,7 @@ body.navbar-static .navbar-container .search-input.open {
 	text-align: center;
 	overflow: hidden;
 	white-space: nowrap;
-	margin: 1rem 0;
+	/* margin: 1rem 0; */
 }
 
 .divider .divider-text {

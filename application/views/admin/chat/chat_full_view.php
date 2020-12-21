@@ -68,17 +68,13 @@ init_head();
                 : '';
             ?>
             <ul class="nav nav-tabs chat_nav">
-                <li class="active staff" style="<?= (!isClientsEnabled()) ? 'width:50%;' : ''; ?> "><a  data-toggle="tab"
+                <li class="active staff" style=width:50%; "><a  data-toggle="tab"
                                                                                                        href="#staff"><i
                                 class="fa fa-user i_chat_navigation"></i><?= _l('chat_staff_text'); ?></a></li>
-                <li class="groups events_disabled" style="<?= (!isClientsEnabled()) ? 'width:50%;' : ''; ?> "><a
+                <li class="groups events_disabled" style="width:50%; "><a
                             data-toggle="tab" class="events_disabled" href="#groups"><i
                                 class="fa fa-users i_chat_navigation"></i><?= _l('chat_groups_text'); ?></a></li>
-                <?php if (isClientsEnabled()) : ?>
-                    <li class="crm_clients"><a data-toggle="tab" class="events_disabled" href="#crm_clients"><i
-                                    class="fa fa-address-book i_chat_navigation"></i><?= _l('chat_lang_clients'); ?></a>
-                    </li>
-                <?php endif; ?>
+
             </ul>
             <div class="tab-content">
                 <div id="staff" class="tab-pane fade in active">
@@ -495,6 +491,7 @@ init_head();
 
         /*---------------* Pusher Trigger subscription succeeded *---------------*/
         presenceChannel.bind('pusher:subscription_succeeded', function (members) {
+
             chatMemberUpdate(members);
             users.then(function () {
                 if (localStorage.staff_to_redirect) {
@@ -506,6 +503,8 @@ init_head();
                     }, 600);
                 }
             });
+
+            $('.main_loader_init').css('display','none');
         });
 
         /*---------------* Pusher Trigger user connected *---------------*/

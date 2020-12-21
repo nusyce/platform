@@ -527,8 +527,8 @@ class Tasks_model extends CI_Model
             $data['rel_id'] = $data['project'];
         }
 
-        $data['startdate'] = $data['startdate'];
-        $data['duedate'] = $data['duedate'];
+		$data['startdate'] = to_sql_date($data['startdate'], true);
+		$data['duedate'] = to_sql_date($data['duedate'], true);
         $data['dateadded'] = date('Y-m-d H:i:s');
         $data['addedfrom'] = $clientRequest == false ? get_user_id() : get_user_id();
         $data['is_added_from_contact'] = $clientRequest == false ? 0 : 1;
@@ -956,8 +956,8 @@ class Tasks_model extends CI_Model
     public function update($data, $id, $clientRequest = false)
     {
         $affectedRows = 0;
-        $data['startdate'] = $data['startdate'];
-        $data['duedate'] = $data['duedate'];
+		$data['startdate'] = to_sql_date($data['startdate'], true);
+		$data['duedate'] = to_sql_date($data['duedate'], true);
 
         $checklistItems = [];
         if (isset($data['checklist_items']) && count($data['checklist_items']) > 0) {
@@ -1021,6 +1021,9 @@ class Tasks_model extends CI_Model
 				}
 
 			}
+			$this->db->where('taskid', $id);
+			$this->db->where_not_in('user_id', $taskFor);
+			$this->db->delete(db_prefix() . 'task_assigned');
 			pusher_trigger_notification($taskFor);
         }
 
@@ -1314,7 +1317,7 @@ class Tasks_model extends CI_Model
             'taskid' => $data['taskid'],
             'content' => is_client_logged_in() ? _strip_tags($data['content']) : $data['content'],
             'moment' => $data['moment'],
-            'staffid' => $data['staffid'],
+            'user_id' => $data['staffid'],
             'contact_id' => $data['contact_id'],
             'dateadded' => date('Y-m-d H:i:s'),
         ]);
@@ -1322,24 +1325,6 @@ class Tasks_model extends CI_Model
         $insert_id = $this->db->insert_id();
 
         if ($insert_id) {
-            $this->db->select('rel_type,rel_id,name,visible_to_client');
-            $this->db->where('id', $data['taskid']);
-            $task = $this->db->get(db_prefix() . 'tasks')->row();
-
-            $description = 'not_task_new_comment';
-            $additional_data = serialize([
-                $task->name,
-            ]);
-
-            if ($task->rel_type == 'project') {
-                $this->projects_model->log_activity($task->rel_id, 'project_activity_new_task_comment', $task->name, $task->visible_to_client);
-            }
-
-            $this->_send_task_responsible_users_notification($description, $data['taskid'], false, 'task_new_comment_to_staff', $additional_data, $insert_id);
-            $this->_send_customer_contacts_notification($data['taskid'], 'task_new_comment_to_customer');
-
-            hooks()->do_action('task_comment_added', ['task_id' => $data['taskid'], 'comment_id' => $insert_id]);
-
             return $insert_id;
         }
 
@@ -1833,6 +1818,7 @@ class Tasks_model extends CI_Model
      */
     public function mark_as($status, $task_id)
     {
+
         $this->db->select('rel_type,rel_id,name,visible_to_client,status');
         $this->db->where('id', $task_id);
         $task = $this->db->get(db_prefix() . 'tasks')->row();
@@ -1849,6 +1835,7 @@ class Tasks_model extends CI_Model
 
         $this->db->where('id', $task_id);
         $this->db->update(db_prefix() . 'tasks', $update);
+
         if ($this->db->affected_rows() > 0) {
             $description = 'not_task_status_changed';
 
@@ -1868,7 +1855,7 @@ class Tasks_model extends CI_Model
                 ]);
             }
 
-            if ($task->rel_type == 'project') {
+           /* if ($task->rel_type == 'project') {
                 $project_activity_log = $status == self::STATUS_COMPLETE ? 'project_activity_task_marked_complete' : 'not_project_activity_task_status_changed';
 
                 $project_activity_desc = $task->name;
@@ -1878,11 +1865,11 @@ class Tasks_model extends CI_Model
                 }
 
                 $this->projects_model->log_activity($task->rel_id, $project_activity_log, $project_activity_desc, $task->visible_to_client);
-            }
+            }*/
 
-            $this->_send_task_responsible_users_notification($description, $task_id, false, 'task_status_changed_to_staff', serialize($not_data));
+           return $this->_send_task_responsible_users_notification($description, $task_id, false, 'task_status_changed_to_staff', serialize($not_data));
 
-            $this->_send_customer_contacts_notification($task_id, 'task_status_changed_to_customer');
+            //$this->_send_customer_contacts_notification($task_id, 'task_status_changed_to_customer');
 
 
             return true;
@@ -1921,9 +1908,9 @@ class Tasks_model extends CI_Model
             $this->db->where('id', $id);
             $task = $this->db->get(db_prefix() . 'tasks')->row();
 
-            if ($task->rel_type == 'project') {
+            /*if ($task->rel_type == 'project') {
                 $this->projects_model->log_activity($task->rel_id, 'project_activity_task_unmarked_complete', $task->name, $task->visible_to_client);
-            }
+            }*/
 
             $description = 'not_task_unmarked_as_complete';
 
@@ -2022,10 +2009,22 @@ class Tasks_model extends CI_Model
      */
     private function _send_task_responsible_users_notification($description, $taskid, $excludeid = false, $email_template = '', $additional_notification_data = '', $comment_id = false)
     {
+
+
+		$this->db->where('taskid', $taskid);
+		$finds=$this->db->get(db_prefix() . 'task_assigned')->result_array();
+		if(!$finds)
+		{
+			return false;
+		}
+		$members_id=[];
+		foreach ($finds as $find)
+		{
+			array_push($members_id, $find['user_id']);
+		}
         $this->load->model('admin_model');
-
-        $staff = $this->admin_model->get('', ['active' => 1,'company_id' => get_user_id()]);
-
+		$this->db->where_in('admin_id', $members_id);
+        $staff = $this->db->get(db_prefix().'admin')->result_array();
         $notifiedUsers = [];
         foreach ($staff as $member) {
             if (is_numeric($excludeid)) {
@@ -2033,13 +2032,13 @@ class Tasks_model extends CI_Model
                     continue;
                 }
             }
-            if (!is_client_logged_in()) {
+           /* if (!is_client_logged_in()) {
                 if ($member['admin_id'] == get_user_id()) {
                     continue;
                 }
-            }
+            }*/
 
-            if ($this->should_staff_receive_notification($member['admin_id'], $taskid)) {
+            if ($this->should_staff_receive_notification($member['admin_id'], $taskid) || 1==1) {
                 $link = '#taskid=' . $taskid;
 
                 if ($comment_id) {
@@ -2048,22 +2047,22 @@ class Tasks_model extends CI_Model
 
                 $notified = add_notification([
                     'description' => $description,
-                    'touserid' => $member['staffid'],
+                    'touserid' => $member['admin_id'],
                     'link' => $link,
                     'additional_data' => $additional_notification_data,
                 ]);
 
                 if ($notified) {
-                    array_push($notifiedUsers, $member['staffid']);
+                    array_push($notifiedUsers, $member['admin_id']);
                 }
 
                 if ($email_template != '') {
-                    send_mail_template($email_template, $member['email'], $member['staffid'], $taskid);
+                    send_mail_template($email_template, $member['email'], $member['admin_id'], $taskid);
                 }
             }
         }
 
-        //pusher_trigger_notification($notifiedUsers);
+       pusher_trigger_notification($notifiedUsers);
     }
 
     public function _send_customer_contacts_notification($taskid, $template_name)

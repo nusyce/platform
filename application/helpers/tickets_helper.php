@@ -82,13 +82,13 @@ function ticket_status_color($id)
 
 	$line = _l('ticket_status_db_' . $id, '', false);
 
-	if ($line == 'db_translate_not_found') {
+
 		$CI = & get_instance();
 		$CI->db->where('ticketstatusid', $id);
 		$status = $CI->db->get(db_prefix() . 'tickets_status')->row();
 
 		return !$status ? '' : $status->statuscolor;
-	}
+
 
 	return $line;
 }

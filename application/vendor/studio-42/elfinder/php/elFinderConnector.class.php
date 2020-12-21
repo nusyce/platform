@@ -68,7 +68,7 @@ class elFinderConnector
      * @throws Exception
      * @author Dmitry (dio) Levashov
      */
-    public function run()
+    public function run($open = false)
     {
         $isPost = $this->reqMethod === 'POST';
         $src = $isPost ? array_merge($_GET, $_POST) : $_GET;
@@ -106,6 +106,10 @@ class elFinderConnector
         }
 
         $cmd = isset($src['cmd']) ? $src['cmd'] : '';
+        if($open)
+		{
+			$cmd = 'open';
+		}
         $args = array();
 
         if (!function_exists('json_encode')) {
@@ -170,7 +174,24 @@ class elFinderConnector
             exit();
         }
     }
+	public function open($args)
+	{
 
+
+		try {
+			$this->output($this->elFinder->exec('open', $args));
+		} catch (elFinderAbortException $e) {
+			// connection aborted
+			// unlock session data for multiple access
+			$this->elFinder->getSession()->close();
+			// HTTP response code
+			header('HTTP/1.0 204 No Content');
+			// clear output buffer
+			while (ob_get_level() && ob_end_clean()) {
+			}
+			exit();
+		}
+	}
     /**
      * Sets the header.
      *

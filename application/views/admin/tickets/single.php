@@ -1,12 +1,13 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed'); ?>
+
 <?php init_head(); ?>
 <script>tinymce.init({selector:'textarea'});</script>
-<?php set_ticket_open($ticket->adminread,$ticket->ticketid); ?>
 <style>
 	.content-body{
 		margin-bottom: 70px;
 	}
 </style>
+
 <div class="app-content content">
 	<div class="content-overlay"></div>
 	<div class="content-wrapper">
@@ -28,16 +29,6 @@
 											   aria-expanded="true">
 												Antwort hinzufügen </a>
 										</li>
-										<!-- <li style="    margin-left: 10px;" role="presentation" >
-											 <a href="#note" aria-controls="note" role="tab"
-												data-toggle="tab" aria-expanded="false">
-												 Notiz hinzufügen</a>
-										 </li>
-										 <li style="    margin-left: 10px;" role="presentation" class="">
-											 <a href="#tab_reminders" aria-controls="tab_reminders" role="tab"
-												data-toggle="tab" aria-expanded="false">
-												 Erinnerungen</a>
-										 </li>-->
 
 
 									</ul>
@@ -69,7 +60,7 @@
 								<div class="col-md-4 text-right">
 									<div class="row">
 										<div class="col-md-6 col-md-offset-6">
-											<?php echo render_select('status_top',$statuses,array('ticketstatusid','name'),'',$ticket->status,array(),array(),'no-mbot','',false); ?>
+											<?php echo render_select('status', $statuses, array('ticketstatusid', 'name'), '', $ticket->status, array('data-width' => '100%', 'data-none-selected-text' => get_transl_field('tsl_tasks', 'status', 'Status')), array()); ?>
 										</div>
 									</div>
 								</div>
@@ -175,7 +166,7 @@
                      </span>
 
 										<div class="mtop15" style="margin-top: 10px;">
-											<?php
+											<!--<?php
 											$use_knowledge_base = get_option('use_knowledge_base');
 											?>
 											<div class="row mbot15">
@@ -186,29 +177,8 @@
 														<?php } ?>
 													</select>
 												</div>
-												<?php if($use_knowledge_base == 1){ ?>
-													<div class="visible-xs">
-														<div class="mtop15"></div>
-													</div>
-													<div class="col-md-6">
-														<?php $groups = get_all_knowledge_base_articles_grouped(); ?>
-														<select data-width="100%" id="insert_knowledge_base_link" class="selectpicker" data-live-search="true" onchange="insert_ticket_knowledgebase_link(this);" data-title="<?php echo _l('ticket_single_insert_knowledge_base_link'); ?>">
-															<option value=""></option>
-															<?php foreach($groups as $group){ ?>
-																<?php if(count($group['articles']) > 0){ ?>
-																	<optgroup label="<?php echo $group['name']; ?>">
-																		<?php foreach($group['articles'] as $article) { ?>
-																			<option value="<?php echo $article['articleid']; ?>">
-																				<?php echo $article['subject']; ?>
-																			</option>
-																		<?php } ?>
-																	</optgroup>
-																<?php } ?>
-															<?php } ?>
-														</select>
-													</div>
-												<?php } ?>
-											</div>
+
+											</div>-->
 											<?php echo render_textarea('message','','',array(),array(),'','tinymce'); ?>
 										</div>
 										<div class="panel_s ticket-reply-tools">
@@ -237,23 +207,28 @@
 													</div>
 												</div>
 												<hr />
-												<div class="row">
 
-													<div class="col-md-5 mbot15">
-														<div class="form-group">
-															<label for="attachment" class="control-label">
-																<?php echo _l('ticket_single_attachments'); ?>
-															</label>
-															<div class="input-group">
-																<input type="file" extension="<?php echo str_replace(['.', ' '], '', get_option('ticket_attachments_file_extensions')); ?>" filesize="<?php echo file_upload_max_size(); ?>" class="form-control" name="attachments[0]" accept="<?php echo get_ticket_form_accepted_mimes(); ?>">
-																<span class="input-group-btn">
-                                             <button class="btn btn-success add_more_attachments p8-half" data-max="<?php echo get_option('maximum_allowed_ticket_attachments'); ?>" type="button"><i class="fa fa-plus"></i></button>
-                                          </span>
+												<div class="attachments" style="background-color: white">
+													<div class="attachment">
+														<div class="row">
+															<div class="col-md-4 col-md-offset-4 mbot15">
+
+																<div class="form-group">
+																	<label for="attachment" class="control-label"><?php echo _l('ticket_add_attachments'); ?></label>
+																	<div class="input-group">
+																		<input type="file" extension="<?php echo str_replace(['.', ' '], '', get_option('ticket_attachments_file_extensions')); ?>" filesize="<?php echo file_upload_max_size(); ?>" class="form-control" name="attachments[0]" accept="<?php echo get_ticket_form_accepted_mimes(); ?>">
+																		<span class="input-group-btn">
+												<button class="btn btn-success add_more_attachments p8-half" data-max="<?php echo get_option('maximum_allowed_ticket_attachments'); ?>" type="button"><i class="fa fa-plus"></i></button>
+											</span>
+																	</div>
+																</div>
+
 															</div>
+
 														</div>
 
-
 													</div>
+
 												</div>
 											</div>
 										</div>
@@ -355,7 +330,7 @@
 											echo '</div>';
 										}
 										if(is_admin() || (!is_admin() && get_option('allow_non_admin_staff_to_delete_ticket_attachments') == '1')){
-											echo '<a href="'.admin_url('tickets/delete_attachment/'.$attachment['id']).'" class="text-danger _delete">'._l('delete').'</a>';
+											echo '<a href="'.admin_url('ticket/delete_attachment/'.$attachment['id']).'" class="text-danger _delete">'._l('delete').'</a>';
 										}
 										echo '<hr />';
 										?>
@@ -414,7 +389,7 @@
 										<div data-reply-id="<?php echo $reply['id']; ?>" class="tc-content">
 											<?php echo check_for_links($reply['message']); ?>
 										</div>
-										<!--<?php if(count($reply['attachments']) > 0){
+										<?php if(count($reply['attachments']) > 0){
 											echo '<hr />';
 											foreach($reply['attachments'] as $attachment){
 												$path = get_upload_path_by_type('ticket').$ticket->ticketid.'/'.$attachment['file_name'];
@@ -434,11 +409,11 @@
 													echo '</div>';
 												}
 												if(is_admin() || (!is_admin() && get_option('allow_non_admin_staff_to_delete_ticket_attachments') == '1')){
-													echo '<a href="'.admin_url('tickets/delete_attachment/'.$attachment['id']).'" class="text-danger _delete">'._l('delete').'</a>';
+													echo '<a href="'.admin_url('ticket/delete_attachment/'.$attachment['id']).'" class="text-danger _delete">'._l('delete').'</a>';
 												}
 												echo '<hr />';
 											}
-										} ?>-->
+										} ?>
 									</div>
 								</div>
 							</div>
@@ -479,6 +454,7 @@
 		<?php echo form_close(); ?>
 	</div>
 </div>
+
 <script>
     var _ticket_message;
 </script>
@@ -544,4 +520,5 @@
 	<?php } ?>
 
 </script>
+
 

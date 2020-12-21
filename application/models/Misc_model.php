@@ -14,7 +14,7 @@ class Misc_model extends CI_Model
 
     public function get_notifications_limit()
     {
-        return hooks()->apply_filters('notifications_limit', $this->notifications_limit);
+        return $this->notifications_limit;
     }
 
     public function get_taxes_dropdown_template($name, $taxname, $type = '', $item_id = '', $is_edit = false, $manual = false)
@@ -208,7 +208,7 @@ class Misc_model extends CI_Model
         $data['dateadded'] = date('Y-m-d H:i:s');
         $data['rel_id'] = $rel_id;
         if (!isset($attachment[0]['staffid'])) {
-            $data['staffid'] = get_staff_user_id();
+            $data['staffid'] = get_user_id();
         } else {
             $data['staffid'] = $attachment[0]['staffid'];
         }
@@ -219,13 +219,6 @@ class Misc_model extends CI_Model
 
         $data['rel_type'] = $rel_type;
 
-        if (isset($attachment[0]['contact_id'])) {
-            $data['contact_id'] = $attachment[0]['contact_id'];
-            $data['visible_to_customer'] = 1;
-            if (isset($data['staffid'])) {
-                unset($data['staffid']);
-            }
-        }
 
         $data['attachment_key'] = app_generate_hash();
 
@@ -246,24 +239,6 @@ class Misc_model extends CI_Model
         $this->db->insert(db_prefix() . 'files', $data);
         $insert_id = $this->db->insert_id();
 
-        if ($data['rel_type'] == 'customer' && isset($data['contact_id'])) {
-            if (get_option('only_own_files_contacts') == 1) {
-                $this->db->insert(db_prefix() . 'shared_customer_files', [
-                    'file_id' => $insert_id,
-                    'contact_id' => $data['contact_id'],
-                ]);
-            } else {
-                $this->db->select('id');
-                $this->db->where('userid', $data['rel_id']);
-                $contacts = $this->db->get(db_prefix() . 'contacts')->result_array();
-                foreach ($contacts as $contact) {
-                    $this->db->insert(db_prefix() . 'shared_customer_files', [
-                        'file_id' => $insert_id,
-                        'contact_id' => $contact['id'],
-                    ]);
-                }
-            }
-        }
 
         return $insert_id;
     }
@@ -554,6 +529,22 @@ class Misc_model extends CI_Model
 
         return $this->db->get(db_prefix() . 'notifications')->result_array();
     }
+	public function count_unread($read = false)
+	{
+		$read = $read == false ? 0 : 1;
+		$total = $this->notifications_limit;
+		$staff_id = get_user_id();
+
+		$sql = 'SELECT COUNT(*) as total FROM ' . db_prefix() . 'notifications WHERE isread=' . $read . ' AND touserid=' . $staff_id;
+		//$sql .= ' UNION ALL ';
+		//$sql .= 'SELECT COUNT(*) as total FROM ' . db_prefix() . 'notifications WHERE isread_inline=' . $read . ' AND touserid=' . $staff_id;
+
+		$res = $this->db->query($sql)->result();
+
+		$total_unread = $res[0]->total;
+
+		return $total_unread;
+	}
 
     /**
      * Set notification read when user open notification dropdown
@@ -574,7 +565,7 @@ class Misc_model extends CI_Model
 
     public function set_notification_read_inline($id)
     {
-        $this->db->where('touserid', get_staff_user_id());
+        $this->db->where('touserid', get_user_id());
         $this->db->where('id', $id);
         $this->db->update(db_prefix() . 'notifications', [
             'isread_inline' => 1,
@@ -593,7 +584,7 @@ class Misc_model extends CI_Model
 
     public function mark_all_notifications_as_read_inline()
     {
-        $this->db->where('touserid', get_staff_user_id());
+        $this->db->where('touserid', get_user_id());
         $this->db->update(db_prefix() . 'notifications', [
             'isread_inline' => 1,
             'isread' => 1,

@@ -66,9 +66,11 @@ class Ticket extends MY_Controller
     public function add($userid = false)
     {
         if ($this->input->post()) {
+			var_dump($_FILES);
             $data            = $this->input->post();
             $data['message'] = $this->input->post('message');
-            $id              = $this->tickets_model->add($data, $this->session->userdata('admin_id'));
+            $id              = $this->tickets_model->add($data, get_user_id());
+
             if ($id) {
                 set_alert('success', _l('new_ticket_added_successfully', $id));
                redirect(admin_url('ticket/ticket/' . $id));
@@ -166,22 +168,9 @@ class Ticket extends MY_Controller
 
     public function delete_attachment($id)
     {
-        if (is_admin() || (!is_admin() && get_option('allow_non_admin_staff_to_delete_ticket_attachments') == '1')) {
-            if (get_option('staff_access_only_assigned_departments') == 1 && !is_admin()) {
-                $attachment = $this->tickets_model->get_ticket_attachment($id);
-                $ticket     = $this->tickets_model->get_ticket_by_id($attachment->ticketid);
 
-                $this->load->model('departments_model');
-                $staff_departments = $this->departments_model->get_staff_departments(get_user_id(), true);
-                if (!in_array($ticket->department, $staff_departments)) {
-                    set_alert('danger', _l('ticket_access_by_department_denied'));
-                    redirect(admin_url('access_denied'));
-                }
-            }
 
             $this->tickets_model->delete_ticket_attachment($id);
-        }
-
         redirect($_SERVER['HTTP_REFERER']);
     }
 
@@ -197,16 +186,7 @@ class Ticket extends MY_Controller
             blank_page(_l('ticket_not_found'));
         }
 
-        if (get_option('staff_access_only_assigned_departments') == 1) {
-            if (!is_admin()) {
-                $this->load->model('departments_model');
-                $staff_departments = $this->departments_model->get_staff_departments(get_user_id(), true);
-                /*if (!in_array($data['ticket']->department, $staff_departments)) {
-                    set_alert('danger', _l('ticket_access_by_department_denied'));
-                    redirect(admin_url('access_denied'));
-                }*/
-            }
-        }
+
 
         if ($this->input->post()) {
             $returnToTicketList = false;
@@ -253,7 +233,8 @@ class Ticket extends MY_Controller
         //$data['ticket']->ticket_notes = $this->misc_model->get_notes($id, 'ticket');
 		$data['ticket']->ticket_notes =[];
 		$data['ticket']->submitter =[];
-        //add_admin_tickets_js_assets();
+        //add_admin_tickets_js_assets();var_dump( $data);
+
         $this->load->view('admin/tickets/single', $data);
     }
 

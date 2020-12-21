@@ -13,6 +13,18 @@ class Mieter_model extends CI_Model
 		$this->db->order_by('ci_activity_log.id','desc');*/
 		return $this->db->get('mar_mieters')->result_array();
 	}
+	public function add_attachment($insert_id, $data)
+	{
+		$this->db->insert(db_prefix() . 'files', [
+			'rel_id' => $insert_id,
+			'rel_type' => 'mieter',
+			'file_name' => $data['file_name'],
+			'filetype' => $data['file_type'],
+			'staffid' => get_user_id(),
+			'dateadded' => date('Y-m-d H:i:s'),
+			'attachment_key' => app_generate_hash(),
+		]);
+	}
 
 	public function get_by_id($id)
 	{
@@ -141,6 +153,16 @@ class Mieter_model extends CI_Model
 		$this->Activity_model->add_log('Status Mieter changed [ID: ' . $this->input->post('id') . ']');
 		set_alert('success', 'changed_successfully');
 	}
+	public function get_attachments($id)
+	{
+		$this->db->where(['rel_id' => $id, 'rel_type' => 'mieter']);
+		return $this->db->get(db_prefix() . 'files')->result_array();
+	}
+	public function delete_attachment($id)
+	{
+		$this->db->where('id', $id);
+		$this->db->delete(db_prefix() . 'files');
+	}
 
 	public function add($data)
 	{
@@ -149,8 +171,9 @@ class Mieter_model extends CI_Model
 		$data['created_at'] = date('d-m-y h:i:s');
 		$data['company_id']=get_user_company_id();
 		$this->db->insert('mar_mieters', $data);
-		$this->Activity_model->add_log('New mieter [ID: ' . $this->db->insert_id() . ']');
-		return true;
+		$id=$this->db->insert_id();
+		$this->Activity_model->add_log('New mieter [ID: ' . $id . ']');
+		return $id;
 
 
 	}

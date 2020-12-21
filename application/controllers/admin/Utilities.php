@@ -106,20 +106,75 @@ class Utilities extends MY_Controller
             die();
         }
     }
+	public function assigneventtouser()
 
+	{
+
+
+			$this->db->where('user_id',$_POST['user_id']);
+			$this->db->where('event_id',$_POST['event_id']);
+			$result = $this->db->get(db_prefix() . 'event_rel_staff')->row();
+			if(!$result)
+			{
+				$this->db->insert(db_prefix() . 'event_rel_staff', [
+					'user_id' => $_POST['user_id'],
+					'event_id' => $_POST['event_id'],
+				]);
+
+			}
+
+
+			$this->view_event($_POST['event_id']);
+
+
+
+	}
+	public function assigntasktouser()
+
+	{
+
+			$this->db->where('user_id',$_POST['user_id']);
+			$this->db->where('taskid',$_POST['task_id']);
+			$result = $this->db->get(db_prefix() . 'task_assigned')->row();
+			if(!$result)
+			{
+				$this->db->insert(db_prefix() . 'task_assigned', [
+					'user_id' => $_POST['user_id'],
+					'taskid' => $_POST['task_id'],
+					'assigned_from' => get_user_id(),
+				]);
+			}
+			$this->load->view('admin/utilities/calendar');
+
+	}
+	public function assigntasktocar()
+
+	{
+
+
+			$this->db->where('id',$_POST['task_id']);
+			$this->db->update(db_prefix() . 'tasks', [
+				'car' => $_POST['car_id'],
+
+			]);
+
+			$this->load->view('admin/utilities/calendar');
+
+	}
     public function view_event($id)
     {
         $data['event'] = $this->utilities_model->get_event($id);
         $even_relation = $this->utilities_model->get_event_users($id);
         $data['event']->user= array_column( $even_relation,"user_id");
         //print_r($data);
-        if ($data['event']->public == 1 && !is_staff_member()
-            || $data['event']->public == 0 && $data['event']->userid != get_staff_user_id()) {
+        if ($data['event']->public == 1
+            || $data['event']->public == 0 && $data['event']->userid != get_user_id() || 2==1) {
 
 
-                if($even_relation->event_id == $id){
+                /*if($even_relation->event_id == $id){
                     $this->load->view('admin/utilities/event', $data);
-                }
+                }*/
+			$this->load->view('admin/utilities/event', $data);
 
 
         } else {
@@ -533,11 +588,6 @@ class Utilities extends MY_Controller
 
             $mediaLocale = get_media_locale();
 
-            $this->app_scripts->add('media-js', 'assets/plugins/elFinder/js/elfinder.min.js');
-
-            if (file_exists(FCPATH . 'assets/plugins/elFinder/js/i18n/elfinder.' . $mediaLocale . '.js') && $mediaLocale != 'en') {
-                $this->app_scripts->add('media-lang-js', 'assets/plugins/elFinder/js/i18n/elfinder.' . $mediaLocale . '.js');
-            }
 
             $this->load->view('admin/utilities/share_media', $data);
         }

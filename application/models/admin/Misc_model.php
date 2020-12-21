@@ -1168,6 +1168,7 @@ class Misc_model extends CI_Model
 
     public function _search_projects($q, $limit = 0, $where = false)
     {
+
         $result = [
             'result' => [],
             'type' => 'projects',

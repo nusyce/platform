@@ -108,7 +108,7 @@ function parse_email_template_merge_fields($template, $merge_fields)
 function send_mail_template()
 {
     $params = func_get_args();
-
+return [];
     return mail_template(...$params)->send();
 }
 

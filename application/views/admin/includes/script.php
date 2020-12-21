@@ -21,7 +21,7 @@
 <script src="<?= base_url() ?>/assets/app/js/core/app.js"></script>
 <script src="<?= base_url() ?>/assets/app/js/scripts/components.js"></script>
 <script src="<?= base_url() ?>/assets/app/js/scripts/footer.js"></script>
-y.min.js"></script>
+
 
 
 <!-- BEGIN Vendor JS-->
@@ -32,7 +32,7 @@ y.min.js"></script>
 <!--<script src="<? /*= base_url()*/ ?>/assets/app//vendors/js/tables/datatable/dataTables.buttons.min.js"></script>-->
 <script src="<?= base_url() ?>/assets/app/vendors/js/tables/datatable/buttons.html5.min.js"></script>
 <script src="<?= base_url() ?>/assets/app/vendors/js/tables/datatable/buttons.print.min.js"></script>
-<script src="<?= base_url() ?>/assets/plugins/bootstrap-select/js/bootstrap-select.js"></script>
+<script src="<?= base_url() ?>/assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
 <script src="<?= base_url() ?>/assets/plugins/jQueryUI/jquery-ui.js"></script>
 <!--<script src="<? /*= base_url()*/ ?>/assets/app/app-assets/vendors/js/tables/datatable/buttons.bootstrap.min.js"></script>
 -->
@@ -57,12 +57,18 @@ y.min.js"></script>
 
 <!--<script src="<? /*= base_url()*/ ?>/assets/app/js/scripts/pages/dashboard-ecommerce.js"></script>
 -->
-
+<script src="<?= base_url() ?>assets/plugins/dropzone/dropzone.js" type="text/javascript"></script>
 <script src="<?= base_url() ?>/assets/plugins/validation/app-form-validation.js"></script>
+<script src="<?= base_url() ?>/assets/plugins/datetimepicker/jquery.datetimepicker.full.min.js"></script>
+<script type="text/javascript" id="moment-js" src="<?= base_url() ?>/assets/builds/moment.min.js"></script>
+<script type="text/javascript" id="full-calendar-min-js" src="<?= base_url() ?>/assets/plugins/fullcalendar/fullcalendar.min.js"></script>
+<script type="text/javascript" id="full-calendar-lang-js" src="<?= base_url() ?>/assets/plugins/fullcalendar/locale/de.js"></script>
 <!-- END: Page JS-->
 <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
 <script type="text/javascript">
     $(function(){
+        appDatepicker();
+
         // Enable pusher logging - don't include this in production
         // Pusher.logToConsole = true;
 		<?php
@@ -160,6 +166,7 @@ app_js_alerts();
 ?>
 <script>
 
+
 	var csfr_token_name = '<?php echo $this->security->get_csrf_token_name(); ?>';
 
 	var csfr_token_value = '<?php echo $this->security->get_csrf_hash(); ?>';
@@ -167,6 +174,7 @@ app_js_alerts();
 	$(function () {
 //-------------------------------------------------------------------
 // Country State & City Change
+
 
 		$('#edit-menu').click(function (e) {
 			e.preventDefault();

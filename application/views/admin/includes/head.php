@@ -26,7 +26,7 @@
 	<link rel="stylesheet" type="text/css" href="<?= base_url() ?>/assets/app/css/bootstrap-extended.css">
 	<link rel="stylesheet" type="text/css" href="<?= base_url() ?>/assets/app/css/colors.css">
 	<link rel="stylesheet" type="text/css"
-		  href="<?= base_url() ?>/assets/plugins/bootstrap-select/css/bootstrap-select.css">
+		  href="<?= base_url() ?>/assets/plugins/bootstrap-select/bootstrap-select.css">
 	<link rel="stylesheet" type="text/css" href="<?= base_url() ?>/assets/app/css/components.css">
 	<link rel="stylesheet" type="text/css" href="<?= base_url() ?>/assets/app/css/themes/dark-layout.css">
 	<link rel="stylesheet" type="text/css" href="<?= base_url() ?>/assets/app/css/themes/semi-dark-layout.css">
@@ -48,8 +48,8 @@
 
 	<!-- BEGIN: Custom CSS-->
 	<link rel="stylesheet" type="text/css" href="<?= base_url() ?>/assets/css/style.css">
-
-
+	<link rel="stylesheet" type="text/css" href="<?= base_url() ?>/assets/plugins/datetimepicker/jquery.datetimepicker.min.css">
+	<link rel="stylesheet" type="text/css" id="full-calendar-css" href="<?= base_url() ?>/assets/plugins/fullcalendar/fullcalendar.min.css?v=2.4.4">
 	<?php render_admin_js_variables(); ?>
 	<style>
 		body {

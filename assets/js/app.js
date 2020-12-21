@@ -2,6 +2,149 @@
  * @since 2.3.2
  * This file is compiled with assets/js/common.js because most of the functions can be used in admin and clients area
  */
+
+$("body").on('click', '.cpicker', function () {
+	var color = $(this).data('color');
+	// Clicked on the same selected color
+	if ($(this).hasClass('cpicker-big')) {
+		return false;
+	}
+
+	$(this).parents('.cpicker-wrapper').find('.cpicker-big').removeClass('cpicker-big').addClass('cpicker-small');
+	$(this).removeClass('cpicker-small', 'fast').addClass('cpicker-big', 'fast');
+	if ($(this).hasClass('kanban-cpicker')) {
+		$(this).parents('.panel-heading-bg').css('background', color);
+		$(this).parents('.panel-heading-bg').css('border', '1px solid ' + color);
+	} else if ($(this).hasClass('calendar-cpicker')) {
+		$("body").find('._event input[name="color"]').val(color);
+	}
+});
+$("body").on('submit', '#task-form', function (e) {
+	e.preventDefault();
+	var form = $(this);
+	var data = $(this).serialize()
+	$.ajax({ type: "POST",
+		url: form.attr('action'),
+		async: false,
+		data: data,
+		success : function(response)
+		{
+
+			var data = JSON.parse(response);
+			alert_float('success',data.message);
+			$('#_task_modal').modal('hide');
+			init_task_modal(data.id);
+			reload_tasks_tables();
+		}
+	});
+
+});
+function remove_mieter_attachment(link, id) {
+	if (confirm_delete()) {
+		requestGetJSON('mieter/delete_attach/' + id).done(function (response) {
+			if (response) {
+				$('[data-mieter-attachment-id="' + id + '"]').remove();
+			}
+		});
+	}
+}
+function view_event(id) {
+	if (typeof (id) == 'undefined') {
+		return;
+	}
+	$.post(admin_url + 'utilities/view_event/' + id).done(function (response) {
+		$('#_edit_event').html(response);
+		$('#viewEvent').modal('show');
+		init_selectpicker();
+	});
+}
+
+function appValidateForm(form, form_rules, submithandler, overwriteMessages) {
+	$(form).appFormValidator({ rules: form_rules, onSubmit: submithandler, messages: overwriteMessages });
+}
+function validate_calendar_form() {
+	appValidateForm($("body").find('._event form'), {
+		title: 'required',
+		start: 'required',
+		reminder_before: 'required'
+	}, calendar_form_handler);
+
+	appValidateForm($("body").find('#viewEvent form'), {
+		title: 'required',
+		start: 'required',
+		reminder_before: 'required'
+	}, calendar_form_handler);
+}
+function calendar_form_handler(form) {
+	$.post(form.action, $(form).serialize()).done(function (response) {
+		response = JSON.parse(response);
+		if (response.success === true || response.success == 'true') {
+			alert_float('success', response.message);
+			setTimeout(function () {
+				var location = window.location.href;
+				location = location.split('?');
+				window.location.href = location[0];
+			}, 500);
+		}
+	});
+
+	return false;
+}
+
+function open_link_notification(e)
+{
+
+	e.preventDefault();
+	var $notLink = $(this);
+	var not_href_id;
+
+	var not_href = $notLink.hasClass('notification_link') ? $notLink.data('link') : e.currentTarget.href;
+
+	var not_href_array = not_href.split('#');
+	var notRedirect = true;
+	if (not_href_array[1] && not_href_array[1].indexOf('=') > -1) {
+		notRedirect = false;
+		not_href_id = not_href_array[1].split('=')[1];
+		if (not_href_array[1].indexOf('postid') > -1) {
+			postid = not_href_id;
+			if ($(window).width() > 769) {
+				$('.open_newsfeed.desktop').click();
+			} else {
+				$('.open_newsfeed.mobile').click();
+			}
+		} else if (not_href_array[1].indexOf('taskid') > -1) {
+
+			var comment_id = undefined;
+			if (not_href.indexOf('#comment_') > -1) {
+				var task_comment_id = not_href.split('#comment_');
+				comment_id = task_comment_id[task_comment_id.length - 1];
+			}
+			init_task_modal(not_href_id, comment_id);
+		} else if (not_href_array[1].indexOf('leadid') > -1) {
+			init_lead(not_href_id);
+		} else if (not_href_array[1].indexOf('eventid') > -1) {
+			view_event(not_href_id);
+		}
+	}
+	if (!$notLink.hasClass('desktopClick')) {
+		$notLink.parent('li').find('.not-mark-as-read-inline').click();
+	}
+	if (notRedirect) {
+		setTimeout(function () {
+			window.location.href = not_href_array;
+		}, 50);
+	}
+}
+function set_notification_read_inline(id) {
+	requestGet('misc/set_notification_read_inline/' + id).done(function () {
+		fetch_notifications()
+	});
+}
+function mark_all_notifications_as_read_inline() {
+	requestGet('misc/mark_all_notifications_as_read_inline/').done(function () {
+		fetch_notifications();
+	});
+}
 function elFinderBrowser(field_name, url, type, win) {
 	tinymce.activeEditor.windowManager.open({
 		file: admin_url + 'misc/tinymce_file_browser',
@@ -117,7 +260,7 @@ function add_task_comment(task_id) {
 		tinymce.remove('#task_comment');
 	});
 }
-admin_url
+
 function fetch_notifications(callback) {
 	requestGetJSON('misc/notifications_check').done(function (response) {
 		$('#notif-zone').html('');
@@ -155,6 +298,7 @@ function new_task(url) {
 		$('#_task').html(response);
 		init_selectpicker();
 		$("body").find('#_task_modal').modal({show: true, backdrop: 'static'});
+		appDatepicker();
 	}).fail(function (error) {
 		alert_float('danger', error.responseText);
 	})
@@ -163,12 +307,14 @@ function edit_task(task_id) {
 	requestGet('task/task/' + task_id).done(function (response) {
 
 		$('#_task').html(response);
+		appDatepicker();
 		$('#task-modal').modal('hide');
 		init_selectpicker();
 		$("body").find('#_task_modal').modal({show: true, backdrop: 'static'});
 	});
 }
-function init_task_modal(task_id, comment_id) {
+function
+init_task_modal(task_id, comment_id) {
 
 	var queryStr = '';
 	var $leadModal = $('#lead-modal');
@@ -527,7 +673,12 @@ $(document).keyup(function (e) {
 		}
 	}
 });
-
+function init_datepicker(element_date, element_time) {
+	appDatepicker({
+		element_date: element_date,
+		element_time: element_time,
+	});
+}
 function init_selectpicker() {
 	appSelectPicker();
 }
@@ -599,10 +750,10 @@ function renderDataTable(selector, url, notsearchable, notsortable, fnserverpara
 
 	app.options.tables_pagination_limit = parseFloat(app.options.tables_pagination_limit);
 
-	if ($.inArray(app.options.tables_pagination_limit, length_options) == -1) {
+	/*if ($.inArray(app.options.tables_pagination_limit, length_options) == -1) {
 		length_options.push(app.options.tables_pagination_limit);
 		length_options_names.push(app.options.tables_pagination_limit);
-	}
+	}*/
 
 	length_options.sort(function (a, b) {
 		return a - b;
@@ -611,7 +762,8 @@ function renderDataTable(selector, url, notsearchable, notsortable, fnserverpara
 		return a - b;
 	});
 	length_options.push(-1);
-	length_options_names.push(app.lang.dt_length_menu_all);
+	length_options_names.push('Alle');
+	//length_options_names.push(app.lang.dt_length_menu_all);
 
 	var dtSettings = {
 		"language": app.lang.datatables,
@@ -1179,18 +1331,7 @@ function appColorPicker(element) {
 }
 
 // Init bootstrap select picker
-function appSelectPicker(element) {
 
-	if (typeof (element) == 'undefined') {
-		element = $("body").find('select.selectpicker');
-	}
-
-	if (element.length) {
-		element.selectpicker({
-			showSubtext: true
-		});
-	}
-}
 
 // Progress bar animation load
 function appProgressBar() {
@@ -1788,10 +1929,11 @@ function slideToggle(selector, callback) {
 // Date picker init, options and optionally element
 function appDatepicker(options) {
 
-	if (typeof (app._date_picker_locale_configured) === 'undefined') {
+	/*if (typeof(app._date_picker_locale_configured) === 'undefined') {
+		alert(app.locale);
 		jQuery.datetimepicker.setLocale(app.locale);
 		app._date_picker_locale_configured = true;
-	}
+	}*/
 
 	var defaults = {
 		date_format: app.options.date_format,
@@ -1803,22 +1945,22 @@ function appDatepicker(options) {
 
 	var settings = $.extend({}, defaults, options);
 
-	var datepickers = typeof (settings.element_date) != 'undefined' ? settings.element_date : $(settings.date_picker_selector);
-	var datetimepickers = typeof (settings.element_time) != 'undefined' ? settings.element_time : $(settings.date_time_picker_selector);
+	var datepickers = typeof(settings.element_date) != 'undefined' ? settings.element_date : $(settings.date_picker_selector);
+	var datetimepickers = typeof(settings.element_time) != 'undefined' ? settings.element_time : $(settings.date_time_picker_selector);
 
 	if (datetimepickers.length === 0 && datepickers.length === 0) {
 		return;
 	}
 
 	// Datepicker without time
-	$.each(datepickers, function () {
+	$.each(datepickers, function() {
 		var that = $(this);
 
 		var opt = {
 			timepicker: false,
 			scrollInput: false,
 			lazyInit: true,
-			format: settings.date_format,
+			format: 'd/m/yy',
 			dayOfWeekStart: settings.week_start,
 		};
 
@@ -1842,14 +1984,14 @@ function appDatepicker(options) {
 		// Init the picker
 		that.datetimepicker(opt);
 
-		that.parents('.form-group').find('.calendar-icon').on('click', function () {
+		that.parents('.form-group').find('.calendar-icon').on('click', function() {
 			that.focus();
 			that.trigger('open.xdsoft');
 		});
 	});
 
 	// Datepicker with time
-	$.each(datetimepickers, function () {
+	$.each(datetimepickers, function() {
 		var that = $(this);
 		var opt_time = {
 			lazyInit: true,
@@ -1857,12 +1999,9 @@ function appDatepicker(options) {
 			validateOnBlur: false,
 			dayOfWeekStart: settings.week_start
 		};
-		if (settings.time_format == 24) {
-			opt_time.format = settings.date_format + ' H:i';
-		} else {
-			opt_time.format = settings.date_format + ' g:i A';
-			opt_time.formatTime = 'g:i A';
-		}
+
+			opt_time.format = 'd/m/yy H:i';
+
 		// Check in case the input have date-end-date or date-min-date
 		var max_date = that.attr('data-date-end-date');
 		var min_date = that.attr('data-date-min-date');
@@ -1882,12 +2021,13 @@ function appDatepicker(options) {
 		// Init the picker
 		that.datetimepicker(opt_time);
 
-		that.parents('.form-group').find('.calendar-icon').on('click', function () {
+		that.parents('.form-group').find('.calendar-icon').on('click', function() {
 			that.focus();
 			that.trigger('open.xdsoft');
 		});
 	});
 }
+
 
 function appTagsInput(element) {
 

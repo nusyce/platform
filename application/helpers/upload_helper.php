@@ -291,6 +291,9 @@ function handle_task_attachments_array($taskid, $index_name = 'attachments')
 {
     $uploaded_files = [];
     $path = get_upload_path_by_type('task') . $taskid . '/';
+	if (!file_exists($path)) {
+		mkdir($path, 0777, true);
+	}
     $CI = &get_instance();
 
     if (isset($_FILES[$index_name]['name'])
@@ -326,9 +329,9 @@ function handle_task_attachments_array($taskid, $index_name = 'attachments')
                         'filetype' => $_FILES[$index_name]['type'][$i],
                     ]);
 
-                    if (is_image($newFilePath)) {
+                   /* if (is_image($newFilePath)) {
                         create_img_thumb($path, $filename);
-                    }
+                    }*/
 
                 }
             }
@@ -523,16 +526,23 @@ function handle_expense_attachments($id)
 function handle_ticket_attachments($ticketid, $index_name = 'attachments')
 {
     $path = get_upload_path_by_type('ticket') . $ticketid . '/';
-    $uploaded_files = [];
+	if (!file_exists($path)) {
+		mkdir($path, 0777, true);
+	}
+		$uploaded_files = [];
 
     if (isset($_FILES[$index_name])) {
+
         _file_attachments_index_fix($index_name);
 
         for ($i = 0; $i < count($_FILES[$index_name]['name']); $i++) {
+
             //hooks()->do_action('before_upload_ticket_attachment', $ticketid);
             if ($i <= get_option('maximum_allowed_ticket_attachments')) {
+
                 // Get the temp file path
                 $tmpFilePath = $_FILES[$index_name]['tmp_name'][$i];
+
                 // Make sure we have a filepath
                 if (!empty($tmpFilePath) && $tmpFilePath != '') {
                     // Getting file extension
@@ -540,14 +550,19 @@ function handle_ticket_attachments($ticketid, $index_name = 'attachments')
 
                     $allowed_extensions = explode(',', get_option('ticket_attachments_file_extensions'));
                     $allowed_extensions = array_map('trim', $allowed_extensions);
+
                     // Check for all cases if this extension is allowed
                     if (!in_array('.' . $extension, $allowed_extensions)) {
                         continue;
                     }
-                    _maybe_create_upload_path($path);
+
+
                     $filename = unique_filename($path, $_FILES[$index_name]['name'][$i]);
+
                     $newFilePath = $path . $filename;
                     // Upload the file into the temp dir
+
+
                     if (move_uploaded_file($tmpFilePath, $newFilePath)) {
                         array_push($uploaded_files, [
                             'file_name' => $filename,
@@ -1078,6 +1093,10 @@ function get_upload_path_by_type($type)
             $path = NEWSFEED_FOLDER;
 
             break;
+		case 'mailbox':
+			$path = MAILBOX_UPLOADS_FOLDER;
+
+			break;
     }
 
     return $path;

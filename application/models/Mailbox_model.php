@@ -96,9 +96,12 @@ class Mailbox_model extends CI_Model
 
         $attachments = array();
     	if($outbox_id > 0){
+
     		if(count($array_inbox_id) > 0){
+
                 foreach ($array_inbox_id as $inbox_id) {
                     $attachments = handle_mail_attachments($inbox_id,'inbox','attachments','copy');
+
                     if ($attachments) {
                         $this->insert_mail_attachments_to_database($attachments, $inbox_id,'inbox');
                     }

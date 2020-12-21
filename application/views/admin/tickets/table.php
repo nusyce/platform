@@ -61,7 +61,7 @@ foreach ($rResult as $aRow) {
 	$row[] = $subjectOutput;
 	$row[] = $aRow['service'];
 	$row[] = $aRow['assigned'];
-	$status='<span class="label inline-block ticket-status-3" style="border:1px solid '.ticket_status_color($aRow['status']).';color: '.ticket_status_color($aRow['status']).'">'.ticket_status_translate($aRow['status']).'</span>';
+	$status='<span class="label inline-block ticket-status-3" style="padding: 3px 6px;border:1px solid '.ticket_status_color($aRow['status']).';color: '.ticket_status_color($aRow['status']).'">'.ticket_status_translate($aRow['status']).'</span>';
 	$row[] = $status;
 	$row[] = $aRow['priority'];
 	$row[] = $aRow['lastreply'];

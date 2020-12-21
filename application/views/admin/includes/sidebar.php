@@ -88,7 +88,7 @@
 
 							<i class="nav-icon fa <?= $nav['fa_icon'] ?> icon-nav-item"></i>
 							<p>
-								<span class="menu-text"><?= get_menu_option($nav['controller_name'], $module_name) ?></span>
+								<span class="menu-text"><?= get_menu_option($nav['module_name'], $module_name) ?></span>
 								<!--<?= ($has_submenu) ? '<i class="right fa fa-angle-left"></i>' : '' ?>-->
 							</p>
 						</a>
@@ -98,8 +98,8 @@
 							<ul class="menu-content">
 
 								<?php foreach ($sub_menu as $sub_nav): ?>
-									<li class="nav-item <?= ($this->uri->segment(2).'/'.$this->uri->segment(3)==$nav['controller_name'].'/'. $sub_nav['link']) ? 'active' : '' ?>" >
-										<a href="<?= base_url('admin/' . $nav['controller_name'] . '/' . $sub_nav['link']); ?>"
+									<li class="nav-item <?= ($this->uri->segment(2).'/'.$this->uri->segment(3)==$sub_nav['link']) ? 'active' : '' ?>" >
+										<a href="<?= base_url('admin/' . $sub_nav['link']); ?>"
 										   class="nav-link">
 
 											<p class="p-nav-link"><?= $sub_nav['name'] ?></p>
